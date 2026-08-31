@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { Course } from "@/lib/data/courses";
 import FilterPills from "./FilterPills";
-import CourseRail from "./CourseRail";
+import CourseCard from "./CourseCard";
 
 export default function CourseFinder({ courses }: { courses: Course[] }) {
   const niveis = useMemo(
@@ -28,25 +28,28 @@ export default function CourseFinder({ courses }: { courses: Course[] }) {
   const nivelSlug = courses.find((c) => c.nivelNome === tab)?.nivelSlug ?? "";
 
   return (
-    <div>
-      {/* No mobile a busca vem antes do título, como na referência */}
-      <div className="mb-8 flex flex-col-reverse gap-6 lg:mb-10 lg:flex-row lg:items-center lg:justify-between">
-        <h2 className="t-h2 text-navy-950">Cursos mais procurados</h2>
+    <div className="mx-auto max-w-[1180px]">
+      {/* Linha 1 — título à esquerda, busca à direita.
+          No mobile a busca vem antes do título, como já era. */}
+      <div className="flex flex-col-reverse gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+        <h2 className="text-[2.25rem] font-extrabold leading-[1.02] tracking-tight text-black lg:text-[52px]">
+          Cursos mais procurados
+        </h2>
 
-        <label className="relative block w-full lg:w-[420px]">
+        <label className="relative block w-full shrink-0 sm:w-[380px]">
           <span className="sr-only">Buscar curso</span>
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Procure o curso ideal pra você!"
-            className="w-full rounded-full border-2 border-navy-950 bg-white py-4 pl-6 pr-14 text-[15px] font-bold text-navy-950 outline-none placeholder:text-navy-950/60 focus:border-accent"
+            className="h-[55px] w-full rounded-[30px] border border-black bg-white pl-6 pr-14 text-[15px] font-semibold text-black outline-none transition-colors placeholder:text-black/55 focus:border-accent"
           />
           <svg
-            width="20"
-            height="20"
+            width="19"
+            height="19"
             viewBox="0 0 24 24"
             fill="none"
-            className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-navy-950"
+            className="pointer-events-none absolute right-6 top-1/2 -translate-y-1/2 text-black"
             aria-hidden
           >
             <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2.2" />
@@ -55,13 +58,14 @@ export default function CourseFinder({ courses }: { courses: Course[] }) {
         </label>
       </div>
 
+      {/* Linha 2 — abas à esquerda, "Ver todos" à direita */}
       {niveis.length > 0 && (
-        <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
+        <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
           <FilterPills options={niveis} value={tab} onChange={setTab} />
           {nivelSlug && (
             <Link
               href={`/${nivelSlug}`}
-              className="text-sm font-bold text-navy-950 underline underline-offset-4 hover:opacity-70"
+              className="text-[13px] font-bold text-black underline underline-offset-4 hover:opacity-70"
             >
               Ver todos os cursos
             </Link>
@@ -69,7 +73,18 @@ export default function CourseFinder({ courses }: { courses: Course[] }) {
         </div>
       )}
 
-      <CourseRail courses={list} />
+      {/* Grid — 4 colunas no desktop, 2 no tablet, 1 no mobile */}
+      {list.length === 0 ? (
+        <p className="py-12 text-center font-semibold text-muted">
+          Nenhum curso encontrado para essa busca.
+        </p>
+      ) : (
+        <div className="mt-12 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
+          {list.map((course) => (
+            <CourseCard key={`${course.nivelSlug}-${course.slug}`} course={course} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

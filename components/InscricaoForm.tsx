@@ -127,10 +127,10 @@ export default function InscricaoForm({
             id="ingresso"
             name="ingresso"
             required
-            defaultValue="Inscreva-se e pague"
+            defaultValue="Faça agora sua matrícula e comcece já."
             className="mt-2 w-full rounded-xl border border-navy-950/20 bg-white px-4 py-3.5 text-[15px] outline-none transition-colors focus:border-accent focus:ring-4 focus:ring-accent/15"
           >
-            <option>Inscreva-se e pague</option>
+            <option>Faça agora sua matrícula e comcece já.</option>
             <option>Vestibular próprio</option>
             <option>Nota do ENEM</option>
           </select>

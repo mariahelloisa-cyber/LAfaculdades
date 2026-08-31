@@ -116,6 +116,14 @@ body {
   line-height: 1.2;
   letter-spacing: -0.015em;
 }
+/* Título dos cards editoriais — grande o bastante para quebrar em 2/3 linhas. */
+.t-card-h {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.125rem, 2.72vw, 2.55rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
 .t-lead {
   font-size: clamp(1rem, 1.15vw, 1.0625rem);
   line-height: 1.6;
@@ -174,6 +182,32 @@ body {
   .rail { grid-auto-columns: calc((100% - 30px) / 4); gap: 10px; }
 }
 
+/* Fade nas bordas do marquee vertical de depoimentos.
+   A altura do fade vem da variável --fade, definida no componente. */
+.marquee-fade {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--fade, 100px),
+    #000 calc(100% - var(--fade, 100px)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--fade, 100px),
+    #000 calc(100% - var(--fade, 100px)),
+    transparent 100%
+  );
+}
+/* Sem animação, a lista aparece inteira — o fade só atrapalharia a leitura. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-fade {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
 /* Edge-to-edge bleed out of the container */
 .bleed-l { margin-left: calc(var(--gutter) * -1); }
 @media (min-width: 1024px) {
@@ -198,5 +232,27 @@ body {
 @media (prefers-reduced-motion: no-preference) {
   .reveal.is-in {
     animation: reveal-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+/* ---- Entrada em cascata (cabeçalho → cards) ----
+   Mesma regra do .reveal: o estado de repouso é visível; a classe .is-in só
+   *toca* a animação. Cada elemento define seu deslocamento (--rise) e seu
+   atraso (--delay) inline, o que produz o stagger sem JS por elemento. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise, 40px));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise.is-in {
+    animation: rise-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--delay, 0ms);
   }
 }

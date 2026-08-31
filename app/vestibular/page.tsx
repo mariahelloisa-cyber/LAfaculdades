@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const formas = [
   {
-    titulo: "Inscreva-se e pague",
+    titulo: "Faça agora sua matrícula e comcece já.",
     ativo: true,
     descricao:
       "A forma principal de ingresso hoje: preencha seus dados, escolha o curso e a forma de ingresso e finalize a inscrição direto pelo site.",
@@ -23,7 +23,7 @@ const formas = [
     ],
   },
   {
-    titulo: "Vestibular próprio",
+    titulo: "Se inscreva no nosso Vestibular.",
     ativo: false,
     descricao:
       "Prova online, feita no seu tempo, sem precisar se deslocar até uma unidade. Em breve disponível como forma de ingresso.",

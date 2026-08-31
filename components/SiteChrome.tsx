@@ -21,16 +21,15 @@ export default function SiteChrome({
   const isAdmin = pathname?.startsWith("/admin");
 
   if (isAdmin) {
-    // Sem wrapper flex aqui: as páginas de /admin controlam sua própria
-    // altura (h-screen) e não podem depender de um ancestral flex-grow,
-    // que não conta como altura "definida" para filhos com height em %.
-    return <>{children}</>;
+      return <>{children}</>;
   }
 
   return (
     <>
-      <AnnouncementBar />
-      <Header courseNiveis={courseNiveis} />
+      <div className="sticky top-0 z-50">
+        <AnnouncementBar />
+        <Header courseNiveis={courseNiveis} />
+      </div>
       <main className="flex-1">{children}</main>
       <Footer courseNiveis={courseNiveis} />
       <WhatsAppButton />

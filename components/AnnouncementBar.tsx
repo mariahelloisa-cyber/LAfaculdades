@@ -9,7 +9,7 @@ export default function AnnouncementBar() {
 
   return (
     <div className="bg-accent text-navy-950">
-      <div className="container-x flex items-center justify-between gap-4 py-2.5">
+      <div className="container-x flex items-center justify-between gap-4 py-1.5">
         <p className="flex min-w-0 items-center gap-2 text-[13px] font-bold sm:text-sm">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="shrink-0" aria-hidden>
             <path

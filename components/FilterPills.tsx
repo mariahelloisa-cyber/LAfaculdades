@@ -20,12 +20,12 @@ export default function FilterPills({
             key={opt}
             onClick={() => onChange(opt)}
             aria-pressed={active}
-            className={`shrink-0 rounded-full px-6 py-3 text-[15px] font-bold transition-colors ${
+            className={`flex h-10 shrink-0 items-center rounded-full px-5 text-sm font-bold transition-colors ${
               active
-                ? "bg-rose text-white"
+                ? "bg-[#F23883] text-white"
                 : dark
                   ? "bg-white/10 text-white hover:bg-white/20"
-                  : "bg-surface text-navy-950 hover:bg-tint"
+                  : "bg-[#f1f1f1] text-[#111] hover:bg-tint"
             }`}
           >
             {opt}

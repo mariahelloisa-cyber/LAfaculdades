@@ -20,47 +20,69 @@ export default function SplitFeature({
   badge?: { top: string; big: string };
   cards?: { art: string; label: string }[];
 }) {
+  /* Um caminho absoluto (/images/foo.png) é usado como está; só o nome do
+     arquivo continua sendo resolvido dentro de /images/art. */
+  const src = (a: string) => (a.startsWith("/") ? a : `/images/art/${a}`);
+
   return (
     <section className="relative bg-tint-deep lg:grid lg:grid-cols-2">
       {/* Metade visual — sangra até a borda da viewport */}
-      <div className="relative min-h-[280px] lg:min-h-[620px]">
-        <Image src={`/images/art/${art}`} alt="" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+      <div className="relative min-h-[238px] lg:min-h-[527px]">
+        <Image
+          src={src(art)}
+          alt=""
+          fill
+          quality={95}
+          priority
+          className="object-cover"
+          sizes="(max-width: 1024px) 100vw, 50vw"
+        />
         {badge && (
-          <div className="absolute right-6 top-1/2 hidden h-32 w-32 -translate-y-1/2 translate-x-1/2 flex-col items-center justify-center rounded-full bg-accent text-center text-white shadow-xl lg:flex">
-            <span className="px-4 text-[11px] font-bold leading-tight">{badge.top}</span>
-            <span className="font-display text-4xl font-extrabold leading-none">{badge.big}</span>
-          </div>
+          /* O selo é um PNG com transparência: object-contain preserva o recorte
+             e o drop-shadow acompanha a silhueta (box-shadow desenharia um quadrado). */
+          <Image
+            src="/images/mec.png"
+            alt={`${badge.top} ${badge.big}`}
+            width={109}
+            height={109}
+            quality={95}
+            sizes="109px"
+            className="absolute right-5 top-[36%] hidden h-[109px] w-[109px] -translate-y-1/2 translate-x-1/2 object-contain drop-shadow-[0_8px_20px_rgba(6,21,35,0.28)] lg:block"
+          />
         )}
       </div>
 
       {/* Metade conteúdo */}
-      <div className="px-[var(--gutter)] py-14 lg:py-20 lg:pl-24 lg:pr-[max(var(--gutter),calc((100vw-var(--container))/2))]">
-        <div className="max-w-xl">
+      <div className="px-[var(--gutter)] py-12 lg:py-[68px] lg:pl-[82px] lg:pr-[max(var(--gutter),calc((100vw-var(--container))/2))]">
+        <div className="max-w-[490px]">
           {eyebrow && (
-            <span className="t-label mb-4 inline-block rounded-full bg-white px-4 py-1.5 uppercase text-navy-800">
+            <span className="t-label mb-3.5 inline-block rounded-full bg-white px-3.5 py-1 uppercase text-navy-800">
               {eyebrow}
             </span>
           )}
-          <h2 className="t-h2 text-navy-950">{title}</h2>
-          <p className="t-lead mt-6 text-navy-900">{body}</p>
+          {/* Tipografia escalada em 85% localmente — .t-h2/.t-lead são globais. */}
+          <h2 className="t-h2 text-navy-950" style={{ fontSize: "clamp(1.9125rem, 3.87vw, 3.453rem)" }}>
+            {title}
+          </h2>
+          <p className="mt-5 text-[14px] font-semibold leading-[1.6] text-navy-900">{body}</p>
 
           {linkHref && linkLabel && (
             <Link
               href={linkHref}
-              className="mt-7 inline-block text-sm font-bold text-navy-950 underline underline-offset-4 hover:opacity-70"
+              className="mt-6 inline-block text-[13px] font-bold text-navy-950 underline underline-offset-4 hover:opacity-70"
             >
               {linkLabel}
             </Link>
           )}
 
           {cards && (
-            <div className="mt-10 grid grid-cols-3 gap-3 sm:gap-4">
+            <div className="mt-8 grid grid-cols-3 gap-2.5 sm:gap-3.5">
               {cards.map((c) => (
-                <div key={c.label} className="overflow-hidden rounded-2xl bg-white">
-                  <div className="relative h-24 sm:h-28">
-                    <Image src={`/images/art/${c.art}`} alt="" fill className="object-cover" sizes="180px" />
+                <div key={c.label} className="overflow-hidden rounded-[14px] bg-white">
+                  <div className="relative h-[82px] sm:h-[95px]">
+                    <Image src={src(c.art)} alt="" fill quality={95} className="object-cover" sizes="(max-width: 640px) 33vw, 180px" />
                   </div>
-                  <p className="bg-accent px-3 py-3 text-center text-[13px] font-bold leading-tight text-white">
+                  <p className="bg-accent px-2.5 py-2.5 text-center text-[11px] font-bold leading-tight text-white">
                     {c.label}
                   </p>
                 </div>
