@@ -1,28 +1,28 @@
 import Link from "next/link";
 import Image from "next/image";
 import { SITE } from "@/lib/constants";
+import type { CourseNivel } from "@/lib/data/courses";
 
-const navCols = [
-  {
-    title: "Cursos",
-    links: [
-      { label: "Graduação", href: "/graduacao" },
-      { label: "Pós-Graduação", href: "/pos-graduacao" },
-      { label: "Vestibular", href: "/vestibular" },
-      { label: "Financiamento LA Bank", href: "/financiamento-la-bank" },
-    ],
-  },
-  {
-    title: "Institucional",
-    links: [
-      { label: "Por que a LA?", href: "/institucional" },
-      { label: "Blog", href: "/blog" },
-      { label: "Contato", href: "/contato" },
-    ],
-  },
-];
+export default function Footer({ courseNiveis }: { courseNiveis: CourseNivel[] }) {
+  const navCols = [
+    {
+      title: "Cursos",
+      links: [
+        ...courseNiveis.map((n) => ({ label: n.nome, href: `/${n.slug}` })),
+        { label: "Vestibular", href: "/vestibular" },
+        { label: "Financiamento LA Bank", href: "/financiamento-la-bank" },
+      ],
+    },
+    {
+      title: "Institucional",
+      links: [
+        { label: "Por que a LA?", href: "/institucional" },
+        { label: "Blog", href: "/blog" },
+        { label: "Contato", href: "/contato" },
+      ],
+    },
+  ];
 
-export default function Footer() {
   return (
     <footer className="text-white">
       {/* Faixa superior — atendimento + CTA + redes */}
@@ -31,7 +31,7 @@ export default function Footer() {
           <div className="flex flex-col gap-8 sm:flex-row sm:items-center sm:gap-10">
             <Image
               src="/images/logo-horizontal.png"
-              alt="LA Faculdades"
+              alt="LA Faculdade"
               width={2561}
               height={895}
               className="h-10 w-auto brightness-0 invert"
@@ -69,7 +69,7 @@ export default function Footer() {
               href={SITE.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Instagram da LA Faculdades"
+              aria-label="Instagram da LA Faculdade"
               className="hover:text-accent"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>

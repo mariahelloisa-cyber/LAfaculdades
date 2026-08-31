@@ -8,16 +8,16 @@ function money(v: number) {
 }
 
 export default function CourseDetail({ course }: { course: Course }) {
-  const nivelLabel = course.nivel === "graduacao" ? "Graduação" : "Pós-Graduação";
+  const nivelLabel = course.nivelNome;
   const [reais, centavos] = money(course.mensalidade).split(",");
 
   return (
     <>
       <PageHero
-        eyebrow={`${nivelLabel} · ${course.tipo}`}
+        eyebrow={nivelLabel}
         title={course.nome}
         description={course.resumo}
-        art={course.art}
+        imageUrl={course.capaUrl}
       />
 
       <section className="section-y bg-white">
@@ -46,11 +46,9 @@ export default function CourseDetail({ course }: { course: Course }) {
               <span className="t-label uppercase text-sky-300">{nivelLabel}</span>
               <h3 className="t-h3 mt-2 text-white">{course.nome}</h3>
               <div className="mt-4 flex flex-wrap gap-2">
-                {course.modalidades.map((m) => (
-                  <span key={m} className="rounded-full bg-sky-200 px-3 py-1.5 text-[12px] font-bold text-navy-900">
-                    {m}
-                  </span>
-                ))}
+                <span className="rounded-full bg-sky-200 px-3 py-1.5 text-[12px] font-bold text-navy-900">
+                  {course.modalidade}
+                </span>
               </div>
             </div>
 
@@ -90,7 +88,7 @@ export default function CourseDetail({ course }: { course: Course }) {
                 </svg>
               </Link>
               <Link
-                href={`/${course.nivel}`}
+                href={`/${course.nivelSlug}`}
                 className="mt-3 block rounded-full border border-navy-950/20 py-3.5 text-center text-[15px] font-bold text-navy-950 transition-colors hover:border-navy-950"
               >
                 Ver outros cursos

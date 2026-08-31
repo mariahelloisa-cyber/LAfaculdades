@@ -4,11 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { SITE } from "@/lib/constants";
-
-const courseLinks = [
-  { label: "Graduação", href: "/graduacao", desc: "Bacharelado, licenciatura e tecnólogo" },
-  { label: "Pós-Graduação", href: "/pos-graduacao", desc: "MBAs e especializações lato sensu" },
-];
+import type { CourseNivel } from "@/lib/data/courses";
 
 const mainLinks = [
   { label: "Por que a LA?", href: "/institucional" },
@@ -17,7 +13,12 @@ const mainLinks = [
   { label: "Blog", href: "/blog" },
 ];
 
-export default function Header() {
+export default function Header({ courseNiveis }: { courseNiveis: CourseNivel[] }) {
+  const courseLinks = courseNiveis.map((n) => ({
+    label: n.nome,
+    href: `/${n.slug}`,
+    desc: n.descricao,
+  }));
   const [menuOpen, setMenuOpen] = useState(false);
   const [coursesOpen, setCoursesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -55,10 +56,10 @@ export default function Header() {
             </svg>
           </button>
 
-          <Link href="/" className="shrink-0" aria-label="LA Faculdades — página inicial">
+          <Link href="/" className="shrink-0" aria-label="LA Faculdade — página inicial">
             <Image
               src="/images/logo-horizontal.png"
-              alt="LA Faculdades"
+              alt="LA Faculdade"
               width={2561}
               height={895}
               priority
@@ -91,7 +92,7 @@ export default function Header() {
                   {courseLinks.map((c) => (
                     <Link key={c.href} href={c.href} className="block px-5 py-3.5 hover:bg-tint">
                       <span className="block text-[15px] font-bold">{c.label}</span>
-                      <span className="mt-0.5 block text-[13px] text-muted">{c.desc}</span>
+                      <span className="mt-0.5 line-clamp-2 block text-[13px] text-muted">{c.desc}</span>
                     </Link>
                   ))}
                 </div>

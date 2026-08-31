@@ -41,7 +41,7 @@ export default function CourseRail({ courses }: { courses: Course[] }) {
       <div className="-mx-[var(--gutter)] px-[var(--gutter)] lg:mx-0 lg:px-0">
         <div ref={railRef} onScroll={sync} className="rail">
           {courses.map((course) => (
-            <CourseCard key={`${course.nivel}-${course.slug}`} course={course} />
+            <CourseCard key={`${course.nivelSlug}-${course.slug}`} course={course} />
           ))}
         </div>
       </div>

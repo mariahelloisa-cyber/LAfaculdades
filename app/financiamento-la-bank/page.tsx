@@ -9,7 +9,7 @@ import { SITE } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Financiamento LA Bank",
   description:
-    "O LA Bank é o banco oficial da educação e o financiamento estudantil da LA Faculdades: sem banco externo, sem fiador e com aprovação na matrícula.",
+    "O LA Bank é o banco oficial da educação e o financiamento estudantil da LA Faculdade: sem banco externo, sem fiador e com aprovação na matrícula.",
 };
 
 const vantagens = [
@@ -106,7 +106,7 @@ const faqs = [
   {
     pergunta: "Quem pode usar o LA Bank?",
     resposta:
-      "Qualquer aluno matriculado em um curso de graduação ou pós-graduação da LA Faculdades pode solicitar o financiamento LA Bank.",
+      "Qualquer aluno matriculado em um curso de graduação ou pós-graduação da LA Faculdade pode solicitar o financiamento LA Bank.",
   },
   {
     pergunta: "Quanto custa o financiamento?",
@@ -166,11 +166,11 @@ export default function LaBankPage() {
         />
 
         <Container className="py-16 lg:py-20">
-          {/* Lockup: LA Faculdades + LA Bank */}
+          {/* Lockup: LA Faculdade + LA Bank */}
           <div className="flex flex-wrap items-center gap-5">
             <Image
               src="/images/logo-horizontal.png"
-              alt="LA Faculdades"
+              alt="LA Faculdade"
               width={2561}
               height={895}
               className="h-8 w-auto brightness-0 invert sm:h-9"
@@ -192,7 +192,7 @@ export default function LaBankPage() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg font-semibold leading-relaxed text-white/90 sm:text-xl">
-            Na LA Faculdades, o LA Bank vira o seu financiamento estudantil: sem banco externo, sem
+            Na LA Faculdade, o LA Bank vira o seu financiamento estudantil: sem banco externo, sem
             fiador e com aprovação na hora da matrícula.
           </p>
 
@@ -237,7 +237,7 @@ export default function LaBankPage() {
             {vantagens.map((v, i) => (
               <Reveal key={v.titulo} delay={i * 70}>
                 <div className="h-full rounded-2xl bg-surface p-7 transition-shadow hover:shadow-[0_16px_38px_rgba(219,16,105,0.12)]">
-                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-accent-soft text-accent">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-sky-100 text-sky-600">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
                       {v.icon}
                     </svg>
@@ -314,7 +314,7 @@ export default function LaBankPage() {
               <div className="mt-7 space-y-5 text-[16px] leading-relaxed text-muted">
                 <p>
                   O LA Bank é uma solução financeira inovadora, criada para atender às necessidades do
-                  ecossistema do Grupo LA Educação — o mesmo grupo do qual a LA Faculdades faz parte.
+                  ecossistema do Grupo LA Educação — o mesmo grupo do qual a LA Faculdade faz parte.
                 </p>
                 <p>
                   Sua missão é resolver o problema das altas tarifas e taxas de outras plataformas
@@ -331,21 +331,22 @@ export default function LaBankPage() {
       </section>
 
 
-      {/* Faixa CTA — mesmo azul do botão "Encontre seu curso" no rodapé
-          (--color-accent do site principal, #17a2e0) */}
-      <section className="bg-[#17a2e0]">
+      {/* Faixa CTA — mesma cor de fundo do header do site (não usar
+          bg-navy-950 aqui: dentro de .theme-bank essa variável é
+          sobrescrita para um tom diferente do navy usado no header) */}
+      <section className="bg-[#061523]">
         <Container className="py-16 text-center lg:py-20">
           <Reveal>
             <h2 className="t-h2 mx-auto max-w-3xl text-white">
               Pronto para começar sem travar no orçamento?
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-white/90">
-              Faça sua inscrição na LA Faculdades e peça o financiamento LA Bank na hora da matrícula.
+              Faça sua inscrição na LA Faculdade e peça o financiamento LA Bank na hora da matrícula.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="/vestibular/inscricao"
-                className="inline-flex items-center justify-center rounded-full bg-white px-9 py-4 font-bold text-accent transition-transform hover:scale-[1.02]"
+                className="inline-flex items-center justify-center rounded-full bg-white px-9 py-4 font-bold text-[#061523] transition-transform hover:scale-[1.02]"
               >
                 Quero me inscrever
               </Link>
@@ -366,7 +367,7 @@ export default function LaBankPage() {
       <section className="section-y bg-white">
         <Container>
           <Reveal>
-            <h2 className="t-h2 text-navy-950">Perguntas sobre o LA Bank</h2>
+            <h2 className="t-h2 text-navy-950">Perguntas sobre o <span className="text-accent">LA Bank</span></h2>
           </Reveal>
           <Reveal>
             <div className="mt-12">

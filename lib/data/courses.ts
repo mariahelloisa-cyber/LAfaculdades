@@ -1,168 +1,181 @@
-export type CourseLevel = "graduacao" | "pos-graduacao";
+import { cache } from "react";
+import { supabasePublic } from "@/lib/supabase/publicClient";
 
 export type Course = {
+  id: string;
   slug: string;
   nome: string;
-  nivel: CourseLevel;
-  tipo: string; // Bacharelado, Licenciatura, Tecnólogo, MBA, Pós-graduação lato sensu
+  nivelSlug: string;
+  nivelNome: string;
   area: string;
-  modalidade: "EAD" | "Semipresencial";
-  modalidades: string[]; // chips exibidos no card
+  modalidade: string;
   duracao: string;
-  mensalidade: number; // valor de exemplo, em reais
-  mensalidadeDe: number; // valor cheio, para o "De R$ X por"
-  art: string; // arte de fundo do card — trocar por foto real em /public/images/art
+  mensalidade: number;
+  mensalidadeDe: number;
+  capaUrl: string;
   resumo: string;
   descricao: string;
   destaques: string[];
+  destaqueHome: boolean;
 };
 
-// Cursos de exemplo — substituir pelos cursos reais e valores oficiais da instituição.
-export const courses: Course[] = [
-  {
-    slug: "administracao",
-    nome: "Administração",
-    nivel: "graduacao",
-    tipo: "Bacharelado",
-    area: "Negócios",
-    modalidade: "EAD",
-    modalidades: ["EAD","Semipresencial"],
-    duracao: "8 semestres",
-    mensalidade: 299.9,
-    mensalidadeDe: 499.9,
-    art: "administracao",
-    resumo: "Formação completa em gestão, finanças, marketing e liderança para empreender ou crescer dentro de empresas.",
-    descricao:
-      "O curso de Administração prepara você para atuar em gestão de pessoas, finanças, marketing e processos, com uma grade flexível 100% EAD e tutoria disponível para tirar dúvidas durante toda a formação.",
-    destaques: ["Diploma reconhecido pelo MEC", "Aulas 100% online", "Estágio supervisionado orientado"],
-  },
-  {
-    slug: "pedagogia",
-    nome: "Pedagogia",
-    nivel: "graduacao",
-    tipo: "Licenciatura",
-    area: "Educação",
-    modalidade: "EAD",
-    modalidades: ["EAD"],
-    duracao: "8 semestres",
-    mensalidade: 279.9,
-    mensalidadeDe: 459.9,
-    art: "pedagogia",
-    resumo: "Licenciatura para atuar na educação infantil, anos iniciais e gestão escolar.",
-    descricao:
-      "Formação voltada para quem quer lecionar na educação infantil e nos anos iniciais do ensino fundamental, além de atuar em coordenação e gestão de escolas.",
-    destaques: ["Habilita para docência", "Estágio em escolas parceiras", "Material didático incluso"],
-  },
-  {
-    slug: "enfermagem",
-    nome: "Enfermagem",
-    nivel: "graduacao",
-    tipo: "Bacharelado",
-    area: "Saúde",
-    modalidade: "Semipresencial",
-    modalidades: ["Semipresencial"],
-    duracao: "10 semestres",
-    mensalidade: 499.9,
-    mensalidadeDe: 799.9,
-    art: "enfermagem",
-    resumo: "Bacharelado com prática em laboratórios e estágio supervisionado em unidades de saúde parceiras.",
-    descricao:
-      "Curso semipresencial que combina teoria online com aulas práticas em laboratório e estágio em unidades de saúde, preparando você para atuar em hospitais, clínicas e UBS.",
-    destaques: ["Laboratórios equipados", "Estágio em unidades parceiras", "Corpo docente especializado"],
-  },
-  {
-    slug: "analise-e-desenvolvimento-de-sistemas",
-    nome: "Análise e Desenvolvimento de Sistemas",
-    nivel: "graduacao",
-    tipo: "Tecnólogo",
-    area: "Tecnologia",
-    modalidade: "EAD",
-    modalidades: ["EAD"],
-    duracao: "4 semestres",
-    mensalidade: 329.9,
-    mensalidadeDe: 549.9,
-    art: "tecnologia",
-    resumo: "Formação rápida em programação, banco de dados e desenvolvimento de software.",
-    descricao:
-      "Tecnólogo focado no mercado de tecnologia, com programação, banco de dados, engenharia de software e projetos práticos para você já sair com portfólio.",
-    destaques: ["Curso mais curto (2 anos)", "Foco em prática de mercado", "Projetos para portfólio"],
-  },
-  {
-    slug: "gestao-de-recursos-humanos",
-    nome: "Gestão de Recursos Humanos",
-    nivel: "graduacao",
-    tipo: "Tecnólogo",
-    area: "Negócios",
-    modalidade: "EAD",
-    modalidades: ["EAD"],
-    duracao: "4 semestres",
-    mensalidade: 289.9,
-    mensalidadeDe: 479.9,
-    art: "rh",
-    resumo: "Recrutamento, seleção, treinamento e gestão de pessoas nas organizações.",
-    descricao:
-      "Curso voltado para quem quer atuar em departamentos de gente e gestão, recrutamento e seleção, treinamento e desenvolvimento organizacional.",
-    destaques: ["Curso mais curto (2 anos)", "Cases reais de RH", "Certificado reconhecido pelo MEC"],
-  },
-  {
-    slug: "mba-gestao-de-pessoas",
-    nome: "MBA em Gestão de Pessoas",
-    nivel: "pos-graduacao",
-    tipo: "Pós-graduação lato sensu",
-    area: "Negócios",
-    modalidade: "EAD",
-    modalidades: ["EAD"],
-    duracao: "12 meses",
-    mensalidade: 249.9,
-    mensalidadeDe: 399.9,
-    art: "pos",
-    resumo: "Especialização em liderança, cultura organizacional e gestão estratégica de pessoas.",
-    descricao:
-      "MBA voltado para profissionais que já atuam ou querem atuar com liderança e gestão de pessoas, com conteúdo aplicado e certificado de pós-graduação lato sensu.",
-    destaques: ["Certificado de pós-graduação", "Conteúdo 100% online", "Professores com vivência de mercado"],
-  },
-  {
-    slug: "pos-psicopedagogia",
-    nome: "Psicopedagogia",
-    nivel: "pos-graduacao",
-    tipo: "Pós-graduação lato sensu",
-    area: "Educação",
-    modalidade: "EAD",
-    modalidades: ["EAD"],
-    duracao: "12 meses",
-    mensalidade: 229.9,
-    mensalidadeDe: 379.9,
-    art: "pedagogia",
-    resumo: "Especialização em dificuldades de aprendizagem e intervenção psicopedagógica.",
-    descricao:
-      "Pós-graduação para pedagogos, psicólogos e professores que querem se especializar em diagnóstico e intervenção nas dificuldades de aprendizagem.",
-    destaques: ["Certificado de pós-graduação", "Estudos de caso práticos", "Conteúdo 100% online"],
-  },
-  {
-    slug: "mba-gestao-escolar",
-    nome: "MBA em Gestão Escolar",
-    nivel: "pos-graduacao",
-    tipo: "Pós-graduação lato sensu",
-    area: "Educação",
-    modalidade: "EAD",
-    modalidades: ["EAD"],
-    duracao: "12 meses",
-    mensalidade: 249.9,
-    mensalidadeDe: 399.9,
-    art: "administracao",
-    resumo: "Gestão pedagógica, financeira e de pessoas para diretores e coordenadores de escolas.",
-    descricao:
-      "Formação para quem atua ou quer atuar na direção e coordenação de instituições de ensino, com foco em gestão pedagógica, financeira e de equipes.",
-    destaques: ["Certificado de pós-graduação", "Foco em gestão escolar", "Conteúdo 100% online"],
-  },
-];
+export type CourseNivel = {
+  id: string;
+  slug: string;
+  nome: string;
+  titulo: string;
+  descricao: string;
+  imagemUrl: string;
+  ordem: number;
+};
 
-export const AREAS = Array.from(new Set(courses.map((c) => c.area))).sort();
+type CourseRow = {
+  id: string;
+  slug: string;
+  nome: string;
+  area: string;
+  modalidade: string;
+  duracao: string;
+  mensalidade: number;
+  mensalidade_de: number;
+  capa_url: string;
+  resumo: string;
+  descricao: string;
+  destaques: string[];
+  destaque_home: boolean;
+  course_niveis: { slug: string; nome: string } | null;
+};
 
-export function getCoursesByLevel(nivel: CourseLevel) {
-  return courses.filter((c) => c.nivel === nivel);
+type NivelRow = {
+  id: string;
+  slug: string;
+  nome: string;
+  titulo: string;
+  descricao: string;
+  imagem_url: string;
+  ordem: number;
+};
+
+const COURSE_FIELDS =
+  "id, slug, nome, area, modalidade, duracao, mensalidade, mensalidade_de, capa_url, resumo, descricao, destaques, destaque_home";
+
+function mapCourse(row: CourseRow): Course {
+  return {
+    id: row.id,
+    slug: row.slug,
+    nome: row.nome,
+    nivelSlug: row.course_niveis?.slug ?? "",
+    nivelNome: row.course_niveis?.nome ?? "",
+    area: row.area,
+    modalidade: row.modalidade,
+    duracao: row.duracao,
+    mensalidade: row.mensalidade,
+    mensalidadeDe: row.mensalidade_de,
+    capaUrl: row.capa_url,
+    resumo: row.resumo,
+    descricao: row.descricao,
+    destaques: row.destaques,
+    destaqueHome: row.destaque_home,
+  };
 }
 
-export function getCourseBySlug(nivel: CourseLevel, slug: string) {
-  return courses.find((c) => c.nivel === nivel && c.slug === slug);
+function mapNivel(row: NivelRow): CourseNivel {
+  return {
+    id: row.id,
+    slug: row.slug,
+    nome: row.nome,
+    titulo: row.titulo,
+    descricao: row.descricao,
+    imagemUrl: row.imagem_url,
+    ordem: row.ordem,
+  };
+}
+
+export const getCourseNiveis = cache(async (): Promise<CourseNivel[]> => {
+  const { data, error } = await supabasePublic
+    .from("course_niveis")
+    .select("id, slug, nome, titulo, descricao, imagem_url, ordem")
+    .order("ordem", { ascending: true });
+
+  if (error) {
+    console.error("Erro ao buscar categorias:", error.message);
+    return [];
+  }
+
+  return (data as NivelRow[]).map(mapNivel);
+});
+
+export async function getCourseNivelBySlug(slug: string): Promise<CourseNivel | null> {
+  const { data, error } = await supabasePublic
+    .from("course_niveis")
+    .select("id, slug, nome, titulo, descricao, imagem_url, ordem")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Erro ao buscar categoria de curso:", error.message);
+    return null;
+  }
+
+  return data ? mapNivel(data as NivelRow) : null;
+}
+
+export async function getAllCourses(): Promise<Course[]> {
+  const { data, error } = await supabasePublic
+    .from("courses")
+    .select(`${COURSE_FIELDS}, course_niveis!nivel_id(slug, nome)`)
+    .order("nome", { ascending: true });
+
+  if (error) {
+    console.error("Erro ao buscar cursos:", error.message);
+    return [];
+  }
+
+  return (data as unknown as CourseRow[]).map(mapCourse);
+}
+
+export async function getCoursesByNivelSlug(nivelSlug: string): Promise<Course[]> {
+  const { data, error } = await supabasePublic
+    .from("courses")
+    .select(`${COURSE_FIELDS}, course_niveis!inner(slug, nome)`)
+    .eq("course_niveis.slug", nivelSlug)
+    .order("nome", { ascending: true });
+
+  if (error) {
+    console.error("Erro ao buscar cursos:", error.message);
+    return [];
+  }
+
+  return (data as unknown as CourseRow[]).map(mapCourse);
+}
+
+export async function getCourseBySlug(nivelSlug: string, slug: string): Promise<Course | null> {
+  const { data, error } = await supabasePublic
+    .from("courses")
+    .select(`${COURSE_FIELDS}, course_niveis!inner(slug, nome)`)
+    .eq("course_niveis.slug", nivelSlug)
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Erro ao buscar curso:", error.message);
+    return null;
+  }
+
+  return data ? mapCourse(data as unknown as CourseRow) : null;
+}
+
+export async function getFeaturedCourses(): Promise<Course[]> {
+  const { data, error } = await supabasePublic
+    .from("courses")
+    .select(`${COURSE_FIELDS}, course_niveis!nivel_id(slug, nome)`)
+    .eq("destaque_home", true)
+    .order("nome", { ascending: true });
+
+  if (error) {
+    console.error("Erro ao buscar cursos em destaque:", error.message);
+    return [];
+  }
+
+  return (data as unknown as CourseRow[]).map(mapCourse);
 }

@@ -2,23 +2,30 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { courses } from "@/lib/data/courses";
+import type { Course } from "@/lib/data/courses";
 import FilterPills from "./FilterPills";
 import CourseRail from "./CourseRail";
 
-const TABS = ["Graduação", "Pós-Graduação"] as const;
-
-export default function CourseFinder() {
-  const [tab, setTab] = useState<string>(TABS[0]);
+export default function CourseFinder({ courses }: { courses: Course[] }) {
+  const niveis = useMemo(
+    () => Array.from(new Set(courses.map((c) => c.nivelNome))),
+    [courses]
+  );
+  const [tabEscolhida, setTab] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 
+  // Derivado no render: se o nível escolhido sumiu (curso despromovido no
+  // admin, por exemplo), cai no primeiro nível disponível.
+  const tab = tabEscolhida && niveis.includes(tabEscolhida) ? tabEscolhida : niveis[0] ?? "";
+
   const list = useMemo(() => {
-    const nivel = tab === "Graduação" ? "graduacao" : "pos-graduacao";
     const q = query.trim().toLowerCase();
     return courses
-      .filter((c) => c.nivel === nivel)
+      .filter((c) => c.nivelNome === tab)
       .filter((c) => !q || c.nome.toLowerCase().includes(q) || c.area.toLowerCase().includes(q));
-  }, [tab, query]);
+  }, [courses, tab, query]);
+
+  const nivelSlug = courses.find((c) => c.nivelNome === tab)?.nivelSlug ?? "";
 
   return (
     <div>
@@ -48,15 +55,19 @@ export default function CourseFinder() {
         </label>
       </div>
 
-      <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
-        <FilterPills options={[...TABS]} value={tab} onChange={setTab} />
-        <Link
-          href={tab === "Graduação" ? "/graduacao" : "/pos-graduacao"}
-          className="text-sm font-bold text-navy-950 underline underline-offset-4 hover:opacity-70"
-        >
-          Ver todos os cursos
-        </Link>
-      </div>
+      {niveis.length > 0 && (
+        <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
+          <FilterPills options={niveis} value={tab} onChange={setTab} />
+          {nivelSlug && (
+            <Link
+              href={`/${nivelSlug}`}
+              className="text-sm font-bold text-navy-950 underline underline-offset-4 hover:opacity-70"
+            >
+              Ver todos os cursos
+            </Link>
+          )}
+        </div>
+      )}
 
       <CourseRail courses={list} />
     </div>

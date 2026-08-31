@@ -8,14 +8,14 @@ function money(v: number) {
 
 export default function CourseCard({ course }: { course: Course }) {
   const [reais, centavos] = money(course.mensalidade).split(",");
-  const nivelLabel = course.nivel === "graduacao" ? "Graduação" : "Pós-Graduação";
+  const nivelLabel = course.nivelNome;
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-surface transition-shadow duration-300 hover:shadow-[0_18px_44px_rgba(6,21,35,0.18)]">
       {/* Visual + identidade do curso */}
       <div className="relative isolate flex h-[252px] flex-col p-5">
         <Image
-          src={`/images/art/${course.art}.svg`}
+          src={course.capaUrl}
           alt=""
           fill
           sizes="(max-width: 640px) 80vw, (max-width: 1024px) 46vw, 320px"
@@ -24,9 +24,7 @@ export default function CourseCard({ course }: { course: Course }) {
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-navy-950/90 via-navy-950/45 to-navy-950/35" />
 
         <div className="flex items-start justify-between gap-3">
-          <span className="text-[12px] font-bold text-white">
-            {nivelLabel} | {course.tipo}
-          </span>
+          <span className="text-[12px] font-bold text-white">{nivelLabel}</span>
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-200 text-navy-900">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path d="M12 4 2.5 9 12 14l9.5-5L12 4Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -43,19 +41,12 @@ export default function CourseCard({ course }: { course: Course }) {
 
         <div className="pt-5">
           <div className="flex flex-wrap gap-2">
-            {course.modalidades.map((m, i) => (
-              <span
-                key={m}
-                className={`rounded-full px-3 py-1.5 text-[12px] font-bold ${
-                  i === 0 ? "bg-sky-200 text-navy-900" : "bg-white text-navy-900"
-                }`}
-              >
-                {m}
-              </span>
-            ))}
+            <span className="rounded-full bg-sky-200 px-3 py-1.5 text-[12px] font-bold text-navy-900">
+              {course.modalidade}
+            </span>
           </div>
           <Link
-            href={`/${course.nivel}/${course.slug}`}
+            href={`/${course.nivelSlug}/${course.slug}`}
             className="mt-4 inline-block text-[13px] font-bold text-white underline underline-offset-4 hover:text-accent-soft"
           >
             Saiba mais

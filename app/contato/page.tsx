@@ -6,7 +6,7 @@ import { SITE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Contato",
-  description: "Fale com a LA Faculdades: endereço, e-mail, WhatsApp e formulário de contato.",
+  description: "Fale com a LA Faculdade: endereço, e-mail, WhatsApp e formulário de contato.",
 };
 
 export default function ContatoPage() {
@@ -48,7 +48,7 @@ export default function ContatoPage() {
                 <dt className="font-bold text-navy-950">Instagram</dt>
                 <dd className="mt-1">
                   <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" className="font-semibold text-sky-600 underline underline-offset-4 hover:text-accent">
-                    @lafaculdades
+                    @laFaculdade
                   </a>
                 </dd>
               </div>
@@ -60,7 +60,7 @@ export default function ContatoPage() {
 
             <div className="mt-10 overflow-hidden rounded-2xl">
               <iframe
-                title="Localização LA Faculdades"
+                title="Localização LA Faculdade"
                 src="https://www.google.com/maps?q=Rua+Formosa,+75,+S%C3%A3o+Paulo&output=embed"
                 width="100%"
                 height="260"

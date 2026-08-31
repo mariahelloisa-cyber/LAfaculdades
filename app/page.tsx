@@ -8,7 +8,9 @@ import SplitFeature from "@/components/SplitFeature";
 import TrustBadges from "@/components/TrustBadges";
 import Testimonials from "@/components/Testimonials";
 import FaqAccordion from "@/components/FaqAccordion";
-import { posts } from "@/lib/data/posts";
+import { getPosts } from "@/lib/data/posts";
+import { getFeaturedCourses } from "@/lib/data/courses";
+import { getSiteMediaUrl } from "@/lib/data/siteMedia";
 
 const ingresso = [
   {
@@ -34,9 +36,9 @@ const ingresso = [
 
 const faqs = [
   {
-    pergunta: "O diploma da LA Faculdades tem validade nacional?",
+    pergunta: "O diploma da LA Faculdade tem validade nacional?",
     resposta:
-      "Sim. A LA Faculdades é credenciada pelo MEC (E-MEC 18263) e os diplomas emitidos têm validade em todo o território nacional.",
+      "Sim. A LA Faculdade é credenciada pelo MEC (E-MEC 18263) e os diplomas emitidos têm validade em todo o território nacional.",
   },
   {
     pergunta: "Qual é a forma de ingresso mais rápida?",
@@ -46,7 +48,7 @@ const faqs = [
   {
     pergunta: "Como funciona o financiamento LA Bank?",
     resposta:
-      "O LA Bank é o financiamento estudantil da própria LA Faculdades, sem banco no meio do caminho e sem necessidade de fiador.",
+      "O LA Bank é o financiamento estudantil da própria LA Faculdade, sem banco no meio do caminho e sem necessidade de fiador.",
   },
   {
     pergunta: "Existe área do aluno?",
@@ -65,16 +67,22 @@ const faqs = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [posts, cursosDestaque, heroVideoUrl] = await Promise.all([
+    getPosts().then((p) => p.slice(0, 4)),
+    getFeaturedCourses(),
+    getSiteMediaUrl("home_hero_video"),
+  ]);
+
   return (
     <>
-      <Hero />
+      <Hero videoUrl={heroVideoUrl} />
 
       {/* 1 — Oferta principal: busca + filtros + carrossel de cursos */}
       <section className="section-y bg-white">
         <Container>
           <Reveal>
-            <CourseFinder />
+            <CourseFinder courses={cursosDestaque} />
           </Reveal>
         </Container>
       </section>
@@ -85,7 +93,7 @@ export default function HomePage() {
           <Reveal>
             <SectionHeading
               title="Você escolhe como entrar."
-              description="Três formas de ingressar na LA Faculdades — hoje a inscrição com pagamento direto é a via principal e mais rápida."
+              description="Três formas de ingressar na LA Faculdade — hoje a inscrição com pagamento direto é a via principal e mais rápida."
               linkHref="/vestibular"
               linkLabel="Ver detalhes do vestibular"
             />
@@ -206,7 +214,7 @@ export default function HomePage() {
           <Reveal>
             <SectionHeading
               title="Blog LA"
-              description="Para decidir com informação, não com achismo."
+              description="Conhecimento que inspira e transforma."
               linkHref="/blog"
               linkLabel="Ver todos os posts"
             />

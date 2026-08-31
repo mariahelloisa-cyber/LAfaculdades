@@ -6,7 +6,7 @@ import FaqAccordion from "@/components/FaqAccordion";
 
 export const metadata: Metadata = {
   title: "Vestibular",
-  description: "Conheça as formas de ingresso na LA Faculdades: inscrição com pagamento direto, vestibular próprio online e ingresso pela nota do ENEM.",
+  description: "Conheça as formas de ingresso na LA Faculdade: inscrição com pagamento direto, vestibular próprio online e ingresso pela nota do ENEM.",
 };
 
 const formas = [
@@ -70,7 +70,7 @@ export default function VestibularPage() {
       <PageHero
         eyebrow="Vestibular"
         title="Você escolhe como entrar. Nós cuidamos do resto."
-        description="Três formas de ingressar na LA Faculdades — conheça cada uma e escolha a que faz mais sentido para você."
+        description="Três formas de ingressar na LA Faculdade — conheça cada uma e escolha a que faz mais sentido para você."
         art="campus"
       />
 

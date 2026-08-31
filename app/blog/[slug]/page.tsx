@@ -3,9 +3,10 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Container from "@/components/Container";
 import PageHero from "@/components/PageHero";
-import { getPostBySlug, posts } from "@/lib/data/posts";
+import { getPostBySlug, getPosts } from "@/lib/data/posts";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const posts = await getPosts();
   return posts.map((p) => ({ slug: p.slug }));
 }
 
@@ -15,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) return {};
   return { title: post.titulo, description: post.resumo };
 }
@@ -26,7 +27,7 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) notFound();
 
   return (
@@ -40,6 +41,7 @@ export default async function BlogPostPage({
           year: "numeric",
         })}
         art="tecnologia"
+        imageUrl={post.imagemUrl}
       />
       <section className="section-y bg-white">
         <Container className="max-w-2xl">

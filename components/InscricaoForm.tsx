@@ -2,10 +2,16 @@
 
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { courses } from "@/lib/data/courses";
+import type { Course, CourseNivel } from "@/lib/data/courses";
 import { SITE } from "@/lib/constants";
 
-export default function InscricaoForm() {
+export default function InscricaoForm({
+  niveis,
+  cursos,
+}: {
+  niveis: CourseNivel[];
+  cursos: Course[];
+}) {
   const searchParams = useSearchParams();
   const cursoInicial = searchParams.get("curso") ?? "";
   const [enviado, setEnviado] = useState(false);
@@ -99,24 +105,17 @@ export default function InscricaoForm() {
             <option value="" disabled>
               Selecione um curso
             </option>
-            <optgroup label="Graduação">
-              {courses
-                .filter((c) => c.nivel === "graduacao")
-                .map((c) => (
-                  <option key={c.slug} value={c.slug}>
-                    {c.nome}
-                  </option>
-                ))}
-            </optgroup>
-            <optgroup label="Pós-Graduação">
-              {courses
-                .filter((c) => c.nivel === "pos-graduacao")
-                .map((c) => (
-                  <option key={c.slug} value={c.slug}>
-                    {c.nome}
-                  </option>
-                ))}
-            </optgroup>
+            {niveis.map((nivel) => (
+              <optgroup key={nivel.slug} label={nivel.nome}>
+                {cursos
+                  .filter((c) => c.nivelSlug === nivel.slug)
+                  .map((c) => (
+                    <option key={c.slug} value={c.slug}>
+                      {c.nome}
+                    </option>
+                  ))}
+              </optgroup>
+            ))}
           </select>
         </div>
 
@@ -139,7 +138,7 @@ export default function InscricaoForm() {
       </div>
 
       <p className="mt-5 text-xs text-muted leading-relaxed">
-        Ao enviar, a equipe de matrículas da LA Faculdades entrará em contato pelo WhatsApp para confirmar o
+        Ao enviar, a equipe de matrículas da LA Faculdade entrará em contato pelo WhatsApp para confirmar o
         pagamento da inscrição e os próximos passos.
       </p>
 

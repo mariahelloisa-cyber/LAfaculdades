@@ -6,7 +6,7 @@ import { SITE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Institucional",
-  description: "Conheça a missão, a visão e o credenciamento MEC da LA Faculdades.",
+  description: "Conheça a missão, a visão e o credenciamento MEC da LA Faculdade.",
 };
 
 export default function InstitucionalPage() {
@@ -43,7 +43,7 @@ export default function InstitucionalPage() {
         <Container className="max-w-3xl">
           <h2 className="t-h2 text-navy-950">Nosso compromisso</h2>
           <p className="mt-8 font-display text-xl font-bold leading-relaxed text-navy-900 sm:text-2xl">
-            &ldquo;Na LA Faculdades, acreditamos que todos têm o direito de sonhar grande! Com educação acessível
+            &ldquo;Na LA Faculdade, acreditamos que todos têm o direito de sonhar grande! Com educação acessível
             e de qualidade, estamos aqui para apoiar você na realização dos seus objetivos. Junte-se a nós e
             comece sua jornada hoje mesmo!&rdquo;
           </p>

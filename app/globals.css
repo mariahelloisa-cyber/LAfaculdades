@@ -129,7 +129,7 @@ body {
 
 /* ---- Tema LA Bank ----
    Escopo para a página de financiamento: mantém o grid, a tipografia e o
-   shell da LA Faculdades, mas troca os acentos pela identidade do LA Bank. */
+   shell da LA Faculdade, mas troca os acentos pela identidade do LA Bank. */
 .theme-bank {
   --color-accent: #db1069;
   --color-accent-hover: #b70d57;
