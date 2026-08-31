@@ -2,25 +2,201 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0b1b26;
+
+  /* Dominant dark — plays the role black plays in the reference */
+  --color-navy-950: #061523;
+  --color-navy-900: #0a2233;
+  --color-navy-850: #0b2b42;
+  --color-navy-800: #0f3a5c;
+  --color-navy-700: #154a73;
+  --color-navy-600: #1c5c8f;
+
+  /* Brand blues */
+  --color-sky-600: #1b7fb5;
+  --color-sky-500: #4f8fc0;
+  --color-sky-400: #6fa3c9;
+  --color-sky-300: #9dc2dd;
+  --color-sky-200: #cbe0ee;
+  --color-sky-100: #e6f0f8;
+
+  /* Accent — the single brightest colour, used for CTAs and prices */
+  --color-accent: #17a2e0;
+  --color-accent-hover: #128ec6;
+  --color-accent-soft: #d5f0fc;
+
+  /* Secondary contrast accent (from the logo's tassel) — urgency strips, active tabs */
+  --color-rose: #e8557f;
+  --color-rose-dark: #cf3d67;
+
+  /* Section tints */
+  --color-tint: #e3eef7;
+  --color-tint-deep: #cfe2f2;
+  --color-surface: #f0f1f3;
+
+  --color-ink: #0b1b26;
+  --color-muted: #4b6070;
+
+  /* Geometry */
+  --container: 1280px;
+  --gutter: 20px;
+}
+
+@media (min-width: 640px) {
+  :root { --gutter: 40px; }
+}
+@media (min-width: 1024px) {
+  :root { --gutter: 80px; }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-navy-950: var(--color-navy-950);
+  --color-navy-900: var(--color-navy-900);
+  --color-navy-850: var(--color-navy-850);
+  --color-navy-800: var(--color-navy-800);
+  --color-navy-700: var(--color-navy-700);
+  --color-navy-600: var(--color-navy-600);
+
+  --color-sky-600: var(--color-sky-600);
+  --color-sky-500: var(--color-sky-500);
+  --color-sky-400: var(--color-sky-400);
+  --color-sky-300: var(--color-sky-300);
+  --color-sky-200: var(--color-sky-200);
+  --color-sky-100: var(--color-sky-100);
+
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-soft: var(--color-accent-soft);
+
+  --color-rose: var(--color-rose);
+  --color-rose-dark: var(--color-rose-dark);
+
+  --color-tint: var(--color-tint);
+  --color-tint-deep: var(--color-tint-deep);
+  --color-surface: var(--color-surface);
+
+  --color-ink: var(--color-ink);
+  --color-muted: var(--color-muted);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-heading);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ---- Type scale (mirrors the reference's impact) ---- */
+.t-display {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(3.25rem, 8.35vw, 7.5rem);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+}
+.t-h2 {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.25rem, 4.55vw, 4.0625rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+.t-h3 {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.25rem, 1.7vw, 1.5rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+.t-lead {
+  font-size: clamp(1rem, 1.15vw, 1.0625rem);
+  line-height: 1.6;
+  font-weight: 600;
+}
+.t-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ---- Tema LA Bank ----
+   Escopo para a página de financiamento: mantém o grid, a tipografia e o
+   shell da LA Faculdades, mas troca os acentos pela identidade do LA Bank. */
+.theme-bank {
+  --color-accent: #db1069;
+  --color-accent-hover: #b70d57;
+  --color-accent-soft: #f8d0e0;
+  --color-navy-950: #1a1a2e;
+  --color-navy-800: #2a2a4a;
+  --color-tint: #fdf2f7;
+  --color-tint-deep: #f8d0e0;
+  --color-surface: #f8f9fa;
+}
+
+/* ---- Layout primitives ---- */
+.container-x {
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section-y {
+  padding-block: clamp(3.5rem, 7vw, 6.5rem);
+}
+
+/* Horizontal scroll-snap carousel (4-up desktop, peek on mobile) */
+.rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 78%;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail > * { scroll-snap-align: start; }
+
+@media (min-width: 640px) {
+  .rail { grid-auto-columns: 46%; gap: 16px; }
+}
+@media (min-width: 1024px) {
+  .rail { grid-auto-columns: calc((100% - 30px) / 4); gap: 10px; }
+}
+
+/* Edge-to-edge bleed out of the container */
+.bleed-l { margin-left: calc(var(--gutter) * -1); }
+@media (min-width: 1024px) {
+  .bleed-l { margin-left: calc((100vw - var(--container)) / -2 - var(--gutter)); }
+}
+
+/* ---- Scroll reveal ----
+   The resting state is visible; entering the viewport only *plays* an
+   animation. Nothing can be stranded invisible if the observer never fires
+   (fast scrolling, no JS, crawlers). */
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal.is-in {
+    animation: reveal-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
 }
