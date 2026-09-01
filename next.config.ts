@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import path from "path";
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const nextConfig: NextConfig = {
   turbopack: {
@@ -21,3 +22,7 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+// Habilita o acesso a bindings do Cloudflare (env vars, KV, R2, etc.) durante
+// `next dev`, usando a mesma wrangler.jsonc do build/deploy.
+initOpenNextCloudflareForDev();
