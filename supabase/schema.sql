@@ -132,7 +132,7 @@ insert into course_niveis (slug, nome, titulo, descricao, imagem_url, ordem) val
 (
   'pos-graduacao', 'Pós-Graduação',
   'Especialize-se sem parar sua rotina',
-  'MBAs e pós-graduações lato sensu 100% EAD, com certificado reconhecido pelo MEC e conteúdo aplicado ao mercado.',
+  'Pós-graduações EAD, com certificado reconhecido pelo MEC e conteúdo aplicado ao mercado.',
   '/images/art/pos.svg', 2
 )
 on conflict (slug) do nothing;
@@ -162,6 +162,16 @@ create table if not exists courses (
 alter table courses drop column if exists tipo;
 alter table courses drop column if exists modalidades;
 
+-- Conteúdo da página "Saiba mais" do curso. Todos opcionais: cada bloco só
+-- aparece no site quando o curso tem conteúdo preenchido no admin.
+alter table courses add column if not exists para_quem text[] not null default '{}';
+alter table courses add column if not exists mercado text not null default '';
+alter table courses add column if not exists atuacao text[] not null default '{}';
+-- grade: [{ "titulo": "1º semestre", "disciplinas": ["...", "..."] }]
+alter table courses add column if not exists grade jsonb not null default '[]'::jsonb;
+-- faq: [{ "pergunta": "...", "resposta": "..." }]
+alter table courses add column if not exists faq jsonb not null default '[]'::jsonb;
+
 alter table courses enable row level security;
 
 grant select on courses to anon, authenticated;
@@ -182,8 +192,8 @@ insert into courses (slug, nome, nivel_id, area, modalidade, duracao, mensalidad
 (
   'administracao', 'Administração', (select id from course_niveis where slug = 'graduacao'), 'Negócios', 'EAD', '8 semestres', 299.90, 499.90, '/images/art/administracao.svg',
   'Formação completa em gestão, finanças, marketing e liderança para empreender ou crescer dentro de empresas.',
-  'O curso de Administração prepara você para atuar em gestão de pessoas, finanças, marketing e processos, com uma grade flexível 100% EAD e tutoria disponível para tirar dúvidas durante toda a formação.',
-  ARRAY['Diploma reconhecido pelo MEC', 'Aulas 100% online', 'Estágio supervisionado orientado'], true
+  'O curso de Administração prepara você para atuar em gestão de pessoas, finanças, marketing e processos, com uma grade flexível EAD e tutoria disponível para tirar dúvidas durante toda a formação.',
+  ARRAY['Diploma reconhecido pelo MEC', 'Aulas online', 'Estágio supervisionado orientado'], true
 ),
 (
   'pedagogia', 'Pedagogia', (select id from course_niveis where slug = 'graduacao'), 'Educação', 'EAD', '8 semestres', 279.90, 459.90, '/images/art/pedagogia.svg',
@@ -213,19 +223,19 @@ insert into courses (slug, nome, nivel_id, area, modalidade, duracao, mensalidad
   'mba-gestao-de-pessoas', 'MBA em Gestão de Pessoas', (select id from course_niveis where slug = 'pos-graduacao'), 'Negócios', 'EAD', '12 meses', 249.90, 399.90, '/images/art/pos.svg',
   'Especialização em liderança, cultura organizacional e gestão estratégica de pessoas.',
   'MBA voltado para profissionais que já atuam ou querem atuar com liderança e gestão de pessoas, com conteúdo aplicado e certificado de pós-graduação lato sensu.',
-  ARRAY['Certificado de pós-graduação', 'Conteúdo 100% online', 'Professores com vivência de mercado'], true
+  ARRAY['Certificado de pós-graduação', 'Conteúdo online', 'Professores com vivência de mercado'], true
 ),
 (
   'pos-psicopedagogia', 'Psicopedagogia', (select id from course_niveis where slug = 'pos-graduacao'), 'Educação', 'EAD', '12 meses', 229.90, 379.90, '/images/art/pedagogia.svg',
   'Especialização em dificuldades de aprendizagem e intervenção psicopedagógica.',
   'Pós-graduação para pedagogos, psicólogos e professores que querem se especializar em diagnóstico e intervenção nas dificuldades de aprendizagem.',
-  ARRAY['Certificado de pós-graduação', 'Estudos de caso práticos', 'Conteúdo 100% online'], false
+  ARRAY['Certificado de pós-graduação', 'Estudos de caso práticos', 'Conteúdo online'], false
 ),
 (
   'mba-gestao-escolar', 'MBA em Gestão Escolar', (select id from course_niveis where slug = 'pos-graduacao'), 'Educação', 'EAD', '12 meses', 249.90, 399.90, '/images/art/administracao.svg',
   'Gestão pedagógica, financeira e de pessoas para diretores e coordenadores de escolas.',
   'Formação para quem atua ou quer atuar na direção e coordenação de instituições de ensino, com foco em gestão pedagógica, financeira e de equipes.',
-  ARRAY['Certificado de pós-graduação', 'Foco em gestão escolar', 'Conteúdo 100% online'], true
+  ARRAY['Certificado de pós-graduação', 'Foco em gestão escolar', 'Conteúdo online'], true
 )
 on conflict (slug) do nothing;
 

@@ -76,7 +76,7 @@ function MarqueeColumn({
   // movimento reduzido a coluna cresce naturalmente e mostra tudo.
   return (
     <div
-      className={`marquee-fade motion-safe:h-[520px] motion-safe:overflow-hidden lg:motion-safe:h-[600px] ${className}`}
+      className={`marquee-fade motion-safe:h-[540px] motion-safe:overflow-hidden lg:motion-safe:h-[660px] ${className}`}
       style={{ ["--fade" as string]: `${FADE_SIZE}px` }}
     >
       <div ref={trackRef} className="flex flex-col gap-4 will-change-transform">
@@ -116,19 +116,21 @@ export default function VerticalTestimonials() {
     .map((t) => ({ testimonial: t, hideOnDesktop: false }));
 
   return (
-    <div
-      className="grid grid-cols-1 gap-4 md:grid-cols-2"
-      onMouseEnter={() => (pausedRef.current = true)}
-      onMouseLeave={() => (pausedRef.current = false)}
-    >
-      <MarqueeColumn items={colunaA} direction="up" speed={MARQUEE_SPEED} pausedRef={pausedRef} />
-      <MarqueeColumn
-        items={colunaB}
-        direction="down"
-        speed={MARQUEE_SPEED * SPEED_VARIATION}
-        pausedRef={pausedRef}
-        className="hidden md:block"
-      />
+    <div className="relative">
+      <div
+        className="relative z-10 grid grid-cols-1 gap-4 md:grid-cols-2"
+        onMouseEnter={() => (pausedRef.current = true)}
+        onMouseLeave={() => (pausedRef.current = false)}
+      >
+        <MarqueeColumn items={colunaA} direction="up" speed={MARQUEE_SPEED} pausedRef={pausedRef} />
+        <MarqueeColumn
+          items={colunaB}
+          direction="down"
+          speed={MARQUEE_SPEED * SPEED_VARIATION}
+          pausedRef={pausedRef}
+          className="hidden md:block"
+        />
+      </div>
     </div>
   );
 }

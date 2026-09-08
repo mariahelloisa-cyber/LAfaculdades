@@ -5,10 +5,18 @@ import Link from "next/link";
 import { slugify } from "@/lib/slugify";
 import { AREAS } from "@/lib/areas";
 import UploadField from "../UploadField";
-import type { CourseNivel } from "@/lib/data/courses";
+import type { CourseFaq, CourseModulo, CourseNivel } from "@/lib/data/courses";
 import type { CourseFormState } from "./actions";
 
 const MODALIDADES_SUGERIDAS = ["EAD", "Semipresencial", "Presencial"];
+
+/* A grade é editada como texto: "# 1º semestre" abre um módulo e as linhas
+   seguintes são as disciplinas dele. */
+function gradeToText(grade: CourseModulo[] = []) {
+  return grade
+    .map((m) => [`# ${m.titulo}`, ...m.disciplinas].join("\n"))
+    .join("\n\n");
+}
 
 type CourseFormValues = {
   nome: string;
@@ -24,6 +32,11 @@ type CourseFormValues = {
   descricao: string;
   destaques: string[];
   destaqueHome: boolean;
+  paraQuem: string[];
+  mercado: string;
+  atuacao: string[];
+  grade: CourseModulo[];
+  faq: CourseFaq[];
 };
 
 const inputClass =
@@ -235,6 +248,75 @@ export default function CourseForm({
         />
       </div>
 
+      {/* ---- Conteúdo da página "Saiba mais" do curso ---- */}
+      <div className="border-t border-navy-950/10 pt-6">
+        <h2 className="text-base font-bold text-navy-950">Página do curso</h2>
+        <p className="mt-1 text-xs text-muted">
+          Tudo aqui é opcional — cada bloco só aparece no site quando você preenche.
+        </p>
+      </div>
+
+      <div>
+        <label htmlFor="para_quem" className="text-sm font-semibold text-navy-950">
+          Para quem é este curso
+        </label>
+        <p className="mt-0.5 text-xs text-muted">Um perfil por linha.</p>
+        <textarea
+          id="para_quem"
+          name="para_quem"
+          rows={4}
+          defaultValue={defaultValues?.paraQuem.join("\n")}
+          className={inputClass}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="grade" className="text-sm font-semibold text-navy-950">
+          Grade curricular
+        </label>
+        <p className="mt-0.5 text-xs text-muted">
+          Comece a linha com <b>#</b> para abrir um semestre/módulo (ex.: “# 1º semestre”). As linhas
+          seguintes são as disciplinas dele.
+        </p>
+        <textarea
+          id="grade"
+          name="grade"
+          rows={10}
+          placeholder={"# 1º semestre\nIntrodução à Administração\nMatemática Financeira\n\n# 2º semestre\nContabilidade Geral"}
+          defaultValue={gradeToText(defaultValues?.grade)}
+          className={`${inputClass} font-mono text-[13px]`}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="mercado" className="text-sm font-semibold text-navy-950">
+          Mercado de trabalho
+        </label>
+        <textarea
+          id="mercado"
+          name="mercado"
+          rows={4}
+          defaultValue={defaultValues?.mercado}
+          className={inputClass}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="atuacao" className="text-sm font-semibold text-navy-950">
+          Onde o aluno pode atuar
+        </label>
+        <p className="mt-0.5 text-xs text-muted">Um item por linha. Viram etiquetas na página.</p>
+        <textarea
+          id="atuacao"
+          name="atuacao"
+          rows={4}
+          defaultValue={defaultValues?.atuacao.join("\n")}
+          className={inputClass}
+        />
+      </div>
+
+      <FaqFields defaultValue={defaultValues?.faq ?? []} />
+
       <UploadField
         name="capa_url"
         folder="cursos"
@@ -275,5 +357,58 @@ export default function CourseForm({
         </Link>
       </div>
     </form>
+  );
+}
+
+/* Perguntas e respostas do curso — pares repetidos no formulário, lidos no
+   server action com formData.getAll("faq_pergunta" / "faq_resposta"). */
+function FaqFields({ defaultValue }: { defaultValue: CourseFaq[] }) {
+  const [itens, setItens] = useState<CourseFaq[]>(defaultValue);
+
+  return (
+    <div>
+      <span className="text-sm font-semibold text-navy-950">Dúvidas frequentes do curso</span>
+      <p className="mt-0.5 text-xs text-muted">
+        Sem nenhuma pergunta aqui, a página mostra as dúvidas gerais da faculdade.
+      </p>
+
+      <div className="mt-3 space-y-3">
+        {itens.map((item, i) => (
+          <div key={i} className="rounded-xl bg-white p-4 ring-1 ring-navy-950/10">
+            <div className="flex items-start gap-3">
+              <input
+                name="faq_pergunta"
+                placeholder="Pergunta"
+                defaultValue={item.pergunta}
+                className={`${inputClass} mt-0`}
+              />
+              <button
+                type="button"
+                onClick={() => setItens(itens.filter((_, idx) => idx !== i))}
+                aria-label="Remover pergunta"
+                className="mt-1 rounded-lg px-2.5 py-2 text-sm font-bold text-rose-dark hover:bg-surface"
+              >
+                Remover
+              </button>
+            </div>
+            <textarea
+              name="faq_resposta"
+              rows={3}
+              placeholder="Resposta"
+              defaultValue={item.resposta}
+              className={inputClass}
+            />
+          </div>
+        ))}
+      </div>
+
+      <button
+        type="button"
+        onClick={() => setItens([...itens, { pergunta: "", resposta: "" }])}
+        className="mt-3 rounded-full border-2 border-navy-950/15 px-5 py-2 text-sm font-bold text-navy-950 transition-colors hover:bg-white"
+      >
+        + Adicionar pergunta
+      </button>
+    </div>
   );
 }

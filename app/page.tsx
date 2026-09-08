@@ -7,6 +7,9 @@ import CourseFinder from "@/components/CourseFinder";
 import IngressoCards from "@/components/IngressoCards";
 import SplitFeature from "@/components/SplitFeature";
 import VerticalTestimonials from "@/components/VerticalTestimonials";
+import StrokeMark from "@/components/StrokeMark";
+import TestimonialsVideo from "@/components/TestimonialsVideo";
+import BlobDepoimentos from "@/components/BlobDepoimentos";
 import FaqAccordion from "@/components/FaqAccordion";
 import { getPosts } from "@/lib/data/posts";
 import { getFeaturedCourses } from "@/lib/data/courses";
@@ -83,7 +86,7 @@ export default async function HomePage() {
         badge={{ top: "Credenciada pelo", big: "MEC" }}
         cards={[
           { art: "/images/imagem1.png", label: "Tutoria ativa" },
-          { art: "/images/imagem2.png", label: "100% online" },
+          { art: "/images/imagem2.png", label: "Ensino online" },
           { art: "/images/imagem3.png", label: "Mensalidade justa" },
         ]}
       />
@@ -92,14 +95,38 @@ export default async function HomePage() {
              No desktop: texto à esquerda, esteira à direita e centralizada verticalmente.
              No mobile: empilha. */}
       {/* Padding vertical mínimo: a esteira quase encosta nas bordas da seção. */}
-      <section className="bg-white pt-12 pb-4 lg:py-6">
-        <Container>
-          <div className="grid items-center gap-10 lg:grid-cols-[38%_1fr] lg:gap-14">
+      <section className="relative overflow-hidden bg-white pt-12 pb-8 lg:py-14">
+        {/* Forma azul centralizada na página, atrás de todo o conteúdo da seção. */}
+        <BlobDepoimentos />
+
+        <Container className="relative z-10">
+          <div className="grid items-center gap-10 lg:grid-cols-[41%_1fr] lg:gap-14">
             <Reveal>
-              <SectionHeading
-                title="Quem já estuda na LA"
-                description="Histórias de alunos que voltaram a estudar e mudaram de patamar profissional."
-              />
+              {/* Bloco editorial: traço + título + subtítulo + vídeo. */}
+              <div>
+                {/* O L fica atrás do texto: a perna vertical à esquerda e a
+                    barra horizontal correndo por cima do título. O padding do
+                    bloco abre exatamente o espaço dele, sem estourar a margem. */}
+                <div className="relative pl-6 pt-5 sm:pl-8 sm:pt-6">
+                  <StrokeMark className="absolute left-0 top-0 h-[104px] w-[72px] sm:h-[124px] sm:w-[86px]" />
+
+                  <div className="relative min-w-0">
+                    <h2 className="font-display text-[clamp(2.85rem,4.5vw,3.75rem)] font-extrabold leading-[1.04] tracking-[-0.03em] text-navy-950">
+                      Quem já
+                      <br />
+                      estuda na LA
+                    </h2>
+                    <p className="mt-4 max-w-[32ch] text-[18px] font-semibold leading-[1.5] text-navy-800">
+                      Histórias de alunos que voltaram a estudar e mudaram de patamar profissional.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Vídeo fora da coluna do traço: ocupa a largura inteira do bloco. */}
+                <div className="mt-8 -mx-3 sm:mx-0">
+                  <TestimonialsVideo />
+                </div>
+              </div>
             </Reveal>
 
             <VerticalTestimonials />
@@ -108,7 +135,7 @@ export default async function HomePage() {
       </section>
       
       {/* 7 — FAQ em duas colunas */}
-      <section className="section-y bg-tint">
+      <section className="section-y bg-tint-deep">
         <Container>
           <Reveal>
             <SectionHeading title="Perguntas frequentes" />
@@ -121,25 +148,7 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* 8 — CTA de fechamento */}
-      <section className="bg-navy-950">
-        <Container className="py-16 lg:py-20">
-          <div className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between">
-            <h2 className="t-h2 max-w-2xl text-white">
-              Você não precisa ter tudo pronto. Só precisa começar.
-            </h2>
-            <Link
-              href="/vestibular/inscricao"
-              className="group inline-flex shrink-0 items-center gap-4 rounded-full bg-accent px-9 py-5 text-lg font-bold text-white transition-colors hover:bg-accent-hover"
-            >
-              Quero me inscrever
-              <svg width="20" height="15" viewBox="0 0 20 14" fill="none" className="transition-transform group-hover:translate-x-1" aria-hidden>
-                <path d="M1 7h17M12.5 1 18.5 7l-6 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </Link>
-          </div>
-        </Container>
-      </section>
+    
     </>
   );
 }

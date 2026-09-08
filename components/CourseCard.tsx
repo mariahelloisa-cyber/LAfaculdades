@@ -74,10 +74,10 @@ export default function CourseCard({ course }: { course: Course }) {
         </div>
 
         <Link
-          href={`/vestibular/inscricao?curso=${course.slug}`}
+          href={`/${course.nivelSlug}/${course.slug}`}
           className="mx-auto mt-3 flex h-[50px] w-full max-w-[202px] items-center justify-between rounded-[28px] bg-[#FFD600] pl-6 pr-5 text-[15px] font-bold text-black transition-[filter] hover:brightness-95"
         >
-          Matricule-se
+          Saiba mais
           <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden>
             <path d="M1 8h19M14 1.5 20.5 8 14 14.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

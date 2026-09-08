@@ -15,8 +15,8 @@ export default function TestimonialCard({ testimonial }: { testimonial: Testimon
   const { name, role, comment, avatar } = testimonial;
 
   return (
-    <figure className="rounded-2xl border border-navy-950/10 bg-surface px-5 py-4">
-      <div className="flex items-center gap-2.5">
+    <figure className="rounded-[18px] border border-navy-950/[0.06] bg-white/95 px-5 py-[18px] shadow-[0_14px_34px_-22px_rgba(6,21,35,0.45)] backdrop-blur-[2px]">
+      <div className="flex items-center gap-3">
         {avatar ? (
           <Image
             src={avatar}
@@ -26,18 +26,20 @@ export default function TestimonialCard({ testimonial }: { testimonial: Testimon
             className="h-[38px] w-[38px] shrink-0 rounded-full object-cover"
           />
         ) : (
-          <span className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full bg-accent text-[13px] font-bold text-white">
+          <span className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full bg-sky-100 text-[13px] font-bold text-sky-600">
             {iniciais(name)}
           </span>
         )}
 
         <div className="min-w-0">
-          <figcaption className="truncate text-[14px] font-bold text-navy-950">{name}</figcaption>
+          <figcaption className="truncate text-[14px] font-bold tracking-[-0.01em] text-navy-950">
+            {name}
+          </figcaption>
           <p className="truncate text-[12px] text-muted">{role}</p>
         </div>
       </div>
 
-      <blockquote className="mt-3 text-[14px] leading-relaxed text-navy-900">
+      <blockquote className="mt-3 text-[13.5px] leading-[1.62] text-navy-900/90">
         &ldquo;{comment}&rdquo;
       </blockquote>
     </figure>

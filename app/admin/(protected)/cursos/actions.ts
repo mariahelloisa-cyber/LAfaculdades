@@ -7,6 +7,44 @@ import { slugify } from "@/lib/slugify";
 
 export type CourseFormState = { error?: string } | undefined;
 
+function linhas(valor: FormDataEntryValue | null): string[] {
+  return String(valor ?? "")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
+}
+
+/* Grade curricular: linhas iniciadas por "#" abrem um módulo (ex.: "# 1º
+   semestre") e as linhas seguintes são as disciplinas dele. Disciplinas
+   soltas antes do primeiro "#" caem num módulo único "Disciplinas". */
+function parseGrade(valor: FormDataEntryValue | null) {
+  const modulos: { titulo: string; disciplinas: string[] }[] = [];
+
+  for (const linha of linhas(valor)) {
+    if (linha.startsWith("#")) {
+      modulos.push({ titulo: linha.replace(/^#+\s*/, ""), disciplinas: [] });
+      continue;
+    }
+    if (modulos.length === 0) modulos.push({ titulo: "Disciplinas", disciplinas: [] });
+    modulos[modulos.length - 1].disciplinas.push(linha);
+  }
+
+  return modulos.filter((m) => m.titulo && m.disciplinas.length > 0);
+}
+
+/* FAQ do curso: pares pergunta/resposta repetidos no formulário. */
+function parseFaq(formData: FormData) {
+  const perguntas = formData.getAll("faq_pergunta").map(String);
+  const respostas = formData.getAll("faq_resposta").map(String);
+
+  return perguntas
+    .map((pergunta, i) => ({
+      pergunta: pergunta.trim(),
+      resposta: String(respostas[i] ?? "").trim(),
+    }))
+    .filter((f) => f.pergunta && f.resposta);
+}
+
 async function requireUser() {
   const supabase = await createClient();
   const {
@@ -30,10 +68,12 @@ function parseForm(formData: FormData) {
   const mensalidade = Number(String(formData.get("mensalidade") ?? "").replace(",", ".")) || 0;
   const mensalidade_de = Number(String(formData.get("mensalidade_de") ?? "").replace(",", ".")) || 0;
 
-  const destaques = String(formData.get("destaques") ?? "")
-    .split("\n")
-    .map((d) => d.trim())
-    .filter(Boolean);
+  const destaques = linhas(formData.get("destaques"));
+  const para_quem = linhas(formData.get("para_quem"));
+  const atuacao = linhas(formData.get("atuacao"));
+  const mercado = String(formData.get("mercado") ?? "").trim();
+  const grade = parseGrade(formData.get("grade"));
+  const faq = parseFaq(formData);
 
   return {
     nome,
@@ -48,6 +88,11 @@ function parseForm(formData: FormData) {
     descricao,
     destaques,
     destaque_home,
+    para_quem,
+    mercado,
+    atuacao,
+    grade,
+    faq,
   };
 }
 

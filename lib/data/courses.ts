@@ -1,6 +1,9 @@
 import { cache } from "react";
 import { supabasePublic } from "@/lib/supabase/publicClient";
 
+export type CourseModulo = { titulo: string; disciplinas: string[] };
+export type CourseFaq = { pergunta: string; resposta: string };
+
 export type Course = {
   id: string;
   slug: string;
@@ -17,6 +20,12 @@ export type Course = {
   descricao: string;
   destaques: string[];
   destaqueHome: boolean;
+  /* Conteúdo da página do curso — opcional, cada bloco some quando vazio. */
+  paraQuem: string[];
+  mercado: string;
+  atuacao: string[];
+  grade: CourseModulo[];
+  faq: CourseFaq[];
 };
 
 export type CourseNivel = {
@@ -43,6 +52,11 @@ type CourseRow = {
   descricao: string;
   destaques: string[];
   destaque_home: boolean;
+  para_quem: string[] | null;
+  mercado: string | null;
+  atuacao: string[] | null;
+  grade: CourseModulo[] | null;
+  faq: CourseFaq[] | null;
   course_niveis: { slug: string; nome: string } | null;
 };
 
@@ -56,8 +70,27 @@ type NivelRow = {
   ordem: number;
 };
 
-const COURSE_FIELDS =
+const COURSE_FIELDS_BASE =
   "id, slug, nome, area, modalidade, duracao, mensalidade, mensalidade_de, capa_url, resumo, descricao, destaques, destaque_home";
+
+/* Campos da página "Saiba mais" — adicionados pelo schema.sql. */
+const COURSE_FIELDS = `${COURSE_FIELDS_BASE}, para_quem, mercado, atuacao, grade, faq`;
+
+type CourseQueryResult = {
+  data: unknown;
+  error: { code?: string; message: string } | null;
+};
+
+/** Consulta os cursos com os campos da página do curso e, caso o banco ainda
+ *  não tenha recebido o ALTER TABLE do schema.sql (erro 42703), repete sem
+ *  eles — assim o site não fica sem cursos antes da migração rodar. */
+async function queryCourses(
+  run: (fields: string) => PromiseLike<CourseQueryResult>
+): Promise<CourseQueryResult> {
+  const resultado = await run(COURSE_FIELDS);
+  if (resultado.error?.code === "42703") return run(COURSE_FIELDS_BASE);
+  return resultado;
+}
 
 function mapCourse(row: CourseRow): Course {
   return {
@@ -76,6 +109,11 @@ function mapCourse(row: CourseRow): Course {
     descricao: row.descricao,
     destaques: row.destaques,
     destaqueHome: row.destaque_home,
+    paraQuem: row.para_quem ?? [],
+    mercado: row.mercado ?? "",
+    atuacao: row.atuacao ?? [],
+    grade: Array.isArray(row.grade) ? row.grade : [],
+    faq: Array.isArray(row.faq) ? row.faq : [],
   };
 }
 
@@ -121,10 +159,12 @@ export async function getCourseNivelBySlug(slug: string): Promise<CourseNivel | 
 }
 
 export async function getAllCourses(): Promise<Course[]> {
-  const { data, error } = await supabasePublic
-    .from("courses")
-    .select(`${COURSE_FIELDS}, course_niveis!nivel_id(slug, nome)`)
-    .order("nome", { ascending: true });
+  const { data, error } = await queryCourses((fields) =>
+    supabasePublic
+      .from("courses")
+      .select(`${fields}, course_niveis!nivel_id(slug, nome)`)
+      .order("nome", { ascending: true })
+  );
 
   if (error) {
     console.error("Erro ao buscar cursos:", error.message);
@@ -135,11 +175,13 @@ export async function getAllCourses(): Promise<Course[]> {
 }
 
 export async function getCoursesByNivelSlug(nivelSlug: string): Promise<Course[]> {
-  const { data, error } = await supabasePublic
-    .from("courses")
-    .select(`${COURSE_FIELDS}, course_niveis!inner(slug, nome)`)
-    .eq("course_niveis.slug", nivelSlug)
-    .order("nome", { ascending: true });
+  const { data, error } = await queryCourses((fields) =>
+    supabasePublic
+      .from("courses")
+      .select(`${fields}, course_niveis!inner(slug, nome)`)
+      .eq("course_niveis.slug", nivelSlug)
+      .order("nome", { ascending: true })
+  );
 
   if (error) {
     console.error("Erro ao buscar cursos:", error.message);
@@ -150,12 +192,14 @@ export async function getCoursesByNivelSlug(nivelSlug: string): Promise<Course[]
 }
 
 export async function getCourseBySlug(nivelSlug: string, slug: string): Promise<Course | null> {
-  const { data, error } = await supabasePublic
-    .from("courses")
-    .select(`${COURSE_FIELDS}, course_niveis!inner(slug, nome)`)
-    .eq("course_niveis.slug", nivelSlug)
-    .eq("slug", slug)
-    .maybeSingle();
+  const { data, error } = await queryCourses((fields) =>
+    supabasePublic
+      .from("courses")
+      .select(`${fields}, course_niveis!inner(slug, nome)`)
+      .eq("course_niveis.slug", nivelSlug)
+      .eq("slug", slug)
+      .maybeSingle()
+  );
 
   if (error) {
     console.error("Erro ao buscar curso:", error.message);
@@ -166,11 +210,13 @@ export async function getCourseBySlug(nivelSlug: string, slug: string): Promise<
 }
 
 export async function getFeaturedCourses(): Promise<Course[]> {
-  const { data, error } = await supabasePublic
-    .from("courses")
-    .select(`${COURSE_FIELDS}, course_niveis!nivel_id(slug, nome)`)
-    .eq("destaque_home", true)
-    .order("nome", { ascending: true });
+  const { data, error } = await queryCourses((fields) =>
+    supabasePublic
+      .from("courses")
+      .select(`${fields}, course_niveis!nivel_id(slug, nome)`)
+      .eq("destaque_home", true)
+      .order("nome", { ascending: true })
+  );
 
   if (error) {
     console.error("Erro ao buscar cursos em destaque:", error.message);
@@ -178,4 +224,18 @@ export async function getFeaturedCourses(): Promise<Course[]> {
   }
 
   return (data as unknown as CourseRow[]).map(mapCourse);
+}
+
+/** Outros cursos do mesmo nível para o bloco "Cursos relacionados" — prioriza
+ *  a mesma área de interesse e completa com os demais do nível. */
+export async function getRelatedCourses(
+  course: Course,
+  limit = 4
+): Promise<Course[]> {
+  const doNivel = (await getCoursesByNivelSlug(course.nivelSlug)).filter(
+    (c) => c.slug !== course.slug
+  );
+  const mesmaArea = doNivel.filter((c) => c.area === course.area);
+  const resto = doNivel.filter((c) => c.area !== course.area);
+  return [...mesmaArea, ...resto].slice(0, limit);
 }

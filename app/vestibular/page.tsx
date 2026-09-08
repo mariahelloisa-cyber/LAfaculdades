@@ -29,7 +29,7 @@ const formas = [
       "Prova online, feita no seu tempo, sem precisar se deslocar até uma unidade. Em breve disponível como forma de ingresso.",
     passos: [
       "Inscrição gratuita",
-      "Prova 100% online",
+      "Prova online",
       "Resultado em poucos dias úteis",
       "Matrícula após aprovação",
     ],

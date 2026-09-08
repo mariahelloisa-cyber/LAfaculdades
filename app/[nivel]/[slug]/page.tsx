@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import CourseDetail from "@/components/CourseDetail";
-import { getCourseBySlug, getCourseNiveis, getCoursesByNivelSlug } from "@/lib/data/courses";
+import {
+  getCourseBySlug,
+  getCourseNiveis,
+  getCoursesByNivelSlug,
+  getRelatedCourses,
+} from "@/lib/data/courses";
 
 export async function generateStaticParams() {
   const niveis = await getCourseNiveis();
@@ -36,5 +41,7 @@ export default async function CursoPage({
   const course = await getCourseBySlug(nivel, slug);
   if (!course) notFound();
 
-  return <CourseDetail course={course} />;
+  const relacionados = await getRelatedCourses(course);
+
+  return <CourseDetail course={course} relacionados={relacionados} />;
 }

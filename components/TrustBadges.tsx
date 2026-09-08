@@ -4,7 +4,7 @@ const badges = [
   { title: `E-MEC ${SITE.emec}`, subtitle: "Credenciada pelo MEC" },
   { title: "RA 1000", subtitle: "Certificado ReclameAQUI" },
   { title: "5,0 ★★★★★", subtitle: "Avaliação no Google" },
-  { title: "100% EAD", subtitle: "Estude de onde estiver" },
+  { title: "EAD", subtitle: "Estude de onde estiver" },
 ];
 
 export default function TrustBadges({ dark = false }: { dark?: boolean }) {
