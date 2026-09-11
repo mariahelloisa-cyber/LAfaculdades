@@ -24,7 +24,7 @@ const faqs = [
   {
     pergunta: "Qual é a forma de ingresso mais rápida?",
     resposta:
-      "A inscrição com pagamento direto pelo site é a via principal hoje. Vestibular próprio e ingresso pela nota do ENEM entram em breve.",
+      "A inscrição com pagamento direto pelo site é a via principal hoje. Você também pode usar a nota do ENEM e ganhar desconto na mensalidade — o vestibular próprio está em andamento.",
   },
   {
     pergunta: "Como funciona o financiamento LA Bank?",

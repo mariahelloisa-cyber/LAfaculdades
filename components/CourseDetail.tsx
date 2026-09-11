@@ -1,51 +1,34 @@
 import Link from "next/link";
 import Image from "next/image";
+import AnimatedText from "./AnimatedText";
 import Container from "./Container";
+import BlobDepoimentos from "./BlobDepoimentos";
+import CourseBannerCta from "./CourseBannerCta";
 import CourseCard from "./CourseCard";
-import FaqAccordion, { type FaqItem } from "./FaqAccordion";
+import FaqAccordion from "./FaqAccordion";
 import TrustBadges from "./TrustBadges";
 import Reveal from "./Reveal";
 import CourseStickyBar from "./CourseStickyBar";
 import { SITE } from "@/lib/constants";
+import { FAQ_CURSOS } from "@/lib/faq";
 import type { Course } from "@/lib/data/courses";
 
 function money(v: number) {
   return v.toFixed(2).replace(".", ",");
 }
 
-/* Perguntas gerais usadas quando o curso ainda não tem FAQ próprio no admin. */
-const FAQ_PADRAO: FaqItem[] = [
-  {
-    pergunta: "O diploma tem validade nacional?",
-    resposta: `A LA Faculdade é credenciada pelo MEC (E-MEC ${SITE.emec}) e os diplomas emitidos têm validade em todo o território nacional.`,
-  },
-  {
-    pergunta: "Como são as aulas e as provas?",
-    resposta:
-      "As aulas ficam gravadas no Ambiente Virtual de Aprendizagem (AVA), disponíveis 24h. Você estuda no seu ritmo e faz as avaliações dentro dos prazos de cada disciplina.",
-  },
-  {
-    pergunta: "Quando posso começar?",
-    resposta:
-      "As turmas têm entradas contínuas. Concluindo a inscrição e a matrícula pelo site, o acesso ao AVA é liberado e você já começa a estudar.",
-  },
-  {
-    pergunta: "Existe financiamento?",
-    resposta:
-      "Sim. O LA Bank é o financiamento estudantil da própria LA Faculdade, sem banco no meio do caminho e sem necessidade de fiador.",
-  },
-];
-
 const passos = [
   {
     n: "1",
-    titulo: "Faça sua inscrição",
-    texto: "Preencha seus dados e escolha o curso direto pelo site, em poucos minutos.",
+    titulo: "Fale com um consultor",
+    texto:
+      "Clique em matricule-se e caia direto no WhatsApp com um consultor, que tira suas dúvidas e faz sua inscrição.",
   },
   {
     n: "2",
     titulo: "Confirme a matrícula",
-    texto: "Envie os documentos e garanta o 1º mês por R$ 49,90 enquanto houver vagas.",
+    texto:
+      "O consultor pede seus documentos pelo WhatsApp e garante o 1º mês por R$ 49,90 enquanto houver vagas.",
   },
   {
     n: "3",
@@ -62,8 +45,11 @@ export default function CourseDetail({
   relacionados?: Course[];
 }) {
   const [reais, centavos] = money(course.mensalidade).split(",");
-  const inscricaoHref = `/vestibular/inscricao?curso=${course.slug}`;
-  const faqs = course.faq.length > 0 ? course.faq : FAQ_PADRAO;
+  /* A inscrição é feita por um consultor no WhatsApp — os botões de matrícula
+     abrem a conversa já com o nome do curso na mensagem. */
+  const inscricaoHref = `${SITE.whatsapp}?text=${encodeURIComponent(
+    `Olá! Quero me matricular no curso de ${course.nome}.`
+  )}`;
 
   const desconto =
     course.mensalidadeDe > course.mensalidade
@@ -142,8 +128,12 @@ export default function CourseDetail({
             <span className="uppercase text-white">{course.nome}</span>
           </nav>
 
-          <h1 className="t-h2 mt-5 max-w-3xl uppercase text-white">{course.nome}</h1>
-          <p className="t-lead mt-5 max-w-xl text-sky-200">{course.resumo}</p>
+          <AnimatedText as="h1" variant="titulo" className="t-h2 mt-5 max-w-3xl uppercase text-white">
+            {course.nome}
+          </AnimatedText>
+          <AnimatedText as="p" delay={0.12} className="t-lead mt-5 max-w-xl text-sky-200">
+            {course.resumo}
+          </AnimatedText>
 
           <ul className="mt-8 flex flex-wrap gap-3">
             {fatos.map((f) => (
@@ -162,8 +152,10 @@ export default function CourseDetail({
 
           {/* No desktop a chamada mora no card; aqui ela serve o mobile. */}
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center lg:hidden">
-            <Link
+            <a
               href={inscricaoHref}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex h-[54px] items-center justify-center gap-3 rounded-full bg-[#FFD600] px-8 font-bold text-black"
             >
               Matricule-se agora
@@ -176,7 +168,7 @@ export default function CourseDetail({
                   strokeLinejoin="round"
                 />
               </svg>
-            </Link>
+            </a>
             <a
               href={SITE.whatsapp}
               target="_blank"
@@ -190,16 +182,18 @@ export default function CourseDetail({
       </section>
 
       {/* ---------- Conteúdo + card de matrícula ---------- */}
-      <section className="section-y bg-white">
+      <section className="bg-white pb-[clamp(3.5rem,7vw,6.5rem)] pt-8 lg:pt-10">
         <Container className="grid gap-12 lg:grid-cols-[1fr_380px]">
           <div>
-            <h2 id="sobre" className="t-h3 scroll-mt-32 text-navy-950">
+            <AnimatedText as="h2" id="sobre" variant="titulo" className="t-h3 scroll-mt-32 text-navy-950">
               Sobre o curso
-            </h2>
-            <p className="t-lead mt-5 text-navy-900">{course.descricao}</p>
+            </AnimatedText>
+            <AnimatedText as="p" delay={0.08} className="t-lead mt-5 text-navy-900">
+              {course.descricao}
+            </AnimatedText>
 
             {course.destaques.length > 0 && (
-              <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+              <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {course.destaques.map((d) => (
                   <li key={d} className="flex items-start gap-3 rounded-2xl bg-surface p-5">
                     <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-white">
@@ -221,9 +215,14 @@ export default function CourseDetail({
 
             {course.paraQuem.length > 0 && (
               <div className="mt-14">
-                <h2 id="para-quem" className="t-h3 scroll-mt-32 text-navy-950">
+                <AnimatedText
+                  as="h2"
+                  id="para-quem"
+                  variant="titulo"
+                  className="t-h3 scroll-mt-32 text-navy-950"
+                >
                   Para quem é este curso
-                </h2>
+                </AnimatedText>
                 <ul className="mt-6 space-y-3">
                   {course.paraQuem.map((p) => (
                     <li
@@ -240,12 +239,12 @@ export default function CourseDetail({
 
             {course.grade.length > 0 && (
               <div className="mt-14">
-                <h2 id="grade" className="t-h3 scroll-mt-32 text-navy-950">
+                <AnimatedText as="h2" id="grade" variant="titulo" className="t-h3 scroll-mt-32 text-navy-950">
                   Grade curricular
-                </h2>
-                <p className="mt-3 text-[14px] font-semibold text-muted">
+                </AnimatedText>
+                <AnimatedText as="p" delay={0.08} className="mt-3 text-[14px] font-semibold text-muted">
                   Conteúdo programático sujeito a atualização a cada nova turma.
-                </p>
+                </AnimatedText>
                 <div className="mt-6 overflow-hidden rounded-2xl ring-1 ring-navy-950/10">
                   {course.grade.map((modulo, i) => (
                     <details
@@ -274,8 +273,12 @@ export default function CourseDetail({
                       </summary>
                       <ul className="grid gap-x-8 gap-y-2 bg-white px-5 py-4 sm:grid-cols-2">
                         {modulo.disciplinas.map((d) => (
-                          <li key={d} className="text-[14px] font-semibold text-navy-900">
-                            • {d}
+                          <li
+                            key={d.nome}
+                            className="flex items-baseline justify-between gap-3 text-[14px] font-semibold text-navy-900"
+                          >
+                            <span>• {d.nome}</span>
+                            {d.horas && <span className="shrink-0 text-[13px] text-muted">{d.horas}h</span>}
                           </li>
                         ))}
                       </ul>
@@ -285,29 +288,24 @@ export default function CourseDetail({
               </div>
             )}
 
-            {(course.mercado || course.atuacao.length > 0) && (
+            {course.atuacao.length > 0 && (
               <div className="mt-14">
-                <h2 id="mercado" className="t-h3 scroll-mt-32 text-navy-950">
+                <AnimatedText as="h2" id="mercado" variant="titulo" className="t-h3 scroll-mt-32 text-navy-950">
                   Mercado de trabalho
-                </h2>
-                {course.mercado && <p className="t-lead mt-5 text-navy-900">{course.mercado}</p>}
-                {course.atuacao.length > 0 && (
-                  <>
-                    <h3 className="mt-8 text-[13px] font-bold uppercase tracking-wide text-muted">
-                      Onde você pode atuar
-                    </h3>
-                    <div className="mt-4 flex flex-wrap gap-2.5">
-                      {course.atuacao.map((a) => (
-                        <span
-                          key={a}
-                          className="flex h-10 items-center rounded-full bg-tint px-5 text-[14px] font-bold text-navy-950"
-                        >
-                          {a}
-                        </span>
-                      ))}
-                    </div>
-                  </>
-                )}
+                </AnimatedText>
+                <h3 className="mt-5 text-[13px] font-bold uppercase tracking-wide text-muted">
+                  Onde você pode atuar
+                </h3>
+                <div className="mt-4 flex flex-wrap gap-2.5">
+                  {course.atuacao.map((a) => (
+                    <span
+                      key={a}
+                      className="flex h-10 items-center rounded-full bg-tint px-5 text-[14px] font-bold text-navy-950"
+                    >
+                      {a}
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -318,7 +316,7 @@ export default function CourseDetail({
               barra. */}
           <aside
             id="card-matricula"
-            className="hidden h-fit overflow-hidden rounded-[22px] bg-white shadow-[0_18px_50px_rgba(6,21,35,0.28)] lg:sticky lg:top-28 lg:-mt-[400px] lg:block"
+            className="hidden h-fit overflow-hidden rounded-[22px] bg-white shadow-[0_18px_50px_rgba(6,21,35,0.28)] lg:sticky lg:top-28 lg:-mt-[336px] lg:block"
           >
             <div className="relative isolate flex h-[190px] flex-col justify-between overflow-hidden p-4">
               <Image
@@ -377,7 +375,7 @@ export default function CourseDetail({
               </p>
 
               <a
-                href={SITE.whatsapp}
+                href={inscricaoHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-5 flex h-[54px] items-center justify-center gap-3 rounded-full bg-[#FFD600] font-bold uppercase text-black transition-[filter] hover:brightness-95"
@@ -398,10 +396,16 @@ export default function CourseDetail({
         </Container>
       </section>
 
-      {/* ---------- Como ingressar ---------- */}
-      <section id="ingresso" className="section-y scroll-mt-32 bg-surface">
-        <Container>
-          <h2 className="t-h2 text-navy-950">Como ingressar</h2>
+      {/* ---------- Como ingressar ----------
+          A mesma forma orgânica da home: fundo azul claro e a forma num azul
+          um degrau mais escuro. */}
+      <section id="ingresso" className="section-y relative scroll-mt-32 overflow-hidden bg-tint">
+        <BlobDepoimentos fill="#b9d5ef" manterProporcao />
+
+        <Container className="relative z-10">
+          <AnimatedText as="h2" variant="titulo" className="t-h2 text-navy-950">
+            Como ingressar
+          </AnimatedText>
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {passos.map((p, i) => (
               <Reveal key={p.n} delay={i * 90}>
@@ -424,38 +428,12 @@ export default function CourseDetail({
       {/* ---------- FAQ ---------- */}
       <section id="faq" className="section-y scroll-mt-32 bg-white">
         <Container>
-          <h2 className="t-h2 text-navy-950">Dúvidas frequentes</h2>
+          <AnimatedText as="h2" variant="titulo" className="t-h2 text-navy-950">
+            Dúvidas frequentes
+          </AnimatedText>
           <div className="mt-10">
-            <FaqAccordion items={faqs} />
+            <FaqAccordion items={FAQ_CURSOS} />
           </div>
-        </Container>
-      </section>
-
-      {/* ---------- CTA final ---------- */}
-      <section className="bg-navy-950 py-[clamp(3rem,5.5vw,5rem)]">
-        <Container className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
-          <div>
-            <h2 className="t-h2 max-w-2xl text-white">Comece {course.nome} ainda este mês</h2>
-            <p className="t-lead mt-4 max-w-xl text-sky-200">
-              Mensalidade de R$ {money(course.mensalidade)} e o 1º mês por R$ 49,90 enquanto houver
-              vagas.
-            </p>
-          </div>
-          <Link
-            href={inscricaoHref}
-            className="flex h-[58px] shrink-0 items-center gap-3 rounded-full bg-[#FFD600] px-9 font-bold text-black transition-[filter] hover:brightness-95"
-          >
-            Fazer minha inscrição
-            <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden>
-              <path
-                d="M1 8h19M14 1.5 20.5 8 14 14.5"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
         </Container>
       </section>
 
@@ -464,7 +442,9 @@ export default function CourseDetail({
         <section className="section-y bg-white">
           <Container>
             <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
-              <h2 className="t-h2 text-navy-950">Cursos relacionados</h2>
+              <AnimatedText as="h2" variant="titulo" className="t-h2 text-navy-950">
+                Cursos relacionados
+              </AnimatedText>
               <Link
                 href={`/${course.nivelSlug}`}
                 className="text-sm font-bold text-navy-950 underline underline-offset-4 hover:opacity-70"
@@ -481,10 +461,13 @@ export default function CourseDetail({
         </section>
       )}
 
+      {/* ---------- Banner de fechamento ---------- */}
+      <CourseBannerCta href={`/${course.nivelSlug}`} />
+
       {/* ---------- Barra de matrícula ----------
           Entra quando o card lateral sai da tela e acompanha o resto da
           página. O espaçador evita que ela cubra o fim do conteúdo. */}
-      <div className="h-[90px]" aria-hidden />
+      <div className="h-[140px]" aria-hidden />
       <CourseStickyBar
         nome={course.nome}
         nivelNome={course.nivelNome}

@@ -18,6 +18,7 @@ export default function CourseStickyBar({
   mensalidadeDe,
   href,
   watchSelector = "#card-matricula",
+  hideSelector = "footer",
 }: {
   nome: string;
   nivelNome: string;
@@ -26,45 +27,56 @@ export default function CourseStickyBar({
   mensalidadeDe: number;
   href: string;
   watchSelector?: string;
+  /** Ao encostar neste elemento (o rodapé), a barra sai de cena. */
+  hideSelector?: string;
 }) {
   const [visivel, setVisivel] = useState(false);
   const [reais, centavos] = money(mensalidade).split(",");
 
   useEffect(() => {
     const card = document.querySelector(watchSelector);
+    const rodape = document.querySelector(hideSelector);
     let cardNaTela = false;
+    let rodapeNaTela = false;
 
-    const atualizar = () => setVisivel(window.scrollY > 420 && !cardNaTela);
+    const atualizar = () => setVisivel(window.scrollY > 420 && !cardNaTela && !rodapeNaTela);
 
-    const io = card
-      ? new IntersectionObserver(
-          ([entry]) => {
-            cardNaTela = entry.isIntersecting;
-            atualizar();
-          },
-          { threshold: 0 }
-        )
-      : null;
+    const observar = (alvo: Element | null, ao: (visivel: boolean) => void) => {
+      if (!alvo) return null;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          ao(entry.isIntersecting);
+          atualizar();
+        },
+        { threshold: 0 }
+      );
+      obs.observe(alvo);
+      return obs;
+    };
 
-    if (card && io) io.observe(card);
+    const ioCard = observar(card, (v) => (cardNaTela = v));
+    const ioRodape = observar(rodape, (v) => (rodapeNaTela = v));
+
     window.addEventListener("scroll", atualizar, { passive: true });
     atualizar();
 
     return () => {
-      io?.disconnect();
+      ioCard?.disconnect();
+      ioRodape?.disconnect();
       window.removeEventListener("scroll", atualizar);
     };
-  }, [watchSelector]);
+  }, [watchSelector, hideSelector]);
 
   return (
     <div
       aria-hidden={!visivel}
-      className={`fixed bottom-4 left-1/2 z-40 w-[min(1180px,calc(100%-1.5rem))] -translate-x-1/2 transition-all duration-300 ${
+      className={`fixed bottom-0 left-1/2 z-40 w-[min(980px,calc(100%-2rem))] -translate-x-1/2 transition-all duration-300 ${
         visivel ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-8 opacity-0"
       }`}
     >
-      {/* pr extra reserva o canto do botão flutuante do WhatsApp */}
-      <div className="flex items-center gap-4 rounded-[28px] bg-white py-3 pl-5 pr-[76px] shadow-[0_10px_40px_rgba(6,21,35,0.18)] ring-1 ring-navy-950/5 sm:gap-6 sm:py-4 sm:pl-7 xl:pr-7">
+      {/* Encostado no rodapé da tela: cantos arredondados só em cima, base
+          cortada pela borda. O pr extra reserva o canto do botão do WhatsApp. */}
+      <div className="flex items-center gap-4 rounded-t-[32px] bg-white py-7 pl-6 pr-[76px] shadow-[0_10px_40px_rgba(6,21,35,0.18)] ring-1 ring-navy-950/5 sm:gap-8 sm:py-9 sm:pl-9 xl:pr-9">
         <div className="min-w-0 flex-1">
           <span className="hidden items-center gap-2 text-[12px] font-bold text-navy-950 sm:flex">
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-sky-200 text-navy-900">
@@ -109,6 +121,9 @@ export default function CourseStickyBar({
 
         <Link
           href={href}
+          // A matrícula é feita por um consultor no WhatsApp: link externo abre fora.
+          target={href.startsWith("http") ? "_blank" : undefined}
+          rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
           tabIndex={visivel ? undefined : -1}
           className="flex h-[46px] shrink-0 items-center gap-3 rounded-full bg-[#FFD600] px-5 text-[14px] font-bold text-black transition-[filter] hover:brightness-95 sm:h-[54px] sm:px-8 sm:text-[15px]"
         >

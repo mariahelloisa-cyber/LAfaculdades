@@ -1,8 +1,33 @@
 import { cache } from "react";
 import { supabasePublic } from "@/lib/supabase/publicClient";
 
-export type CourseModulo = { titulo: string; disciplinas: string[] };
-export type CourseFaq = { pergunta: string; resposta: string };
+export type CourseDisciplina = { nome: string; horas?: string };
+export type CourseModulo = { titulo: string; disciplinas: CourseDisciplina[] };
+
+/* A grade vinha (e ainda pode vir, em cursos antigos) com as disciplinas como
+   texto puro. Aqui tudo vira { nome, horas } para o resto do site nao precisar
+   saber disso. */
+export function normalizeGrade(valor: unknown): CourseModulo[] {
+  if (!Array.isArray(valor)) return [];
+
+  return valor.flatMap((modulo) => {
+    if (!modulo || typeof modulo !== "object") return [];
+    const { titulo, disciplinas } = modulo as { titulo?: unknown; disciplinas?: unknown };
+    if (typeof titulo !== "string" || !titulo.trim()) return [];
+
+    const itens = (Array.isArray(disciplinas) ? disciplinas : []).flatMap((d): CourseDisciplina[] => {
+      if (typeof d === "string") return d.trim() ? [{ nome: d.trim() }] : [];
+      if (!d || typeof d !== "object") return [];
+      const { nome, horas } = d as { nome?: unknown; horas?: unknown };
+      if (typeof nome !== "string" || !nome.trim()) return [];
+      const h =
+        typeof horas === "string" ? horas.trim() : typeof horas === "number" ? String(horas) : "";
+      return [h ? { nome: nome.trim(), horas: h } : { nome: nome.trim() }];
+    });
+
+    return itens.length > 0 ? [{ titulo: titulo.trim(), disciplinas: itens }] : [];
+  });
+}
 
 export type Course = {
   id: string;
@@ -22,10 +47,8 @@ export type Course = {
   destaqueHome: boolean;
   /* Conteúdo da página do curso — opcional, cada bloco some quando vazio. */
   paraQuem: string[];
-  mercado: string;
   atuacao: string[];
   grade: CourseModulo[];
-  faq: CourseFaq[];
 };
 
 export type CourseNivel = {
@@ -53,10 +76,8 @@ type CourseRow = {
   destaques: string[];
   destaque_home: boolean;
   para_quem: string[] | null;
-  mercado: string | null;
   atuacao: string[] | null;
-  grade: CourseModulo[] | null;
-  faq: CourseFaq[] | null;
+  grade: unknown;
   course_niveis: { slug: string; nome: string } | null;
 };
 
@@ -74,7 +95,7 @@ const COURSE_FIELDS_BASE =
   "id, slug, nome, area, modalidade, duracao, mensalidade, mensalidade_de, capa_url, resumo, descricao, destaques, destaque_home";
 
 /* Campos da página "Saiba mais" — adicionados pelo schema.sql. */
-const COURSE_FIELDS = `${COURSE_FIELDS_BASE}, para_quem, mercado, atuacao, grade, faq`;
+const COURSE_FIELDS = `${COURSE_FIELDS_BASE}, para_quem, atuacao, grade`;
 
 type CourseQueryResult = {
   data: unknown;
@@ -110,10 +131,8 @@ function mapCourse(row: CourseRow): Course {
     destaques: row.destaques,
     destaqueHome: row.destaque_home,
     paraQuem: row.para_quem ?? [],
-    mercado: row.mercado ?? "",
     atuacao: row.atuacao ?? [],
-    grade: Array.isArray(row.grade) ? row.grade : [],
-    faq: Array.isArray(row.faq) ? row.faq : [],
+    grade: normalizeGrade(row.grade),
   };
 }
 

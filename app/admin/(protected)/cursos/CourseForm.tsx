@@ -2,28 +2,15 @@
 
 import { useActionState, useState } from "react";
 import Link from "next/link";
-import { slugify } from "@/lib/slugify";
 import { AREAS } from "@/lib/areas";
 import UploadField from "../UploadField";
-import type { CourseFaq, CourseModulo, CourseNivel } from "@/lib/data/courses";
+import type { CourseDisciplina, CourseModulo, CourseNivel } from "@/lib/data/courses";
 import type { CourseFormState } from "./actions";
-
-const MODALIDADES_SUGERIDAS = ["EAD", "Semipresencial", "Presencial"];
-
-/* A grade é editada como texto: "# 1º semestre" abre um módulo e as linhas
-   seguintes são as disciplinas dele. */
-function gradeToText(grade: CourseModulo[] = []) {
-  return grade
-    .map((m) => [`# ${m.titulo}`, ...m.disciplinas].join("\n"))
-    .join("\n\n");
-}
 
 type CourseFormValues = {
   nome: string;
-  slug: string;
   nivelId: string;
   area: string;
-  modalidade: string;
   duracao: string;
   mensalidade: number;
   mensalidadeDe: number;
@@ -33,10 +20,8 @@ type CourseFormValues = {
   destaques: string[];
   destaqueHome: boolean;
   paraQuem: string[];
-  mercado: string;
   atuacao: string[];
   grade: CourseModulo[];
-  faq: CourseFaq[];
 };
 
 const inputClass =
@@ -54,8 +39,6 @@ export default function CourseForm({
   submitLabel: string;
 }) {
   const [state, formAction, pending] = useActionState(action, undefined);
-  const [slug, setSlug] = useState(defaultValues?.slug ?? "");
-  const [slugTouched, setSlugTouched] = useState(Boolean(defaultValues?.slug));
   const [uploading, setUploading] = useState(false);
 
   // Se um curso antigo tiver uma área fora da lista (digitada errada antes),
@@ -65,41 +48,29 @@ export default function CourseForm({
   );
 
   return (
-    <form action={formAction} className="max-w-2xl space-y-5">
-      <div>
-        <label htmlFor="nome" className="text-sm font-semibold text-navy-950">
-          Nome do curso
-        </label>
-        <input
-          id="nome"
-          name="nome"
-          required
-          defaultValue={defaultValues?.nome}
-          onChange={(e) => {
-            if (!slugTouched) setSlug(slugify(e.target.value));
-          }}
-          className={inputClass}
-        />
-      </div>
+    <form action={formAction} className="space-y-5">
+      <div className="grid gap-x-6 gap-y-5 lg:grid-cols-2">
+        <div>
+          <label htmlFor="nome" className="text-sm font-semibold text-navy-950">
+            Nome do curso
+          </label>
+          <input id="nome" name="nome" required defaultValue={defaultValues?.nome} className={inputClass} />
+        </div>
 
-      <div>
-        <label htmlFor="slug" className="text-sm font-semibold text-navy-950">
-          Slug (URL)
-        </label>
-        <input
-          id="slug"
-          name="slug"
-          required
-          value={slug}
-          onChange={(e) => {
-            setSlug(e.target.value);
-            setSlugTouched(true);
-          }}
-          className={inputClass}
-        />
-      </div>
+        <div>
+          <label htmlFor="duracao" className="text-sm font-semibold text-navy-950">
+            Duração
+          </label>
+          <input
+            id="duracao"
+            name="duracao"
+            required
+            placeholder="8 semestres"
+            defaultValue={defaultValues?.duracao}
+            className={inputClass}
+          />
+        </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="nivel_id" className="text-sm font-semibold text-navy-950">
             Nível
@@ -146,39 +117,6 @@ export default function CourseForm({
         </div>
 
         <div>
-          <label htmlFor="duracao" className="text-sm font-semibold text-navy-950">
-            Duração
-          </label>
-          <input
-            id="duracao"
-            name="duracao"
-            required
-            placeholder="8 semestres"
-            defaultValue={defaultValues?.duracao}
-            className={inputClass}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="modalidade" className="text-sm font-semibold text-navy-950">
-            Modalidade principal
-          </label>
-          <input
-            id="modalidade"
-            name="modalidade"
-            list="modalidades-sugeridas"
-            required
-            defaultValue={defaultValues?.modalidade}
-            className={inputClass}
-          />
-          <datalist id="modalidades-sugeridas">
-            {MODALIDADES_SUGERIDAS.map((m) => (
-              <option key={m} value={m} />
-            ))}
-          </datalist>
-        </div>
-
-        <div>
           <label htmlFor="mensalidade" className="text-sm font-semibold text-navy-950">
             Mensalidade (R$)
           </label>
@@ -204,48 +142,48 @@ export default function CourseForm({
             className={inputClass}
           />
         </div>
-      </div>
 
-      <div>
-        <label htmlFor="resumo" className="text-sm font-semibold text-navy-950">
-          Resumo (aparece no card e no hero)
-        </label>
-        <textarea
-          id="resumo"
-          name="resumo"
-          required
-          rows={2}
-          defaultValue={defaultValues?.resumo}
-          className={inputClass}
-        />
-      </div>
+        <div>
+          <label htmlFor="resumo" className="text-sm font-semibold text-navy-950">
+            Resumo (aparece no card e no hero)
+          </label>
+          <textarea
+            id="resumo"
+            name="resumo"
+            required
+            rows={5}
+            defaultValue={defaultValues?.resumo}
+            className={inputClass}
+          />
+        </div>
 
-      <div>
-        <label htmlFor="descricao" className="text-sm font-semibold text-navy-950">
-          Descrição completa
-        </label>
-        <textarea
-          id="descricao"
-          name="descricao"
-          required
-          rows={5}
-          defaultValue={defaultValues?.descricao}
-          className={inputClass}
-        />
-      </div>
+        <div>
+          <label htmlFor="descricao" className="text-sm font-semibold text-navy-950">
+            Descrição completa
+          </label>
+          <textarea
+            id="descricao"
+            name="descricao"
+            required
+            rows={5}
+            defaultValue={defaultValues?.descricao}
+            className={inputClass}
+          />
+        </div>
 
-      <div>
-        <label htmlFor="destaques" className="text-sm font-semibold text-navy-950">
-          Destaques
-        </label>
-        <p className="mt-0.5 text-xs text-muted">Um por linha.</p>
-        <textarea
-          id="destaques"
-          name="destaques"
-          rows={4}
-          defaultValue={defaultValues?.destaques.join("\n")}
-          className={inputClass}
-        />
+        <div className="lg:col-span-2">
+          <label htmlFor="destaques" className="text-sm font-semibold text-navy-950">
+            Destaques
+          </label>
+          <p className="mt-0.5 text-xs text-muted">Um por linha.</p>
+          <textarea
+            id="destaques"
+            name="destaques"
+            rows={3}
+            defaultValue={defaultValues?.destaques.join("\n")}
+            className={inputClass}
+          />
+        </div>
       </div>
 
       {/* ---- Conteúdo da página "Saiba mais" do curso ---- */}
@@ -256,66 +194,37 @@ export default function CourseForm({
         </p>
       </div>
 
-      <div>
-        <label htmlFor="para_quem" className="text-sm font-semibold text-navy-950">
-          Para quem é este curso
-        </label>
-        <p className="mt-0.5 text-xs text-muted">Um perfil por linha.</p>
-        <textarea
-          id="para_quem"
-          name="para_quem"
-          rows={4}
-          defaultValue={defaultValues?.paraQuem.join("\n")}
-          className={inputClass}
-        />
+      <div className="grid gap-x-6 gap-y-5 lg:grid-cols-2">
+        <div>
+          <label htmlFor="para_quem" className="text-sm font-semibold text-navy-950">
+            Para quem é este curso
+          </label>
+          <p className="mt-0.5 text-xs text-muted">Um perfil por linha.</p>
+          <textarea
+            id="para_quem"
+            name="para_quem"
+            rows={4}
+            defaultValue={defaultValues?.paraQuem.join("\n")}
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="atuacao" className="text-sm font-semibold text-navy-950">
+            Onde o aluno pode atuar
+          </label>
+          <p className="mt-0.5 text-xs text-muted">Um item por linha. Viram etiquetas na página.</p>
+          <textarea
+            id="atuacao"
+            name="atuacao"
+            rows={4}
+            defaultValue={defaultValues?.atuacao.join("\n")}
+            className={inputClass}
+          />
+        </div>
       </div>
 
-      <div>
-        <label htmlFor="grade" className="text-sm font-semibold text-navy-950">
-          Grade curricular
-        </label>
-        <p className="mt-0.5 text-xs text-muted">
-          Comece a linha com <b>#</b> para abrir um semestre/módulo (ex.: “# 1º semestre”). As linhas
-          seguintes são as disciplinas dele.
-        </p>
-        <textarea
-          id="grade"
-          name="grade"
-          rows={10}
-          placeholder={"# 1º semestre\nIntrodução à Administração\nMatemática Financeira\n\n# 2º semestre\nContabilidade Geral"}
-          defaultValue={gradeToText(defaultValues?.grade)}
-          className={`${inputClass} font-mono text-[13px]`}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="mercado" className="text-sm font-semibold text-navy-950">
-          Mercado de trabalho
-        </label>
-        <textarea
-          id="mercado"
-          name="mercado"
-          rows={4}
-          defaultValue={defaultValues?.mercado}
-          className={inputClass}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="atuacao" className="text-sm font-semibold text-navy-950">
-          Onde o aluno pode atuar
-        </label>
-        <p className="mt-0.5 text-xs text-muted">Um item por linha. Viram etiquetas na página.</p>
-        <textarea
-          id="atuacao"
-          name="atuacao"
-          rows={4}
-          defaultValue={defaultValues?.atuacao.join("\n")}
-          className={inputClass}
-        />
-      </div>
-
-      <FaqFields defaultValue={defaultValues?.faq ?? []} />
+      <GradeFields defaultValue={defaultValues?.grade ?? []} />
 
       <UploadField
         name="capa_url"
@@ -360,55 +269,107 @@ export default function CourseForm({
   );
 }
 
-/* Perguntas e respostas do curso — pares repetidos no formulário, lidos no
-   server action com formData.getAll("faq_pergunta" / "faq_resposta"). */
-function FaqFields({ defaultValue }: { defaultValue: CourseFaq[] }) {
-  const [itens, setItens] = useState<CourseFaq[]>(defaultValue);
+/* Grade curricular: semestres e disciplinas montados na tela. O estado inteiro
+   vai para o server action num campo escondido em JSON. */
+function GradeFields({ defaultValue }: { defaultValue: CourseModulo[] }) {
+  const [modulos, setModulos] = useState<CourseModulo[]>(defaultValue);
+
+  function atualizar(i: number, muda: (m: CourseModulo) => CourseModulo) {
+    setModulos(modulos.map((m, idx) => (idx === i ? muda(m) : m)));
+  }
+
+  function atualizarDisciplina(i: number, j: number, campo: keyof CourseDisciplina, valor: string) {
+    atualizar(i, (m) => ({
+      ...m,
+      disciplinas: m.disciplinas.map((d, idx) => (idx === j ? { ...d, [campo]: valor } : d)),
+    }));
+  }
 
   return (
     <div>
-      <span className="text-sm font-semibold text-navy-950">Dúvidas frequentes do curso</span>
-      <p className="mt-0.5 text-xs text-muted">
-        Sem nenhuma pergunta aqui, a página mostra as dúvidas gerais da faculdade.
-      </p>
+      <input type="hidden" name="grade" value={JSON.stringify(modulos)} />
 
-      <div className="mt-3 space-y-3">
-        {itens.map((item, i) => (
-          <div key={i} className="rounded-xl bg-white p-4 ring-1 ring-navy-950/10">
-            <div className="flex items-start gap-3">
-              <input
-                name="faq_pergunta"
-                placeholder="Pergunta"
-                defaultValue={item.pergunta}
-                className={`${inputClass} mt-0`}
-              />
+      <div className="flex items-center justify-between gap-4">
+        <span className="text-xs font-bold uppercase tracking-wide text-navy-950/70">
+          Grade curricular
+        </span>
+        <button
+          type="button"
+          onClick={() => setModulos([...modulos, { titulo: "", disciplinas: [{ nome: "" }] }])}
+          className="rounded-lg bg-accent/10 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-accent transition-colors hover:bg-accent hover:text-white"
+        >
+          + Semestre
+        </button>
+      </div>
+
+      <div className="mt-3 space-y-4">
+        {modulos.map((modulo, i) => (
+          <div key={i} className="rounded-xl border border-navy-950/10 bg-surface p-4">
+            <div className="flex items-center gap-3">
+              <div className="min-w-0 flex-1">
+                <input
+                  placeholder="1º Semestre"
+                  value={modulo.titulo}
+                  onChange={(e) => atualizar(i, (m) => ({ ...m, titulo: e.target.value }))}
+                  className={`${inputClass} mt-0 bg-white font-bold`}
+                />
+              </div>
               <button
                 type="button"
-                onClick={() => setItens(itens.filter((_, idx) => idx !== i))}
-                aria-label="Remover pergunta"
-                className="mt-1 rounded-lg px-2.5 py-2 text-sm font-bold text-rose-dark hover:bg-surface"
+                onClick={() => setModulos(modulos.filter((_, idx) => idx !== i))}
+                aria-label="Remover semestre"
+                className="shrink-0 rounded-lg px-2 py-1.5 text-base font-bold text-rose-dark transition-colors hover:bg-white"
               >
-                Remover
+                ✕
               </button>
             </div>
-            <textarea
-              name="faq_resposta"
-              rows={3}
-              placeholder="Resposta"
-              defaultValue={item.resposta}
-              className={inputClass}
-            />
+
+            <div className="mt-2 space-y-2">
+              {modulo.disciplinas.map((disciplina, j) => (
+                <div key={j} className="flex items-center gap-3">
+                  <div className="min-w-0 flex-1">
+                    <input
+                      placeholder="Nome da disciplina"
+                      value={disciplina.nome}
+                      onChange={(e) => atualizarDisciplina(i, j, "nome", e.target.value)}
+                      className={`${inputClass} mt-0 bg-white`}
+                    />
+                  </div>
+                  <div className="w-[92px] shrink-0">
+                    <input
+                      placeholder="Horas"
+                      value={disciplina.horas ?? ""}
+                      onChange={(e) => atualizarDisciplina(i, j, "horas", e.target.value)}
+                      className={`${inputClass} mt-0 bg-white`}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      atualizar(i, (m) => ({
+                        ...m,
+                        disciplinas: m.disciplinas.filter((_, idx) => idx !== j),
+                      }))
+                    }
+                    aria-label="Remover disciplina"
+                    className="shrink-0 rounded-lg px-2 py-1.5 text-base font-bold text-rose-dark transition-colors hover:bg-white"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => atualizar(i, (m) => ({ ...m, disciplinas: [...m.disciplinas, { nome: "" }] }))}
+              className="mt-3 text-xs font-bold uppercase tracking-wide text-accent transition-colors hover:text-accent-hover"
+            >
+              + Disciplina
+            </button>
           </div>
         ))}
       </div>
-
-      <button
-        type="button"
-        onClick={() => setItens([...itens, { pergunta: "", resposta: "" }])}
-        className="mt-3 rounded-full border-2 border-navy-950/15 px-5 py-2 text-sm font-bold text-navy-950 transition-colors hover:bg-white"
-      >
-        + Adicionar pergunta
-      </button>
     </div>
   );
 }

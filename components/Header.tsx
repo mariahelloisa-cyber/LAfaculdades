@@ -8,17 +8,22 @@ import type { CourseNivel } from "@/lib/data/courses";
 
 const mainLinks = [
   { label: "Por que a LA?", href: "/institucional" },
-  { label: "Vestibular", href: "/vestibular" },
   { label: "Financiamento", href: "/financiamento-la-bank" },
   { label: "Blog", href: "/blog" },
 ];
 
-export default function Header({ courseNiveis }: { courseNiveis: CourseNivel[] }) {
-  const courseLinks = courseNiveis.map((n) => ({ label: n.nome, href: `/${n.slug}` }));
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [coursesOpen, setCoursesOpen] = useState(false);
-  /* Realce do dropdown: guarda a posição/altura do item sob o cursor, medidas
-     do próprio DOM, para a pílula deslizar de uma opção para a outra. */
+const ingressarLinks = [
+  { label: "Matrícula", href: "/matricula" },
+  { label: "Enem", href: "/enem" },
+  { label: "Vestibular", href: "/vestibular" },
+];
+
+type NavLink = { label: string; href: string };
+
+/* Dropdown de navegação com realce deslizante: usado tanto para "Cursos"
+   quanto para "Ingressar", cada um com seu próprio estado de hover/pílula. */
+function NavDropdown({ label, links }: { label: string; links: NavLink[] }) {
+  const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const labelsRef = useRef<(HTMLSpanElement | null)[]>([]);
   const [pill, setPill] = useState<{
@@ -27,6 +32,121 @@ export default function Header({ courseNiveis }: { courseNiveis: CourseNivel[] }
     width: number;
     height: number;
   } | null>(null);
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => {
+        setOpen(false);
+        setPill(null);
+      }}
+    >
+      <button
+        aria-expanded={open}
+        className={`flex items-center gap-1.5 py-5 text-[15px] font-bold transition-colors duration-200 ${
+          open ? "text-accent" : "text-white hover:text-accent"
+        }`}
+      >
+        {label}
+        <svg
+          width="11"
+          height="7"
+          viewBox="0 0 10 6"
+          fill="none"
+          className={`transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            open ? "rotate-180" : ""
+          }`}
+          aria-hidden
+        >
+          <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+      </button>
+
+      {/* O pt-1.5 é a ponte de hover: o cursor nunca atravessa um vão
+          entre o botão e o painel, então o menu não pisca no caminho. */}
+      <div
+        className="absolute left-1/2 top-full -translate-x-1/2 pt-1.5"
+        style={{
+          visibility: open ? "visible" : "hidden",
+          /* A visibilidade só comuta no fim do fechamento, para o fade
+             de saída não ser cortado. */
+          transition: open ? "visibility 0s" : "visibility 0s 180ms",
+        }}
+      >
+        {/* A animação fica no painel, e não no wrapper, para o translate
+            da abertura não brigar com o -translate-x-1/2 que centraliza. */}
+        <div
+          ref={panelRef}
+          onMouseLeave={() => setPill(null)}
+          className={`relative w-[186px] rounded-2xl border border-navy-950/5 bg-white p-2 text-navy-950 shadow-[0_10px_30px_rgba(6,21,35,0.13)] ${
+            open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-[5px] opacity-0"
+          }`}
+          style={{
+            /* Fecha um pouco mais rápido do que abre. */
+            transition: open
+              ? "opacity 200ms cubic-bezier(0.22,1,0.36,1), transform 200ms cubic-bezier(0.22,1,0.36,1)"
+              : "opacity 180ms cubic-bezier(0.22,1,0.36,1), transform 180ms cubic-bezier(0.22,1,0.36,1)",
+          }}
+        >
+          {/* Camada única de realce: desliza e se redimensiona para
+              abraçar exatamente a palavra sob o cursor. */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute left-0 top-0 rounded-full bg-tint"
+            style={{
+              width: pill?.width ?? 0,
+              height: pill?.height ?? 0,
+              opacity: pill ? 1 : 0,
+              transform: `translate(${pill?.left ?? 0}px, ${pill?.top ?? 0}px)`,
+              transition:
+                "transform 200ms cubic-bezier(0.22,1,0.36,1), width 200ms cubic-bezier(0.22,1,0.36,1), height 200ms cubic-bezier(0.22,1,0.36,1), opacity 160ms ease",
+            }}
+          />
+
+          {/* A área de hover é o <a> inteiro; a pílula acompanha só o
+              <span>, que é quem tem a largura do texto. */}
+          {links.map((l, i) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              onMouseEnter={() => {
+                const labelEl = labelsRef.current[i];
+                const painel = panelRef.current;
+                if (!labelEl || !painel) return;
+                const el = labelEl.getBoundingClientRect();
+                const p = painel.getBoundingClientRect();
+                /* getBoundingClientRect parte da borda do painel, mas o
+                   realce é posicionado a partir do padding box: descontar
+                   a borda mantém os dois exatamente alinhados. */
+                setPill({
+                  left: el.left - p.left - painel.clientLeft,
+                  top: el.top - p.top - painel.clientTop,
+                  width: el.width,
+                  height: el.height,
+                });
+              }}
+              className="block px-1 py-1"
+            >
+              <span
+                ref={(node) => {
+                  labelsRef.current[i] = node;
+                }}
+                className="relative inline-block rounded-full px-3 py-1.5 text-[14px] font-bold"
+              >
+                {l.label}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Header({ courseNiveis }: { courseNiveis: CourseNivel[] }) {
+  const courseLinks = courseNiveis.map((n) => ({ label: n.nome, href: `/${n.slug}` }));
+  const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -75,113 +195,8 @@ export default function Header({ courseNiveis }: { courseNiveis: CourseNivel[] }
 
           {/* Desktop nav */}
           <nav className="hidden flex-1 items-center gap-8 lg:flex">
-            <div
-              className="relative"
-              onMouseEnter={() => setCoursesOpen(true)}
-              onMouseLeave={() => {
-                setCoursesOpen(false);
-                setPill(null);
-              }}
-            >
-              <button
-                aria-expanded={coursesOpen}
-                className={`flex items-center gap-1.5 py-5 text-[15px] font-bold transition-colors duration-200 ${
-                  coursesOpen ? "text-accent" : "text-white hover:text-accent"
-                }`}
-              >
-                Cursos
-                <svg
-                  width="11"
-                  height="7"
-                  viewBox="0 0 10 6"
-                  fill="none"
-                  className={`transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                    coursesOpen ? "rotate-180" : ""
-                  }`}
-                  aria-hidden
-                >
-                  <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                </svg>
-              </button>
-
-              {/* O pt-1.5 é a ponte de hover: o cursor nunca atravessa um vão
-                  entre o botão e o painel, então o menu não pisca no caminho. */}
-              <div
-                className="absolute left-1/2 top-full -translate-x-1/2 pt-1.5"
-                style={{
-                  visibility: coursesOpen ? "visible" : "hidden",
-                  /* A visibilidade só comuta no fim do fechamento, para o fade
-                     de saída não ser cortado. */
-                  transition: coursesOpen ? "visibility 0s" : "visibility 0s 180ms",
-                }}
-              >
-                {/* A animação fica no painel, e não no wrapper, para o translate
-                    da abertura não brigar com o -translate-x-1/2 que centraliza. */}
-                <div
-                  ref={panelRef}
-                  onMouseLeave={() => setPill(null)}
-                  className={`relative w-[186px] rounded-2xl border border-navy-950/5 bg-white p-2 text-navy-950 shadow-[0_10px_30px_rgba(6,21,35,0.13)] ${
-                    coursesOpen ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-[5px] opacity-0"
-                  }`}
-                  style={{
-                    /* Fecha um pouco mais rápido do que abre. */
-                    transition: coursesOpen
-                      ? "opacity 200ms cubic-bezier(0.22,1,0.36,1), transform 200ms cubic-bezier(0.22,1,0.36,1)"
-                      : "opacity 180ms cubic-bezier(0.22,1,0.36,1), transform 180ms cubic-bezier(0.22,1,0.36,1)",
-                  }}
-                >
-                  {/* Camada única de realce: desliza e se redimensiona para
-                      abraçar exatamente a palavra sob o cursor. */}
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute left-0 top-0 rounded-full bg-tint"
-                    style={{
-                      width: pill?.width ?? 0,
-                      height: pill?.height ?? 0,
-                      opacity: pill ? 1 : 0,
-                      transform: `translate(${pill?.left ?? 0}px, ${pill?.top ?? 0}px)`,
-                      transition:
-                        "transform 200ms cubic-bezier(0.22,1,0.36,1), width 200ms cubic-bezier(0.22,1,0.36,1), height 200ms cubic-bezier(0.22,1,0.36,1), opacity 160ms ease",
-                    }}
-                  />
-
-                  {/* A área de hover é o <a> inteiro; a pílula acompanha só o
-                      <span>, que é quem tem a largura do texto. */}
-                  {courseLinks.map((c, i) => (
-                    <Link
-                      key={c.href}
-                      href={c.href}
-                      onMouseEnter={() => {
-                        const label = labelsRef.current[i];
-                        const painel = panelRef.current;
-                        if (!label || !painel) return;
-                        const l = label.getBoundingClientRect();
-                        const p = painel.getBoundingClientRect();
-                        /* getBoundingClientRect parte da borda do painel, mas o
-                           realce é posicionado a partir do padding box: descontar
-                           a borda mantém os dois exatamente alinhados. */
-                        setPill({
-                          left: l.left - p.left - painel.clientLeft,
-                          top: l.top - p.top - painel.clientTop,
-                          width: l.width,
-                          height: l.height,
-                        });
-                      }}
-                      className="block px-1 py-1"
-                    >
-                      <span
-                        ref={(el) => {
-                          labelsRef.current[i] = el;
-                        }}
-                        className="relative inline-block rounded-full px-3 py-1.5 text-[14px] font-bold"
-                      >
-                        {c.label}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <NavDropdown label="Cursos" links={courseLinks} />
+            <NavDropdown label="Ingressar" links={ingressarLinks} />
 
             {mainLinks.map((l) => (
               <Link key={l.href} href={l.href} className="py-5 text-[15px] font-bold hover:text-accent">
@@ -244,6 +259,17 @@ export default function Header({ courseNiveis }: { courseNiveis: CourseNivel[] }
                 className="border-b border-white/10 py-4 text-lg font-bold"
               >
                 {c.label}
+              </Link>
+            ))}
+            <span className="t-label mb-1 mt-4 text-sky-400 uppercase">Ingressar</span>
+            {ingressarLinks.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={() => setMenuOpen(false)}
+                className="border-b border-white/10 py-4 text-lg font-bold"
+              >
+                {l.label}
               </Link>
             ))}
             {mainLinks.map((l) => (

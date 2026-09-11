@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Container from "@/components/Container";
-import PageHero from "@/components/PageHero";
+import ContatoHero from "@/components/ContatoHero";
 import ContatoForm from "@/components/ContatoForm";
 import { SITE } from "@/lib/constants";
 
@@ -12,12 +12,7 @@ export const metadata: Metadata = {
 export default function ContatoPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Contato"
-        title="Fale com a gente"
-        description="Tire suas dúvidas sobre cursos, vestibular ou financiamento. Nossa equipe responde rápido."
-        art="beneficio-1"
-      />
+      <ContatoHero />
 
       <section className="section-y bg-white">
         <Container className="grid gap-12 lg:grid-cols-2">
@@ -48,7 +43,7 @@ export default function ContatoPage() {
                 <dt className="font-bold text-navy-950">Instagram</dt>
                 <dd className="mt-1">
                   <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" className="font-semibold text-sky-600 underline underline-offset-4 hover:text-accent">
-                    @laFaculdade
+                    @la.faculdadesoficial
                   </a>
                 </dd>
               </div>
@@ -61,7 +56,7 @@ export default function ContatoPage() {
             <div className="mt-10 overflow-hidden rounded-2xl">
               <iframe
                 title="Localização LA Faculdade"
-                src="https://www.google.com/maps?q=Rua+Formosa,+75,+S%C3%A3o+Paulo&output=embed"
+                src="https://www.google.com/maps?q=R.+Marqu%C3%AAs+de+Olinda,+679+-+Vila+Dom+Pedro+I,+S%C3%A3o+Paulo+-+SP,+04277-000&output=embed"
                 width="100%"
                 height="260"
                 style={{ border: 0 }}

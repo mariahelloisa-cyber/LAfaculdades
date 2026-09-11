@@ -29,7 +29,9 @@ export default function AdminSidebar({ email }: { email: string }) {
   }
 
   return (
-    <aside className="flex w-64 shrink-0 flex-col bg-navy-950 text-white">
+    /* Gruda na tela: o painel rola, o menu fica. O que não couber na altura
+       da janela rola dentro da própria barra. */
+    <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col self-start overflow-y-auto bg-navy-950 text-white">
       <div className="flex items-center gap-3 px-5 py-6">
         <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
           <Image src="/images/logo-mark.png" alt="" width={44} height={44} className="h-7 w-7 object-contain" />

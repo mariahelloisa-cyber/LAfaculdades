@@ -46,7 +46,7 @@ const ingresso: Ingresso[] = [
     titulo: "Use sua Nota do ENEM e ganhe desconto",
     topicos: ["Use a nota de qualquer edição anterior.", "Pule a prova inteira."],
     cta: "Ver como funciona",
-    href: "/vestibular",
+    href: "/enem",
     card: "bg-accent",
     titleColor: "text-white",
     bodyColor: "text-white/85",

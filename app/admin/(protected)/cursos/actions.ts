@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { slugify } from "@/lib/slugify";
+import { normalizeGrade } from "@/lib/data/courses";
 
 export type CourseFormState = { error?: string } | undefined;
 
@@ -14,35 +15,14 @@ function linhas(valor: FormDataEntryValue | null): string[] {
     .filter(Boolean);
 }
 
-/* Grade curricular: linhas iniciadas por "#" abrem um módulo (ex.: "# 1º
-   semestre") e as linhas seguintes são as disciplinas dele. Disciplinas
-   soltas antes do primeiro "#" caem num módulo único "Disciplinas". */
+/* Grade curricular: o formulario manda a grade inteira como JSON no campo
+   escondido "grade" (semestres -> disciplinas com nome e horas). */
 function parseGrade(valor: FormDataEntryValue | null) {
-  const modulos: { titulo: string; disciplinas: string[] }[] = [];
-
-  for (const linha of linhas(valor)) {
-    if (linha.startsWith("#")) {
-      modulos.push({ titulo: linha.replace(/^#+\s*/, ""), disciplinas: [] });
-      continue;
-    }
-    if (modulos.length === 0) modulos.push({ titulo: "Disciplinas", disciplinas: [] });
-    modulos[modulos.length - 1].disciplinas.push(linha);
+  try {
+    return normalizeGrade(JSON.parse(String(valor ?? "[]")));
+  } catch {
+    return [];
   }
-
-  return modulos.filter((m) => m.titulo && m.disciplinas.length > 0);
-}
-
-/* FAQ do curso: pares pergunta/resposta repetidos no formulário. */
-function parseFaq(formData: FormData) {
-  const perguntas = formData.getAll("faq_pergunta").map(String);
-  const respostas = formData.getAll("faq_resposta").map(String);
-
-  return perguntas
-    .map((pergunta, i) => ({
-      pergunta: pergunta.trim(),
-      resposta: String(respostas[i] ?? "").trim(),
-    }))
-    .filter((f) => f.pergunta && f.resposta);
 }
 
 async function requireUser() {
@@ -56,10 +36,8 @@ async function requireUser() {
 
 function parseForm(formData: FormData) {
   const nome = String(formData.get("nome") ?? "").trim();
-  const slugRaw = String(formData.get("slug") ?? "").trim();
   const nivel_id = String(formData.get("nivel_id") ?? "").trim();
   const area = String(formData.get("area") ?? "").trim();
-  const modalidade = String(formData.get("modalidade") ?? "").trim();
   const duracao = String(formData.get("duracao") ?? "").trim();
   const resumo = String(formData.get("resumo") ?? "").trim();
   const descricao = String(formData.get("descricao") ?? "").trim();
@@ -71,16 +49,12 @@ function parseForm(formData: FormData) {
   const destaques = linhas(formData.get("destaques"));
   const para_quem = linhas(formData.get("para_quem"));
   const atuacao = linhas(formData.get("atuacao"));
-  const mercado = String(formData.get("mercado") ?? "").trim();
   const grade = parseGrade(formData.get("grade"));
-  const faq = parseFaq(formData);
 
   return {
     nome,
-    slug: slugify(slugRaw || nome),
     nivel_id,
     area,
-    modalidade,
     duracao,
     mensalidade,
     mensalidade_de,
@@ -89,10 +63,8 @@ function parseForm(formData: FormData) {
     destaques,
     destaque_home,
     para_quem,
-    mercado,
     atuacao,
     grade,
-    faq,
   };
 }
 
@@ -100,7 +72,6 @@ function validate(course: ReturnType<typeof parseForm>): string | null {
   if (!course.nome) return "Informe o nome do curso.";
   if (!course.nivel_id) return "Selecione a categoria do curso.";
   if (!course.area) return "Selecione a área do curso.";
-  if (!course.modalidade) return "Informe a modalidade.";
   if (!course.duracao) return "Informe a duração.";
   if (!course.resumo) return "Informe o resumo.";
   if (!course.descricao) return "Informe a descrição.";
@@ -118,8 +89,14 @@ export async function createCourse(
   const erro = validate(course);
   if (erro) return { error: erro };
 
+  /* Slug e modalidade saíram do formulário: o slug vem do nome e a modalidade
+     nasce como EAD. Na edição nenhum dos dois é tocado, para não trocar a URL
+     de um curso já publicado. O FAQ é único para todos os cursos (lib/faq.ts). */
   const { error } = await supabase.from("courses").insert({
     ...course,
+    slug: slugify(course.nome),
+    modalidade: "EAD",
+    mercado: "",
     capa_url: String(formData.get("capa_url") ?? ""),
   });
 

@@ -256,3 +256,51 @@ body {
     animation-delay: var(--delay, 0ms);
   }
 }
+
+/* ---- Slider estilo "simulador" (nota do ENEM, faixas de valor) ----
+   A parte percorrida é pintada pelo gradiente do próprio elemento: --fill
+   vem inline, do valor atual, e os dois pseudo-elementos só desenham o
+   thumb por cima. */
+.value-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--color-accent) 0%,
+    var(--color-accent) var(--fill, 0%),
+    #dde5ee var(--fill, 0%),
+    #dde5ee 100%
+  );
+  outline: none;
+  margin: 0;
+}
+.value-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 3px solid #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(23, 162, 224, 0.45);
+}
+.value-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 3px solid #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(23, 162, 224, 0.45);
+}
+/* No Firefox o track cobriria o gradiente do elemento — deixá-lo
+   transparente mantém o mesmo preenchimento dos demais navegadores. */
+.value-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: transparent;
+}

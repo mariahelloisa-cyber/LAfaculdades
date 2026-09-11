@@ -3,13 +3,12 @@ export const SITE = {
   slogan: "Educação acessível e de qualidade para todos.",
   emec: "18263",
   cnpj: "42.935.217/0001-33",
-  address: "Rua Formosa, 75 - São Paulo/SP - CEP 01049-000",
+  address: "R. Marquês de Olinda, 679 - Vila Dom Pedro I, São Paulo/SP - CEP 04277-000",
   email: "diretoria@laeducacao.com.br",
-  instagram: "https://www.instagram.com/laFaculdade/",
+  instagram: "https://www.instagram.com/la.faculdadesoficial/",
   ava: "https://laFaculdadeava.simpleacademy.tech/login",
-  // TODO: substituir pelo número de WhatsApp real da equipe de matrículas
-  whatsapp: "https://wa.me/5511000000000",
-  whatsappDisplay: "(11) 00000-0000",
+  whatsapp: "https://wa.me/5511969033012",
+  whatsappDisplay: "(11) 96903-3012",
 };
 
 export const NAV_LINKS = [
