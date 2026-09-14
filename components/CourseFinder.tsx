@@ -7,7 +7,14 @@ import FilterPills from "./FilterPills";
 import CourseCard from "./CourseCard";
 import SearchInput from "./SearchInput";
 
-export default function CourseFinder({ courses }: { courses: Course[] }) {
+export default function CourseFinder({
+  courses,
+  titulo = "Cursos mais procurados",
+}: {
+  courses: Course[];
+  /** Título da seção — a home usa o padrão; outras páginas trocam o texto. */
+  titulo?: string;
+}) {
   const niveis = useMemo(
     () => Array.from(new Set(courses.map((c) => c.nivelNome))),
     [courses]
@@ -34,7 +41,7 @@ export default function CourseFinder({ courses }: { courses: Course[] }) {
           No mobile a busca vem antes do título, como já era. */}
       <div className="flex flex-col-reverse gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
         <h2 className="text-[2.25rem] font-extrabold leading-[1.02] tracking-tight text-black lg:text-[52px]">
-          Cursos mais procurados
+          {titulo}
         </h2>
 
         <SearchInput value={query} onChange={setQuery} />

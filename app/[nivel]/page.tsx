@@ -12,6 +12,13 @@ export async function generateStaticParams() {
 
 export const dynamicParams = true;
 
+/* Fotos de hero que moram no repositório, por slug de nível. Elas têm
+   precedência sobre a imagem enviada em /admin/cursos/niveis — apague a
+   entrada aqui para aquele nível voltar a usar o que está no admin. */
+const HERO_POR_NIVEL: Record<string, string> = {
+  graduacao: "/images/graduacao.png",
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -38,7 +45,7 @@ export default async function NivelPage({ params }: { params: Promise<{ nivel: s
         eyebrow={nivelInfo.nome}
         title={nivelInfo.titulo}
         description={nivelInfo.descricao}
-        imageUrl={nivelInfo.imagemUrl}
+        imageUrl={HERO_POR_NIVEL[nivel] ?? nivelInfo.imagemUrl}
       />
       <section className="section-y bg-white">
         <Container>
