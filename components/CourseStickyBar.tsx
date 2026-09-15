@@ -3,10 +3,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-function money(v: number) {
-  return v.toFixed(2).replace(".", ",");
-}
-
 /** Barra de matrícula que entra quando o card lateral sai da tela — no
  *  desktop, quando a coluna de conteúdo acaba; no mobile, onde o card nem
  *  chega a aparecer, logo depois do hero. */
@@ -14,8 +10,6 @@ export default function CourseStickyBar({
   nome,
   nivelNome,
   area,
-  mensalidade,
-  mensalidadeDe,
   href,
   watchSelector = "#card-matricula",
   hideSelector = "footer",
@@ -23,15 +17,12 @@ export default function CourseStickyBar({
   nome: string;
   nivelNome: string;
   area: string;
-  mensalidade: number;
-  mensalidadeDe: number;
   href: string;
   watchSelector?: string;
   /** Ao encostar neste elemento (o rodapé), a barra sai de cena. */
   hideSelector?: string;
 }) {
   const [visivel, setVisivel] = useState(false);
-  const [reais, centavos] = money(mensalidade).split(",");
 
   useEffect(() => {
     const card = document.querySelector(watchSelector);
@@ -104,18 +95,9 @@ export default function CourseStickyBar({
         </div>
 
         <div className="shrink-0 text-right">
-          {mensalidadeDe > mensalidade && (
-            <p className="hidden text-[11px] font-semibold text-muted sm:block">
-              De <s>R$ {money(mensalidadeDe)}</s> por
-            </p>
-          )}
-          <p className="flex items-baseline justify-end gap-1 text-navy-950">
-            <span className="text-[13px] font-bold">R$</span>
-            <span className="font-display text-[26px] font-extrabold leading-none tracking-tight sm:text-[34px]">
-              {reais}
-            </span>
-            <span className="text-[13px] font-bold">,{centavos}</span>
-            <span className="text-[11px] font-semibold text-muted">/mês</span>
+          <p className="hidden text-[11px] font-semibold text-muted sm:block">Mensalidade</p>
+          <p className="font-display text-[22px] font-extrabold leading-none tracking-tight text-navy-950 sm:text-[28px]">
+            Consultar
           </p>
         </div>
 

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Container from "@/components/Container";
 import BlobDepoimentos from "@/components/BlobDepoimentos";
 import CourseBannerCta from "@/components/CourseBannerCta";
+import EditorialScroll from "@/components/institucional/EditorialScroll";
 import Reveal from "@/components/Reveal";
 import { SITE } from "@/lib/constants";
 import { getSiteMediaUrls, type SiteMediaKey } from "@/lib/data/siteMedia";
@@ -123,84 +124,13 @@ export default async function InstitucionalPage() {
         </Container>
       </div>
 
-      <section className="bg-white pt-10 lg:pt-14">
-        <Container>
-          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
-            <Reveal>
-              <h2 className="font-display text-[clamp(2.5rem,5vw,4.5rem)] font-extrabold leading-[1.02] tracking-[-0.03em] text-black">
-                Aqui você aprende de verdade
-              </h2>
-              <p className="mt-5 max-w-[46ch] text-[16px] font-semibold leading-relaxed text-black">
-                A LA Faculdades é credenciada pelo MEC e nasceu para tornar o ensino superior
-                acessível sem abrir mão da qualidade acadêmica. Com aulas EAD, você estuda
-                no seu ritmo, de onde estiver, com o acompanhamento de uma equipe comprometida com
-                a sua formação do primeiro dia até o diploma.
-              </p>
-              <p className="mt-6 border-l-4 border-accent pl-6 font-display text-[clamp(1.6rem,2.4vw,2.2rem)] font-bold leading-[1.15] text-black">
-                Educação de qualidade ao alcance de todos
-              </p>
-            </Reveal>
+      {/* Experiência editorial de scroll (pin + scrub com GSAP). */}
+      <EditorialScroll />
 
-            <Reveal delay={90}>
-              <div className="relative aspect-square overflow-hidden rounded-[28px] sm:aspect-[16/10] lg:aspect-[4/2.9]">
-                <Image
-                  src="/images/historia.png"
-                  alt="Alunos da LA Faculdades sorrindo juntos"
-                  fill
-                  sizes="(min-width: 1024px) 58vw, 100vw"
-                  className="object-cover object-[center_30%]"
-                />
-              </div>
-            </Reveal>
-          </div>
-        </Container>
-      </section>
-
-
-      {/* Plataforma de aprendizagem: vídeo à esquerda, texto e celulares à direita. */}
-      <section className="bg-white pt-10 lg:pt-14">
-        <Container>
-          <Reveal>
-            <h2 className="font-display text-[clamp(2.25rem,4.5vw,3.75rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-black">
-              Sua jornada em um só lugar
-            </h2>
-          </Reveal>
-
-          <div className="mt-8 grid items-start gap-8 lg:mt-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] lg:gap-10">
-            <Reveal>
-              <div className="relative aspect-video overflow-hidden rounded-[24px] bg-navy-950">
-                <video
-                  className="h-full w-full object-cover"
-                  src="/images/videos/institucional.mp4"
-                  poster="/images/fachada.png"
-                  controls
-                  playsInline
-                  preload="metadata"
-                />
-              </div>
-            </Reveal>
-
-            <Reveal delay={90} className="flex flex-col">
-              <p className="font-display text-[clamp(1.2rem,1.6vw,1.45rem)] font-semibold leading-snug text-black">
-                O AVA reúne recursos que fazem parte da sua experiência
-                de aprendizagem.
-              </p>
-              <div className="relative mx-auto mt-4 aspect-[1080/1190] w-full max-w-[340px]">
-                <Image
-                  src="/images/celularla.png"
-                  alt="Plataforma de aprendizagem da LA Faculdades no celular"
-                  fill
-                  sizes="(min-width: 1024px) 26vw, 340px"
-                  className="object-contain"
-                />
-              </div>
-            </Reveal>
-          </div>
-        </Container>
-      </section>
 
       {/* "Acompanhe" — prints das redes sociais, enviados pelo admin. */}
-      <section className="relative mt-10 overflow-hidden bg-tint py-14 lg:mt-14 lg:py-20">
+      {/* Sem margem no topo: encosta direto no fim da seção do vídeo. */}
+      <section className="relative overflow-hidden bg-tint py-14 lg:py-20">
         <BlobDepoimentos fill="#b9d5ef" manterProporcao deslocamentoX={-60} />
 
         <Container className="relative z-10">
@@ -254,42 +184,7 @@ export default async function InstitucionalPage() {
         </Container>
       </section>
 
-      {/* Sem pt: o topo do card de vídeo encosta no fim da seção "Acompanhe". */}
-      <section className="bg-white">
-        <Container>
-          <div className="relative isolate flex min-h-[360px] items-center justify-center overflow-hidden rounded-[28px] bg-navy-950 px-6 py-12 text-center lg:-mx-12 lg:min-h-[460px] xl:-mx-20">
-            <video
-              className="absolute inset-0 -z-10 h-full w-full object-cover"
-              src="/images/videos/institucional.mp4"
-              poster="/images/fachada.png"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              aria-hidden
-            />
-            <div className="absolute inset-0 -z-10 bg-navy-950/55" />
-
-            <Reveal>
-              <p className="text-[15px] font-semibold text-sky-200">Vamos conversar?</p>
-              <h2 className="t-h2 mx-auto mt-5 max-w-4xl text-white">
-                Uma conversa pode mudar o rumo da sua carreira.
-              </h2>
-              <a
-                href={SITE.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-10 inline-flex items-center justify-center rounded-xl bg-white px-8 py-4 font-bold text-navy-950 transition-colors hover:bg-sky-100"
-              >
-                Falar com um consultor
-              </a>
-            </Reveal>
-          </div>
-        </Container>
-      </section>
-
-      <CourseBannerCta href="/matricula#cursos" />
+      
     </>
   );
 }

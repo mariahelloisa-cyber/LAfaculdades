@@ -19,14 +19,14 @@ type Ingresso = {
 
 const ingresso: Ingresso[] = [
   {
-    titulo: "Faça agora sua matrícula e comcece já.",
+    titulo: "Faça agora sua matrícula e comece já.",
     topicos: [
       "A via mais rápida.",
       "Preencha seus dados e escolha o curso.",
       "Finalize a inscrição direto pelo site.",
     ],
     cta: "Iniciar inscrição",
-    href: "/vestibular/inscricao",
+    href: "/matricula",
     card: "bg-navy-950",
     titleColor: "text-white",
     bodyColor: "text-sky-200",
@@ -123,8 +123,7 @@ export default function IngressoCards() {
         } ${state}`}
         style={{ "--rise": "30px", "--delay": "120ms" } as React.CSSProperties}
       >
-        Três formas de ingressar na LA Faculdade — hoje a inscrição com pagamento direto é a via
-        principal e mais rápida.
+        Três formas de ingressar na LA Faculdade — Escolha a forma que mais se encaixa no seu momento.
       </p>
 
       {/* A largura cai junto com a altura (85%) para os cards encolherem sem

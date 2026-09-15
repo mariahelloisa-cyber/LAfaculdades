@@ -185,59 +185,9 @@ drop policy if exists "Authenticated manage courses" on courses;
 create policy "Authenticated manage courses" on courses
   for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
--- Migração dos cursos que já existiam em lib/data/courses.ts. capa_url
--- aponta para as artes SVG atuais até que fotos reais sejam enviadas pelo
--- admin, pra não quebrar o visual do site.
-insert into courses (slug, nome, nivel_id, area, modalidade, duracao, mensalidade, mensalidade_de, capa_url, resumo, descricao, destaques, destaque_home) values
-(
-  'administracao', 'Administração', (select id from course_niveis where slug = 'graduacao'), 'Negócios', 'EAD', '8 semestres', 299.90, 499.90, '/images/art/administracao.svg',
-  'Formação completa em gestão, finanças, marketing e liderança para empreender ou crescer dentro de empresas.',
-  'O curso de Administração prepara você para atuar em gestão de pessoas, finanças, marketing e processos, com uma grade flexível EAD e tutoria disponível para tirar dúvidas durante toda a formação.',
-  ARRAY['Diploma reconhecido pelo MEC', 'Aulas online', 'Estágio supervisionado orientado'], true
-),
-(
-  'pedagogia', 'Pedagogia', (select id from course_niveis where slug = 'graduacao'), 'Educação', 'EAD', '8 semestres', 279.90, 459.90, '/images/art/pedagogia.svg',
-  'Licenciatura para atuar na educação infantil, anos iniciais e gestão escolar.',
-  'Formação voltada para quem quer lecionar na educação infantil e nos anos iniciais do ensino fundamental, além de atuar em coordenação e gestão de escolas.',
-  ARRAY['Habilita para docência', 'Estágio em escolas parceiras', 'Material didático incluso'], true
-),
-(
-  'enfermagem', 'Enfermagem', (select id from course_niveis where slug = 'graduacao'), 'Saúde', 'Semipresencial', '10 semestres', 499.90, 799.90, '/images/art/enfermagem.svg',
-  'Bacharelado com prática em laboratórios e estágio supervisionado em unidades de saúde parceiras.',
-  'Curso semipresencial que combina teoria online com aulas práticas em laboratório e estágio em unidades de saúde, preparando você para atuar em hospitais, clínicas e UBS.',
-  ARRAY['Laboratórios equipados', 'Estágio em unidades parceiras', 'Corpo docente especializado'], true
-),
-(
-  'analise-e-desenvolvimento-de-sistemas', 'Análise e Desenvolvimento de Sistemas', (select id from course_niveis where slug = 'graduacao'), 'Tecnologia', 'EAD', '4 semestres', 329.90, 549.90, '/images/art/tecnologia.svg',
-  'Formação rápida em programação, banco de dados e desenvolvimento de software.',
-  'Tecnólogo focado no mercado de tecnologia, com programação, banco de dados, engenharia de software e projetos práticos para você já sair com portfólio.',
-  ARRAY['Curso mais curto (2 anos)', 'Foco em prática de mercado', 'Projetos para portfólio'], true
-),
-(
-  'gestao-de-recursos-humanos', 'Gestão de Recursos Humanos', (select id from course_niveis where slug = 'graduacao'), 'Negócios', 'EAD', '4 semestres', 289.90, 479.90, '/images/art/rh.svg',
-  'Recrutamento, seleção, treinamento e gestão de pessoas nas organizações.',
-  'Curso voltado para quem quer atuar em departamentos de gente e gestão, recrutamento e seleção, treinamento e desenvolvimento organizacional.',
-  ARRAY['Curso mais curto (2 anos)', 'Cases reais de RH', 'Certificado reconhecido pelo MEC'], false
-),
-(
-  'mba-gestao-de-pessoas', 'MBA em Gestão de Pessoas', (select id from course_niveis where slug = 'pos-graduacao'), 'Negócios', 'EAD', '12 meses', 249.90, 399.90, '/images/art/pos.svg',
-  'Especialização em liderança, cultura organizacional e gestão estratégica de pessoas.',
-  'MBA voltado para profissionais que já atuam ou querem atuar com liderança e gestão de pessoas, com conteúdo aplicado e certificado de pós-graduação lato sensu.',
-  ARRAY['Certificado de pós-graduação', 'Conteúdo online', 'Professores com vivência de mercado'], true
-),
-(
-  'pos-psicopedagogia', 'Psicopedagogia', (select id from course_niveis where slug = 'pos-graduacao'), 'Educação', 'EAD', '12 meses', 229.90, 379.90, '/images/art/pedagogia.svg',
-  'Especialização em dificuldades de aprendizagem e intervenção psicopedagógica.',
-  'Pós-graduação para pedagogos, psicólogos e professores que querem se especializar em diagnóstico e intervenção nas dificuldades de aprendizagem.',
-  ARRAY['Certificado de pós-graduação', 'Estudos de caso práticos', 'Conteúdo online'], false
-),
-(
-  'mba-gestao-escolar', 'MBA em Gestão Escolar', (select id from course_niveis where slug = 'pos-graduacao'), 'Educação', 'EAD', '12 meses', 249.90, 399.90, '/images/art/administracao.svg',
-  'Gestão pedagógica, financeira e de pessoas para diretores e coordenadores de escolas.',
-  'Formação para quem atua ou quer atuar na direção e coordenação de instituições de ensino, com foco em gestão pedagógica, financeira e de equipes.',
-  ARRAY['Certificado de pós-graduação', 'Foco em gestão escolar', 'Conteúdo online'], true
-)
-on conflict (slug) do nothing;
+-- Sem cursos de exemplo: os cursos reais da LA são cadastrados pelo admin
+-- (/admin/cursos). Os 8 cursos de teste que existiam aqui foram removidos
+-- para não voltarem ao banco se este arquivo for executado de novo.
 
 -- ============================================================
 -- Mídia do site (fotos de hero, vídeo da home) — tabela chave/valor,

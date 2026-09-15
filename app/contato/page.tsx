@@ -56,7 +56,7 @@ export default function ContatoPage() {
             <div className="mt-10 overflow-hidden rounded-2xl">
               <iframe
                 title="Localização LA Faculdade"
-                src="https://www.google.com/maps?q=R.+Marqu%C3%AAs+de+Olinda,+679+-+Vila+Dom+Pedro+I,+S%C3%A3o+Paulo+-+SP,+04277-000&output=embed"
+                src="https://www.google.com/maps?q=R.+Formosa,+75+-+S%C3%A3o+Paulo+-+SP,+01049-000&output=embed"
                 width="100%"
                 height="260"
                 style={{ border: 0 }}

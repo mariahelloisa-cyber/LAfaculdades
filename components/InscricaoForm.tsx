@@ -15,7 +15,7 @@ export default function InscricaoForm({
   const searchParams = useSearchParams();
   const cursoInicial = searchParams.get("curso") ?? "";
   const ingressoInicial =
-    searchParams.get("ingresso") === "enem" ? "Nota do ENEM" : "Faça agora sua matrícula e comcece já.";
+    searchParams.get("ingresso") === "enem" ? "Nota do ENEM" : "Faça agora sua matrícula e comece já.";
   const [enviado, setEnviado] = useState(false);
   const [protocolo, setProtocolo] = useState("");
 
@@ -132,7 +132,7 @@ export default function InscricaoForm({
             defaultValue={ingressoInicial}
             className="mt-2 w-full rounded-xl border border-navy-950/20 bg-white px-4 py-3.5 text-[15px] outline-none transition-colors focus:border-accent focus:ring-4 focus:ring-accent/15"
           >
-            <option>Faça agora sua matrícula e comcece já.</option>
+            <option>Faça agora sua matrícula e comece já.</option>
             <option>Se inscreva no nosso Vestibular.</option>
             <option>Nota do ENEM</option>
           </select>

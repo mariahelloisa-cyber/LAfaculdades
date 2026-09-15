@@ -1,9 +1,8 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
-export type LoginState = { error?: string } | undefined;
+export type LoginState = { error?: string; ok?: boolean } | undefined;
 
 export async function login(_prevState: LoginState, formData: FormData): Promise<LoginState> {
   const email = String(formData.get("email") ?? "").trim();
@@ -20,5 +19,8 @@ export async function login(_prevState: LoginState, formData: FormData): Promise
     return { error: "E-mail ou senha inválidos." };
   }
 
-  redirect("/admin");
+  /* Sem redirect() aqui: a navegação suave que ele dispara logo após gravar
+     o cookie da sessão ficava presa em "Entrando...". O formulário faz uma
+     navegação completa para /admin — o mesmo que recarregar a página. */
+  return { ok: true };
 }

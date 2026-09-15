@@ -1,10 +1,18 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { login } from "./actions";
 
 export default function LoginForm() {
   const [state, formAction, pending] = useActionState(login, undefined);
+  const entrando = pending || state?.ok === true;
+
+  /* Login aceito: navegação completa, para o proxy e o layout lerem o cookie
+     novo. router.push() seria a navegação suave que ficava presa. */
+  useEffect(() => {
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+    if (state?.ok) window.location.assign("/admin");
+  }, [state]);
 
   return (
     <form action={formAction} className="w-full max-w-[400px]">
@@ -47,10 +55,10 @@ export default function LoginForm() {
 
       <button
         type="submit"
-        disabled={pending}
+        disabled={entrando}
         className="mt-9 w-full rounded-full bg-accent py-3.5 text-[15px] font-bold text-white transition-colors hover:bg-accent-hover disabled:opacity-60"
       >
-        {pending ? "Entrando..." : "Entrar"}
+        {entrando ? "Entrando..." : "Entrar"}
       </button>
     </form>
   );

@@ -3,7 +3,7 @@ export const SITE = {
   slogan: "Educação acessível e de qualidade para todos.",
   emec: "18263",
   cnpj: "42.935.217/0001-33",
-  address: "R. Marquês de Olinda, 679 - Vila Dom Pedro I, São Paulo/SP - CEP 04277-000",
+  address: "R. Formosa, 75 - São Paulo/SP - CEP 01049-000",
   email: "diretoria@laeducacao.com.br",
   instagram: "https://www.instagram.com/la.faculdadesoficial/",
   // Links dos cards "Acompanhe" da página institucional. Vazio = card sem link.

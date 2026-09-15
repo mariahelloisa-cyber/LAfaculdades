@@ -13,10 +13,6 @@ import { SITE } from "@/lib/constants";
 import { FAQ_CURSOS } from "@/lib/faq";
 import type { Course } from "@/lib/data/courses";
 
-function money(v: number) {
-  return v.toFixed(2).replace(".", ",");
-}
-
 const passos = [
   {
     n: "1",
@@ -44,17 +40,11 @@ export default function CourseDetail({
   course: Course;
   relacionados?: Course[];
 }) {
-  const [reais, centavos] = money(course.mensalidade).split(",");
   /* A inscrição é feita por um consultor no WhatsApp — os botões de matrícula
      abrem a conversa já com o nome do curso na mensagem. */
   const inscricaoHref = `${SITE.whatsapp}?text=${encodeURIComponent(
     `Olá! Quero me matricular no curso de ${course.nome}.`
   )}`;
-
-  const desconto =
-    course.mensalidadeDe > course.mensalidade
-      ? Math.round((1 - course.mensalidade / course.mensalidadeDe) * 100)
-      : 0;
 
   const fatos = [
     {
@@ -346,28 +336,14 @@ export default function CourseDetail({
             </div>
 
             <div className="p-6">
-              {desconto > 0 && (
-                <span className="flex h-7 w-fit items-center rounded-full bg-[#FFD600] px-3.5 text-[12px] font-bold text-black">
-                  {desconto}% de desconto
-                </span>
-              )}
-
-              <h2 className="mt-4 font-display text-[22px] font-extrabold uppercase leading-tight tracking-tight text-navy-950">
+              <h2 className="font-display text-[22px] font-extrabold uppercase leading-tight tracking-tight text-navy-950">
                 {course.nome}
               </h2>
 
-              {course.mensalidadeDe > course.mensalidade && (
-                <p className="mt-4 text-[13px] font-semibold text-muted">
-                  De <s>R$ {money(course.mensalidadeDe)}</s> por
-                </p>
-              )}
-              <p className="mt-1 flex items-baseline gap-1 text-navy-950">
-                <span className="text-lg font-bold">R$</span>
-                <span className="font-display text-[44px] font-extrabold leading-none tracking-tight">
-                  {reais}
-                </span>
-                <span className="text-xl font-bold">,{centavos}</span>
-                <span className="ml-1 text-[13px] font-semibold text-muted">/mês</span>
+              {/* Valor da mensalidade sob consulta com o consultor. */}
+              <p className="mt-4 text-[13px] font-semibold text-muted">Mensalidade</p>
+              <p className="mt-1 font-display text-[40px] font-extrabold leading-none tracking-tight text-navy-950">
+                Consultar
               </p>
 
               <p className="mt-3 flex h-8 w-fit items-center rounded-full bg-[#F23883] px-4 text-[12px] font-bold text-white">
@@ -472,8 +448,6 @@ export default function CourseDetail({
         nome={course.nome}
         nivelNome={course.nivelNome}
         area={course.area}
-        mensalidade={course.mensalidade}
-        mensalidadeDe={course.mensalidadeDe}
         href={inscricaoHref}
       />
     </>

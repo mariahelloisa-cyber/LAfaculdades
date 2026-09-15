@@ -2,19 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { Course } from "@/lib/data/courses";
 
-function money(v: number) {
-  return v.toFixed(2).replace(".", ",");
-}
-
 export default function CourseCard({ course }: { course: Course }) {
-  const [reais, centavos] = money(course.mensalidade).split(",");
-
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-[25px] bg-[#E9E9E9]">
       {/* Área da foto — categoria/ícone no topo, nome + modalidade + link na base */}
       <div className="relative isolate flex h-[228px] flex-col p-[13px]">
         <Image
-          src={course.capaUrl}
+          // Curso sem capa cadastrada: mesma arte padrão da página do curso.
+          src={course.capaUrl || "/images/art/campus.svg"}
           alt=""
           fill
           sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 290px"
@@ -59,18 +54,13 @@ export default function CourseCard({ course }: { course: Course }) {
         R$ 49,90 no 1º mês · vagas limitadas
       </p>
 
-      {/* Preço alinhado à direita + CTA */}
+      {/* Mensalidade (valor sob consulta) alinhada à direita + CTA */}
       <div className="flex flex-1 flex-col justify-between px-4 pb-4 pt-3">
-        <div>
-          <p className="text-right text-[11px] font-semibold text-black/60">
-            De <s>R$ {money(course.mensalidadeDe)}</s> por
+        <div className="text-right">
+          <p className="text-[11px] font-semibold text-black/60">Mensalidade</p>
+          <p className="font-display text-[34px] font-extrabold leading-none tracking-tight text-black">
+            Consultar
           </p>
-          <p className="flex items-baseline justify-end gap-1 text-black">
-            <span className="text-lg font-bold">R$</span>
-            <span className="font-display text-[44px] font-extrabold leading-none tracking-tight">{reais}</span>
-            <span className="text-xl font-bold">,{centavos}</span>
-          </p>
-          <p className="text-right text-[12px] font-semibold text-black/60">/mês</p>
         </div>
 
         <Link

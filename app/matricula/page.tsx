@@ -30,7 +30,7 @@ const passos = [
   {
     n: "2",
     t: "Clique em “Saiba mais”",
-    d: "Na página do curso você vê a grade curricular, a duração, a modalidade e o valor da mensalidade.",
+    d: "Na página do curso você vê a grade curricular, a duração e a modalidade. O valor da mensalidade você consulta com um consultor.",
   },
   {
     n: "3",
@@ -117,7 +117,7 @@ const faqs = [
   {
     pergunta: "Quanto custa a primeira mensalidade?",
     resposta:
-      "O 1º mês sai por R$ 49,90 enquanto houver vagas na turma. O valor das mensalidades seguintes aparece na página de cada curso.",
+      "O 1º mês sai por R$ 49,90 enquanto houver vagas na turma. O valor das mensalidades seguintes você consulta com um consultor pelo WhatsApp.",
   },
   {
     pergunta: "Posso me matricular em mais de um curso?",
