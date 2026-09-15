@@ -6,6 +6,11 @@ export const SITE = {
   address: "R. Marquês de Olinda, 679 - Vila Dom Pedro I, São Paulo/SP - CEP 04277-000",
   email: "diretoria@laeducacao.com.br",
   instagram: "https://www.instagram.com/la.faculdadesoficial/",
+  // Links dos cards "Acompanhe" da página institucional. Vazio = card sem link.
+  facebook: "",
+  youtube: "",
+  reclameAqui: "",
+  googleMeuNegocio: "",
   ava: "https://laFaculdadeava.simpleacademy.tech/login",
   whatsapp: "https://wa.me/5511969033012",
   whatsappDisplay: "(11) 96903-3012",

@@ -17,6 +17,7 @@ async function requireUser() {
 
 export async function updateSiteMedia(
   chave: string,
+  tipo: "imagem" | "video",
   _prevState: MidiaFormState,
   formData: FormData
 ): Promise<MidiaFormState> {
@@ -27,10 +28,10 @@ export async function updateSiteMedia(
   const url = String(formData.get("url") ?? "").trim();
   if (!url) return { error: "Escolha um arquivo antes de salvar." };
 
+  // upsert: slots novos funcionam mesmo em bancos onde a linha ainda não existe.
   const { error } = await supabase
     .from("site_media")
-    .update({ url, updated_at: new Date().toISOString() })
-    .eq("chave", chave);
+    .upsert({ chave, tipo, url, updated_at: new Date().toISOString() }, { onConflict: "chave" });
 
   if (error) return { error: "Erro ao salvar a mídia." };
 

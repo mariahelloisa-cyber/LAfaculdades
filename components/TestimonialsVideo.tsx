@@ -3,13 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-/**
- * Bloco de vídeo da seção de depoimentos.
- *
- * `src` é opcional de propósito: enquanto não existir um vídeo de depoimentos
- * gravado, o bloco mostra só a thumbnail (o layout não muda em nada). Quando o
- * vídeo existir, basta passar a URL — o clique troca a capa pelo player.
- */
+
 export default function TestimonialsVideo({
   src,
   poster = "/images/imagem1.png",

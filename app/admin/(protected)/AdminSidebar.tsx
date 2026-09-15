@@ -13,6 +13,7 @@ const NAV = [
   { href: "/admin/blog", label: "Blog", icon: "blog" },
   { href: "/admin/midia/blog-hero", label: "Hero do Blog", icon: "imagem" },
   { href: "/admin/midia/home-video", label: "Vídeo da Home", icon: "video" },
+  { href: "/admin/midia/redes-sociais", label: "Redes Sociais", icon: "imagem" },
 ];
 
 export default function AdminSidebar({ email }: { email: string }) {

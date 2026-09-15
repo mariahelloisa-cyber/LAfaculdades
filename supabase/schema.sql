@@ -270,7 +270,13 @@ create policy "Authenticated manage site_media" on site_media
 -- cada nível agora é editável.)
 insert into site_media (chave, url, tipo) values
   ('blog_hero', '/images/blog.png', 'imagem'),
-  ('home_hero_video', '', 'video')
+  ('home_hero_video', '', 'video'),
+  -- Cards "Acompanhe" da página institucional.
+  ('social_facebook', '', 'imagem'),
+  ('social_instagram', '', 'imagem'),
+  ('social_youtube', '', 'imagem'),
+  ('social_reclameaqui', '', 'imagem'),
+  ('social_google', '', 'imagem')
 on conflict (chave) do nothing;
 
 -- ============================================================

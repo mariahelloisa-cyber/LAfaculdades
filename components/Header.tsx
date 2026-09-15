@@ -164,10 +164,19 @@ export default function Header({ courseNiveis }: { courseNiveis: CourseNivel[] }
 
   return (
     <header
-      className={`relative bg-navy-950 text-white transition-shadow duration-300 ${
+      className={`relative text-white transition-shadow duration-300 ${
         scrolled ? "shadow-[0_8px_28px_rgba(0,0,0,0.32)]" : ""
       }`}
     >
+      {/* Fundo em camada própria: ao rolar fica translúcido e deixa a página
+          aparecer por trás. O blur não vai no <header> porque backdrop-filter
+          viraria o bloco de contenção do drawer mobile (position: fixed). */}
+      <div
+        aria-hidden
+        className={`absolute inset-0 -z-10 transition-colors duration-300 ${
+          scrolled && !menuOpen ? "bg-navy-850/80 backdrop-blur-sm backdrop-saturate-150" : "bg-navy-950"
+        }`}
+      />
       <div className="container-x">
         <div className="flex h-[58px] items-center justify-between gap-6 lg:h-[64px]">
           {/* Mobile: hamburger */}

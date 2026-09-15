@@ -9,26 +9,33 @@ export default function MidiaSlot({
   tipo,
   url,
   dica,
+  titulo = "Mídia atual",
+  previewAspect,
+  className = "mt-6 max-w-3xl",
 }: {
   chave: string;
   tipo: "imagem" | "video";
   url: string;
   dica: string;
+  titulo?: string;
+  previewAspect?: string;
+  className?: string;
 }) {
-  const action = updateSiteMedia.bind(null, chave);
+  const action = updateSiteMedia.bind(null, chave, tipo);
   const [state, formAction, pending] = useActionState<MidiaFormState, FormData>(action, undefined);
   const [uploading, setUploading] = useState(false);
 
   return (
-    <div className="mt-6 max-w-3xl rounded-2xl bg-white p-5 ring-1 ring-navy-950/5 sm:p-6">
+    <div className={`${className} rounded-2xl bg-white p-5 ring-1 ring-navy-950/5 sm:p-6`}>
       <form action={formAction}>
         <UploadField
           name="url"
           folder="site"
           tipo={tipo}
           currentUrl={url}
-          label="Mídia atual"
+          label={titulo}
           hint={dica}
+          previewAspect={previewAspect}
           onUploadingChange={setUploading}
         />
 

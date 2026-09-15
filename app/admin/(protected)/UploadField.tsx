@@ -17,6 +17,7 @@ export default function UploadField({
   currentUrl,
   label,
   hint,
+  previewAspect = "aspect-[16/7]",
   onUploadingChange,
 }: {
   /** nome do campo que vai levar a URL no submit do formulário */
@@ -27,6 +28,8 @@ export default function UploadField({
   currentUrl?: string;
   label: string;
   hint?: string;
+  /** classe de proporção da prévia (ex.: "aspect-square") */
+  previewAspect?: string;
   onUploadingChange?: (uploading: boolean) => void;
 }) {
   const [url, setUrl] = useState(currentUrl ?? "");
@@ -79,11 +82,11 @@ export default function UploadField({
       {url && (
         <div className="mt-2 overflow-hidden rounded-xl bg-surface">
           {tipo === "imagem" ? (
-            <div className="relative aspect-[16/7] w-full">
+            <div className={`relative ${previewAspect} w-full`}>
               <Image src={url} alt="" fill className="object-cover" />
             </div>
           ) : (
-            <video src={url} controls muted className="aspect-[16/7] w-full bg-navy-950 object-cover" />
+            <video src={url} controls muted className={`${previewAspect} w-full bg-navy-950 object-cover`} />
           )}
         </div>
       )}

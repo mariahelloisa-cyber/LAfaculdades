@@ -225,8 +225,17 @@ export default async function MatriculaPage() {
     
       {/* Faixa escura de CTA — atalho para quem já sabe o curso e quer ir direto
           ao WhatsApp, sem passar pela página do curso. */}
-      <section className="bg-navy-950">
-        <Container className="py-16 text-center lg:py-20">
+      <section className="relative overflow-hidden bg-navy-950">
+        <Image
+          src="/images/fachada.png"
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div aria-hidden className="absolute inset-0 bg-navy-950/80" />
+        <Container className="relative py-16 text-center lg:py-20">
           <Reveal>
             <h2 className="t-h2 mx-auto max-w-3xl text-white">Já sabe o que quer cursar?</h2>
             <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-sky-200">

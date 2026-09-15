@@ -13,11 +13,14 @@ const BLOB_DESLOCAMENTO_Y = 16;
 export default function BlobDepoimentos({
   fill = "#cfe2f2",
   deslocamentoY = BLOB_DESLOCAMENTO_Y,
+  deslocamentoX = 0,
   manterProporcao = false,
 }: {
   /** Cor da forma — clara sobre fundo branco, escura sobre fundo navy. */
   fill?: string;
   deslocamentoY?: number;
+  /** Deslocamento horizontal em pixels. Negativo = esquerda. */
+  deslocamentoX?: number;
   /** Mantém a proporção original da forma: em vez de achatar para caber, ela
    *  cobre o espaço e o que sobra é cortado pela seção. */
   manterProporcao?: boolean;
@@ -25,7 +28,7 @@ export default function BlobDepoimentos({
   return (
     <div
       aria-hidden
-      style={{ top: `calc(50% + ${deslocamentoY}px)` }}
+      style={{ top: `calc(50% + ${deslocamentoY}px)`, left: `calc(50% + ${deslocamentoX}px)` }}
       className="pointer-events-none absolute left-1/2 z-0 h-[180%] w-[min(2100px,150vw)] -translate-x-1/2 -translate-y-1/2"
     >
       <svg

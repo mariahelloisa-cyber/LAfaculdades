@@ -34,10 +34,7 @@ export default async function AdminLoginPage() {
 
   return (
     <div className="flex min-h-screen flex-col lg:h-screen lg:flex-row">
-      {/* Painel esquerdo — fundo liso azul institucional, sem imagem.
-          Sem altura explícita: herda 100% da altura do irmão via
-          align-items:stretch (padrão do flex), já que o pai tem altura
-          definida (h-screen). */}
+  
       <div className="relative flex w-full flex-col justify-between overflow-hidden bg-navy-950 px-8 py-10 text-white sm:px-14 sm:py-12 lg:w-1/2">
         <div
           aria-hidden
