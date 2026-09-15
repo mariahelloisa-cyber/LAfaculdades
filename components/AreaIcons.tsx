@@ -48,6 +48,15 @@ const fallback = (
   </>
 );
 
+/** Ícone de uma área isolado (ex.: cards do resultado do teste vocacional). */
+export function AreaIcon({ area, size = 24 }: { area: string; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      {icons[area] ?? fallback}
+    </svg>
+  );
+}
+
 export default function AreaIcons({
   areas,
   value,

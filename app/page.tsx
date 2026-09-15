@@ -11,6 +11,7 @@ import StrokeMark from "@/components/StrokeMark";
 import TestimonialsVideo from "@/components/TestimonialsVideo";
 import BlobDepoimentos from "@/components/BlobDepoimentos";
 import FaqAccordion from "@/components/FaqAccordion";
+import QuizIntro from "@/components/vocational-quiz/QuizIntro";
 import { getPosts } from "@/lib/data/posts";
 import { getFeaturedCourses } from "@/lib/data/courses";
 import { getSiteMediaUrl } from "@/lib/data/siteMedia";
@@ -133,7 +134,10 @@ export default async function HomePage() {
           </div>
         </Container>
       </section>
-      
+
+      {/* 5 — Teste vocacional: só a chamada; as perguntas ficam em /teste-vocacional */}
+      <QuizIntro />
+
       {/* 7 — FAQ em duas colunas */}
       <section className="section-y bg-tint-deep">
         <Container>
