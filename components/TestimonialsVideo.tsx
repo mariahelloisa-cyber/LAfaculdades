@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function TestimonialsVideo({
   src,
-  poster = "/images/imagem1.png",
+  poster = "/images/imagem1.jpg",
   alt = "Alunos da LA Faculdade em aula prática",
 }: {
   src?: string;

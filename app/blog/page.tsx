@@ -20,7 +20,7 @@ export default async function BlogPage() {
           ícones flutuantes no desktop. */}
       <section className="relative isolate overflow-hidden bg-navy-950">
         <Image
-          src={heroUrl || "/images/blog.png"}
+          src={heroUrl || "/images/blog.jpg"}
           alt=""
           fill
           priority

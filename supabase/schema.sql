@@ -219,7 +219,7 @@ create policy "Authenticated manage site_media" on site_media
 -- graduação/pós-graduação ficam na própria tabela course_niveis, já que
 -- cada nível agora é editável.)
 insert into site_media (chave, url, tipo) values
-  ('blog_hero', '/images/blog.png', 'imagem'),
+  ('blog_hero', '/images/blog.jpg', 'imagem'),
   ('home_hero_video', '', 'video'),
   -- Cards "Acompanhe" da página institucional.
   ('social_facebook', '', 'imagem'),

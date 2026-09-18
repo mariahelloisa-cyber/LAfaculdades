@@ -16,7 +16,7 @@ export const dynamicParams = true;
    precedência sobre a imagem enviada em /admin/cursos/niveis — apague a
    entrada aqui para aquele nível voltar a usar o que está no admin. */
 const HERO_POR_NIVEL: Record<string, string> = {
-  graduacao: "/images/graduacao.png",
+  graduacao: "/images/graduacao.jpg",
 };
 
 export async function generateMetadata({

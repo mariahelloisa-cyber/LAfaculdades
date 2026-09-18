@@ -227,7 +227,7 @@ export default async function MatriculaPage() {
           ao WhatsApp, sem passar pela página do curso. */}
       <section className="relative overflow-hidden bg-navy-950">
         <Image
-          src="/images/fachada.png"
+          src="/images/fachada.jpg"
           alt=""
           aria-hidden
           fill

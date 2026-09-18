@@ -46,7 +46,7 @@ export default function QuizIntro() {
     >
       <div className="quiz-stack-bg" aria-hidden="true">
         <Image
-          src="/images/alunos.png"
+          src="/images/alunos.jpg"
           alt=""
           fill
           sizes="100vw"

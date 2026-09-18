@@ -78,7 +78,7 @@ export default async function HomePage() {
 
       {/* 3 — Split assimétrico full-bleed: por que a LA */}
       <SplitFeature
-        art="/images/sobre1.png"
+        art="/images/sobre1.jpg"
         eyebrow="Por que a LA?"
         title="Uma faculdade que cabe na rotina de quem já trabalha."
         body="Você estuda no horário que der, com tutoria que responde de verdade, mensalidade que não aperta o orçamento e um diploma reconhecido pelo MEC que vale em todo o país."
@@ -86,9 +86,9 @@ export default async function HomePage() {
         linkLabel="Conheça a instituição"
         badge={{ top: "Credenciada pelo", big: "MEC" }}
         cards={[
-          { art: "/images/imagem1.png", label: "Tutoria ativa" },
-          { art: "/images/imagem2.png", label: "Ensino online" },
-          { art: "/images/imagem3.png", label: "Mensalidade justa" },
+          { art: "/images/imagem1.jpg", label: "Tutoria ativa" },
+          { art: "/images/imagem2.jpg", label: "Ensino online" },
+          { art: "/images/imagem3.jpg", label: "Mensalidade justa" },
         ]}
       />
 

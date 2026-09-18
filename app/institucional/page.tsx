@@ -82,7 +82,7 @@ export default async function InstitucionalPage() {
           cards "saem" — eles sobem por cima da base da foto. */}
       <section className="relative isolate overflow-hidden bg-navy-950">
         <Image
-          src="/images/fachada.png"
+          src="/images/fachada.jpg"
           alt="Fachada da LA Faculdades"
           fill
           priority

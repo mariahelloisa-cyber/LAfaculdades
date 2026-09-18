@@ -369,7 +369,7 @@ export default function EditorialScroll() {
 
         <div className="ed-intro__media">
           <Image
-            src="/images/alunos.png"
+            src="/images/alunos.jpg"
             alt="Grupo de alunos sorrindo em uma selfie em frente ao prédio da LA Faculdades"
             fill
             sizes="(min-width: 768px) 96vw, 92vw"
@@ -450,7 +450,7 @@ export default function EditorialScroll() {
             <div className="ed-fig">
               <div className="ed-fig__inner">
                 <Image
-                  src="/images/historia.png"
+                  src="/images/historia.jpg"
                   alt="Alunos da LA Faculdades sorrindo juntos"
                   fill
                   sizes="(min-width: 1024px) 33vw, (min-width: 768px) 40vw, 75vw"
@@ -473,7 +473,7 @@ export default function EditorialScroll() {
           </div>
           <div className="ed-feature__media">
             <Image
-              src="/images/imagem3.png"
+              src="/images/imagem3.jpg"
               alt="Estudante sorrindo enquanto usa o celular na rua"
               fill
               sizes="(min-width: 1024px) 67vw, (min-width: 768px) 84vw, 100vw"
