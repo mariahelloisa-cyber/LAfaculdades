@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const faqs = [
   {
     pergunta: "Qual é a forma de ingresso mais rápida?",
-    resposta: "Hoje, a inscrição com pagamento direto pelo site é a via principal e mais rápida para garantir sua vaga.",
+    resposta: "Hoje, a inscrição com pagamento, após preencher o formulário é a via principal e mais rápida para garantir sua vaga.",
   },
   {
     pergunta: "Quando o vestibular próprio estará disponível?",

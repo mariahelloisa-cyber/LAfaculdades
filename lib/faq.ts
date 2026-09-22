@@ -16,7 +16,7 @@ export const FAQ_CURSOS: FaqItem[] = [
   {
     pergunta: "Quando posso começar?",
     resposta:
-      "As turmas têm entradas contínuas. Concluindo a inscrição e a matrícula pelo site, o acesso ao AVA é liberado e você já começa a estudar.",
+      "As turmas têm entradas contínuas. Concluindo a matrícula, o acesso ao AVA é liberado e você já começa a estudar.",
   },
   {
     pergunta: "Existe financiamento?",
