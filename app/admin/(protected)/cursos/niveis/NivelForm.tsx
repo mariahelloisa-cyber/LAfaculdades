@@ -71,13 +71,19 @@ export default function NivelForm({
         <label htmlFor="titulo" className="text-sm font-semibold text-navy-950">
           Título do hero
         </label>
-        <input
+        {/* Textarea em vez de input: as quebras de linha digitadas aqui são
+            as quebras do título na hero da categoria. */}
+        <textarea
           id="titulo"
           name="titulo"
           required
+          rows={3}
           defaultValue={defaultValues?.titulo}
           className="mt-1.5 w-full rounded-xl border border-navy-950/12 bg-surface px-3.5 py-2.5 text-sm text-navy-950 outline-none transition-colors focus:border-accent focus:bg-white"
         />
+        <p className="mt-1 text-xs text-muted">
+          Dê Enter para escolher onde o título quebra de linha no site.
+        </p>
       </div>
 
       <div>

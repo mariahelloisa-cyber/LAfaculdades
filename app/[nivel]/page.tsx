@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Container from "@/components/Container";
-import PageHero from "@/components/PageHero";
+import CategoryHero from "@/components/CategoryHero";
 import CoursesGrid from "@/components/CoursesGrid";
 import { getCourseNiveis, getCourseNivelBySlug, getCoursesByNivelSlug } from "@/lib/data/courses";
 
@@ -12,12 +12,9 @@ export async function generateStaticParams() {
 
 export const dynamicParams = true;
 
-/* Fotos de hero que moram no repositório, por slug de nível. Elas têm
-   precedência sobre a imagem enviada em /admin/cursos/niveis — apague a
-   entrada aqui para aquele nível voltar a usar o que está no admin. */
-const HERO_POR_NIVEL: Record<string, string> = {
-  graduacao: "/images/graduacao.jpg",
-};
+/* A hero das categorias usa um fundo único (matricula-hero.jpg) com a
+   persona por cima; o texto é que muda por categoria. Para voltar a ter uma
+   foto por nível, basta passar `backgroundUrl` ao CategoryHero. */
 
 export async function generateMetadata({
   params,
@@ -41,13 +38,13 @@ export default async function NivelPage({ params }: { params: Promise<{ nivel: s
 
   return (
     <>
-      <PageHero
-        eyebrow={nivelInfo.nome}
-        title={nivelInfo.titulo}
-        description={nivelInfo.descricao}
-        imageUrl={HERO_POR_NIVEL[nivel] ?? nivelInfo.imagemUrl}
-      />
-      <section className="section-y bg-white">
+      <CategoryHero title={nivelInfo.titulo} description={nivelInfo.descricao} />
+      {/* A faixa azul já separa a hero da lista, então o respiro de cima é
+          menor que o padrão do section-y. */}
+      <section
+        id="cursos"
+        className="scroll-mt-[58px] bg-white pb-[clamp(3.5rem,7vw,6.5rem)] pt-8 sm:pt-10 lg:scroll-mt-[64px]"
+      >
         <Container>
           <CoursesGrid courses={cursos} />
         </Container>

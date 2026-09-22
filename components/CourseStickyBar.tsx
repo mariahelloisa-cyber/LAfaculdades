@@ -103,7 +103,8 @@ export default function CourseStickyBar({
 
         <Link
           href={href}
-          // A matrícula é feita por um consultor no WhatsApp: link externo abre fora.
+          // O destino padrão é o formulário de matrícula (rota interna); se
+          // vier um link externo, ele abre fora.
           target={href.startsWith("http") ? "_blank" : undefined}
           rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
           tabIndex={visivel ? undefined : -1}

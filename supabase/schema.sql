@@ -253,3 +253,53 @@ create policy "Authenticated update media bucket" on storage.objects
 drop policy if exists "Authenticated delete media bucket" on storage.objects;
 create policy "Authenticated delete media bucket" on storage.objects
   for delete to authenticated using (bucket_id = 'media');
+
+-- ============================================================
+-- Matrículas (leads do botão "Matricule-se")
+-- O visitante preenche o formulário do site e os dados caem aqui, para a
+-- equipe de matrículas entrar em contato pelo painel (/admin/matriculas).
+-- ============================================================
+
+create table if not exists matriculas (
+  id uuid primary key default gen_random_uuid(),
+  nome_completo text not null,
+  data_nascimento date not null,
+  cpf text not null,
+  email text not null,
+  telefone text not null,
+  curso_slug text not null default '',
+  curso_nome text not null,
+  status text not null default 'novo' check (status in ('novo', 'em_contato', 'matriculado', 'descartado')),
+  observacoes text not null default '',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists matriculas_created_at_idx on matriculas (created_at desc);
+
+alter table matriculas enable row level security;
+
+-- O formulário é público: o visitante (anon) só pode inserir. Ler, editar e
+-- apagar fica restrito a quem está logado no painel.
+grant insert on matriculas to anon, authenticated;
+grant select, update, delete on matriculas to authenticated;
+
+drop policy if exists "Public insert matriculas" on matriculas;
+create policy "Public insert matriculas" on matriculas
+  for insert with check (true);
+
+drop policy if exists "Authenticated read matriculas" on matriculas;
+create policy "Authenticated read matriculas" on matriculas
+  for select using (auth.role() = 'authenticated');
+
+drop policy if exists "Authenticated manage matriculas" on matriculas;
+create policy "Authenticated manage matriculas" on matriculas
+  for update using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+
+drop policy if exists "Authenticated delete matriculas" on matriculas;
+create policy "Authenticated delete matriculas" on matriculas
+  for delete using (auth.role() = 'authenticated');
+
+-- Forma de ingresso escolhida pelo candidato (matrícula direta, vestibular
+-- ou nota do ENEM) — o mesmo formulário atende as três portas de entrada.
+alter table matriculas add column if not exists forma_ingresso text not null default 'Matrícula direta';

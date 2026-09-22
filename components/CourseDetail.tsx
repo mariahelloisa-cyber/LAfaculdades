@@ -18,13 +18,13 @@ const passos = [
     n: "1",
     titulo: "Fale com um consultor",
     texto:
-      "Clique em matricule-se e preencha o formulário. No WhatsApp um consultor irá entrar em contato, tirar suas dúvidas e fazer sua inscrição.",
+      "Clique em matricule-se e preencha o formulário com seus dados e o curso desejado. A equipe de matrículas entra em contato para tirar suas dúvidas e concluir a inscrição.",
   },
   {
     n: "2",
     titulo: "Confirme a matrícula",
     texto:
-      "O consultor pede seus documentos pelo WhatsApp e garante o 1º mês por R$ 49,90 enquanto houver vagas.",
+      "A equipe de matrículas pede seus documentos e garante o 1º mês por R$ 49,90 enquanto houver vagas.",
   },
   {
     n: "3",
@@ -40,11 +40,9 @@ export default function CourseDetail({
   course: Course;
   relacionados?: Course[];
 }) {
-  /* A inscrição é feita por um consultor no WhatsApp — os botões de matrícula
-     abrem a conversa já com o nome do curso na mensagem. */
-  const inscricaoHref = `${SITE.whatsapp}?text=${encodeURIComponent(
-    `Olá! Quero me matricular no curso de ${course.nome}.`
-  )}`;
+  /* Os botões de matrícula levam ao formulário do site já com o curso
+     escolhido — os dados caem no painel para a equipe entrar em contato. */
+  const inscricaoHref = `/matricula/inscricao?curso=${encodeURIComponent(course.slug)}`;
 
   const fatos = [
     {
@@ -142,10 +140,8 @@ export default function CourseDetail({
 
           {/* No desktop a chamada mora no card; aqui ela serve o mobile. */}
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center lg:hidden">
-            <a
+            <Link
               href={inscricaoHref}
-              target="_blank"
-              rel="noopener noreferrer"
               className="flex h-[54px] items-center justify-center gap-3 rounded-full bg-[#FFD600] px-8 font-bold text-black"
             >
               Matricule-se agora
@@ -158,7 +154,7 @@ export default function CourseDetail({
                   strokeLinejoin="round"
                 />
               </svg>
-            </a>
+            </Link>
             <a
               href={SITE.whatsapp}
               target="_blank"
@@ -350,10 +346,8 @@ export default function CourseDetail({
                 R$ 49,90 no 1º mês · vagas limitadas
               </p>
 
-              <a
+              <Link
                 href={inscricaoHref}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="mt-5 flex h-[54px] items-center justify-center gap-3 rounded-full bg-[#FFD600] font-bold uppercase text-black transition-[filter] hover:brightness-95"
               >
                 Matricule-se
@@ -366,7 +360,7 @@ export default function CourseDetail({
                     strokeLinejoin="round"
                   />
                 </svg>
-              </a>
+              </Link>
             </div>
           </aside>
         </Container>

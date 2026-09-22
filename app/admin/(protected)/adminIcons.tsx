@@ -32,6 +32,13 @@ export const adminIcons: Record<string, ReactNode> = {
       <path d="M9 13h6M9 17h4" />
     </>
   ),
+  matriculas: (
+    <>
+      <path d="M16 3.5H8a2 2 0 0 0-2 2V20a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5.5a2 2 0 0 0-2-2Z" />
+      <path d="M9.5 3.5V2h5v1.5" />
+      <path d="M9 11h6M9 15h4" />
+    </>
+  ),
   imagem: (
     <>
       <rect x="3" y="4" width="18" height="16" rx="2" />

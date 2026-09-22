@@ -322,7 +322,7 @@ export default function QuizResult({
                 </Link>
               )}
               <Link
-                href="/vestibular/inscricao"
+                href="/matricula/inscricao"
                 className={`group flex h-[52px] items-center justify-center gap-3 rounded-[12px] bg-sky-100 px-7 font-bold text-navy-800 transition-colors hover:bg-white ${FOCO} focus-visible:ring-offset-navy-800`}
               >
                 Iniciar matrícula

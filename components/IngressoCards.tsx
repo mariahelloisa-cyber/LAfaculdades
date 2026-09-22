@@ -26,7 +26,7 @@ const ingresso: Ingresso[] = [
       "Finalize a inscrição direto pelo site.",
     ],
     cta: "Iniciar inscrição",
-    href: "/matricula",
+    href: "/matricula/inscricao",
     card: "bg-navy-950",
     titleColor: "text-white",
     bodyColor: "text-sky-200",
@@ -126,8 +126,7 @@ export default function IngressoCards() {
         Três formas de ingressar na LA Faculdade — Escolha a forma que mais se encaixa no seu momento.
       </p>
 
-      {/* A largura cai junto com a altura (85%) para os cards encolherem sem
-          distorcer a proporção; o grid em si — colunas e ordem — não muda. */}
+      
       <div className="mt-7 grid gap-3 sm:mx-auto sm:max-w-[85%] sm:grid-cols-2 lg:mt-9 lg:grid-cols-3">
         {ingresso.map((item, i) => (
           <div
@@ -154,8 +153,7 @@ export default function IngressoCards() {
                   </li>
                 ))}
               </ul>
-              {/* mt-auto empurra o botão para a base: o vazio entre descrição e
-                  botão cresce sozinho e os três botões ficam na mesma linha. */}
+              
               <Link
                 href={item.href}
                 className={`mt-auto flex h-[43px] w-full items-center justify-center rounded-full px-5 text-center text-[13px] font-bold transition-colors ${item.button}`}

@@ -304,3 +304,26 @@ body {
   border-radius: 999px;
   background: transparent;
 }
+
+/* ---- Hero das categorias ----
+   A hero já nasce na tela, então a entrada toca no carregamento, sem
+   observer. Como o estado de repouso é o visível, quem pede menos
+   movimento simplesmente vê tudo parado e completo. */
+@keyframes hero-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-34px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-in-left {
+    /* Entrada longa e macia: a hero abre com calma em vez de estalar. */
+    animation: hero-in-left 1.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--delay, 0ms);
+  }
+}

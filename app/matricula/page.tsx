@@ -243,14 +243,12 @@ export default async function MatriculaPage() {
               inscrição por você e tira as dúvidas na mesma conversa.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/matricula/inscricao"
                 className="inline-flex items-center justify-center rounded-full bg-accent px-9 py-4 font-bold text-white transition-colors hover:bg-accent-hover"
               >
-                Matricular pelo WhatsApp
-              </a>
+                Matricule-se agora
+              </Link>
               <a
                 href="#cursos"
                 className="inline-flex items-center justify-center rounded-full border-2 border-white/70 px-9 py-4 font-bold text-white transition-colors hover:bg-white/15"

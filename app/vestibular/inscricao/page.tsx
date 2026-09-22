@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Container from "@/components/Container";
 import PageHero from "@/components/PageHero";
-import InscricaoForm from "@/components/InscricaoForm";
+import MatriculaForm from "@/components/MatriculaForm";
 import { getAllCourses, getCourseNiveis } from "@/lib/data/courses";
 
 export const metadata: Metadata = {
@@ -18,13 +18,20 @@ export default async function InscricaoPage() {
       <PageHero
         eyebrow="Inscrição"
         title="Garanta sua vaga"
-        description="Preencha os dados abaixo para iniciar sua inscrição. É rápido e você recebe um protocolo na hora."
+        description="Preencha os dados abaixo para iniciar sua inscrição. A equipe de matrículas entra em contato para concluir o processo com você."
         art="campus"
       />
       <section className="section-y bg-white">
         <Container className="max-w-2xl">
           <Suspense>
-            <InscricaoForm niveis={niveis} cursos={cursos} />
+            {/* Mesmo formulário da matrícula: aqui o candidato também diz por
+                qual porta quer entrar (vestibular, ENEM ou matrícula direta). */}
+            <MatriculaForm
+              niveis={niveis}
+              cursos={cursos}
+              mostrarFormaIngresso
+              textoBotao="Finalizar inscrição"
+            />
           </Suspense>
         </Container>
       </section>

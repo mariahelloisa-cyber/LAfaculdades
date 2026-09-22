@@ -5,6 +5,13 @@ import { StatCard, badgeCores } from "./AdminUI";
 
 const ACOES = [
   {
+    href: "/admin/matriculas",
+    titulo: "Matrículas recebidas",
+    desc: "Contatos enviados pelo formulário do site",
+    icon: "matriculas",
+    cor: "rosa" as const,
+  },
+  {
     href: "/admin/cursos",
     titulo: "Gerenciar cursos",
     desc: "Adicionar, editar e destacar cursos",
@@ -44,11 +51,13 @@ const ACOES = [
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
 
-  const [posts, cursos, niveis, destaques] = await Promise.all([
+  const [posts, cursos, niveis, destaques, matriculas, matriculasNovas] = await Promise.all([
     supabase.from("blog_posts").select("*", { count: "exact", head: true }),
     supabase.from("courses").select("*", { count: "exact", head: true }),
     supabase.from("course_niveis").select("*", { count: "exact", head: true }),
     supabase.from("courses").select("*", { count: "exact", head: true }).eq("destaque_home", true),
+    supabase.from("matriculas").select("*", { count: "exact", head: true }),
+    supabase.from("matriculas").select("*", { count: "exact", head: true }).eq("status", "novo"),
   ]);
 
   const atualizadoEm = new Date().toLocaleString("pt-BR", {
@@ -73,6 +82,13 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StatCard
+          label="Matrículas recebidas"
+          value={matriculas.count ?? 0}
+          note={`${matriculasNovas.count ?? 0} aguardando contato`}
+          icon="matriculas"
+          cor="rosa"
+        />
         <StatCard
           label="Cursos cadastrados"
           value={cursos.count ?? 0}
