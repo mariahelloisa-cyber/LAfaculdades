@@ -18,7 +18,7 @@ const passos = [
     n: "1",
     titulo: "Fale com um consultor",
     texto:
-      "Clique em matricule-se e caia direto no WhatsApp com um consultor, que tira suas dúvidas e faz sua inscrição.",
+      "Clique em matricule-se e preencha o formulário. No WhatsApp um consultor irá entrar em contato, tirar suas dúvidas e fazer sua inscrição.",
   },
   {
     n: "2",

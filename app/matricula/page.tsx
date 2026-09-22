@@ -145,7 +145,7 @@ export default async function MatriculaPage() {
       <PageHero
         eyebrow="Matrícula"
         title="Seu futuro começa no curso que você escolher."
-        description="Não tem formulário nem prova: escolha um curso e matricule-se. Um consultor finaliza tudo com você pelo WhatsApp."
+        description="Sem complicação: escolha um curso e matricule-se preenchendo o formulário. Um consultor finaliza tudo com você pelo WhatsApp."
         imageUrl="/images/matricula-hero.jpg"
       >
         <div className="mt-9 flex flex-col gap-3 sm:flex-row">
