@@ -12,6 +12,7 @@ type CourseFormValues = {
   nivelId: string;
   area: string;
   duracao: string;
+  cargaHoraria: string;
   mensalidade: number;
   mensalidadeDe: number;
   capaUrl: string;
@@ -69,6 +70,23 @@ export default function CourseForm({
             defaultValue={defaultValues?.duracao}
             className={inputClass}
           />
+          <p className="mt-1 text-xs text-muted">Quanto tempo leva. Vira um balão no card do curso.</p>
+        </div>
+
+        <div>
+          <label htmlFor="carga_horaria" className="text-sm font-semibold text-navy-950">
+            Carga horária
+          </label>
+          <input
+            id="carga_horaria"
+            name="carga_horaria"
+            placeholder="570h"
+            defaultValue={defaultValues?.cargaHoraria}
+            className={inputClass}
+          />
+          <p className="mt-1 text-xs text-muted">
+            Aparece no card e no lugar da modalidade no topo da página do curso.
+          </p>
         </div>
 
         <div>

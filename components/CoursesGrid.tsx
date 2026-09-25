@@ -33,7 +33,11 @@ export default function CoursesGrid({ courses }: { courses: Course[] }) {
         <SearchInput value={query} onChange={setQuery} />
       </div>
 
-      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-[10px]">
+      <p className="mt-8 text-xs font-medium text-muted">
+        {filtered.length} {filtered.length === 1 ? "curso" : "cursos"}
+      </p>
+
+      <div className="mt-3 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-[10px]">
         {filtered.map((course) => (
           <CourseCard key={course.slug} course={course} />
         ))}

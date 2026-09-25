@@ -55,16 +55,30 @@ export default function CourseDetail({
         </svg>
       ),
     },
-    {
-      label: "Modalidade",
-      valor: course.modalidade,
-      icone: (
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden>
-          <rect x="3" y="4.5" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2" />
-          <path d="M8 20h8M12 16.5V20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </svg>
-      ),
-    },
+    /* Carga horária no lugar da modalidade. Curso que ainda não teve a carga
+       preenchida no admin continua mostrando a modalidade, para o selo não
+       ficar vazio. */
+    course.cargaHoraria
+      ? {
+          label: "Carga horária",
+          valor: course.cargaHoraria,
+          icone: (
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <path d="M6.5 3h11M6.5 21h11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path d="M8 3v3.2c0 2.1 4 3.5 4 5.8s-4 3.7-4 5.8V21M16 3v3.2c0 2.1-4 3.5-4 5.8s4 3.7 4 5.8V21" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+            </svg>
+          ),
+        }
+      : {
+          label: "Modalidade",
+          valor: course.modalidade,
+          icone: (
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <rect x="3" y="4.5" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2" />
+              <path d="M8 20h8M12 16.5V20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          ),
+        },
     {
       label: "Nível",
       valor: course.nivelNome,

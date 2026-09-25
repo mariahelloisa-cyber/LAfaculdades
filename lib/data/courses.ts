@@ -38,6 +38,7 @@ export type Course = {
   area: string;
   modalidade: string;
   duracao: string;
+  cargaHoraria: string;
   mensalidade: number;
   mensalidadeDe: number;
   capaUrl: string;
@@ -68,6 +69,7 @@ type CourseRow = {
   area: string;
   modalidade: string;
   duracao: string;
+  carga_horaria: string | null;
   mensalidade: number;
   mensalidade_de: number;
   capa_url: string;
@@ -95,7 +97,7 @@ const COURSE_FIELDS_BASE =
   "id, slug, nome, area, modalidade, duracao, mensalidade, mensalidade_de, capa_url, resumo, descricao, destaques, destaque_home";
 
 /* Campos da página "Saiba mais" — adicionados pelo schema.sql. */
-const COURSE_FIELDS = `${COURSE_FIELDS_BASE}, para_quem, atuacao, grade`;
+const COURSE_FIELDS = `${COURSE_FIELDS_BASE}, carga_horaria, para_quem, atuacao, grade`;
 
 type CourseQueryResult = {
   data: unknown;
@@ -106,10 +108,12 @@ type CourseQueryResult = {
  *  não tenha recebido o ALTER TABLE do schema.sql (erro 42703), repete sem
  *  eles — assim o site não fica sem cursos antes da migração rodar. */
 async function queryCourses(
-  run: (fields: string) => PromiseLike<CourseQueryResult>
+  run: (fields: string) => PromiseLike<CourseQueryResult>,
+  fields = COURSE_FIELDS,
+  semColunasNovas = COURSE_FIELDS_BASE
 ): Promise<CourseQueryResult> {
-  const resultado = await run(COURSE_FIELDS);
-  if (resultado.error?.code === "42703") return run(COURSE_FIELDS_BASE);
+  const resultado = await run(fields);
+  if (resultado.error?.code === "42703") return run(semColunasNovas);
   return resultado;
 }
 
@@ -123,6 +127,7 @@ function mapCourse(row: CourseRow): Course {
     area: row.area,
     modalidade: row.modalidade,
     duracao: row.duracao,
+    cargaHoraria: row.carga_horaria ?? "",
     mensalidade: row.mensalidade,
     mensalidadeDe: row.mensalidade_de,
     capaUrl: row.capa_url,
@@ -245,16 +250,60 @@ export async function getFeaturedCourses(): Promise<Course[]> {
   return (data as unknown as CourseRow[]).map(mapCourse);
 }
 
+/* O bloco "Cursos relacionados" só monta CourseCard, que não usa descrição,
+   grade nem os textos da página do curso. Buscar só o que o card mostra evita
+   baixar ~115 KB (os 150 cursos inteiros) para escolher 4. Os campos pesados
+   voltam vazios de propósito. */
+const COURSE_CARD_FIELDS =
+  "id, slug, nome, area, modalidade, duracao, mensalidade, mensalidade_de, capa_url, destaque_home";
+
+function mapCourseCard(row: Partial<CourseRow> & { slug: string }): Course {
+  return {
+    id: row.id ?? "",
+    slug: row.slug,
+    nome: row.nome ?? "",
+    nivelSlug: row.course_niveis?.slug ?? "",
+    nivelNome: row.course_niveis?.nome ?? "",
+    area: row.area ?? "",
+    modalidade: row.modalidade ?? "",
+    duracao: row.duracao ?? "",
+    cargaHoraria: row.carga_horaria ?? "",
+    mensalidade: row.mensalidade ?? 0,
+    mensalidadeDe: row.mensalidade_de ?? 0,
+    capaUrl: row.capa_url ?? "",
+    resumo: "",
+    descricao: "",
+    destaques: [],
+    destaqueHome: row.destaque_home ?? false,
+    paraQuem: [],
+    atuacao: [],
+    grade: [],
+  };
+}
+
 /** Outros cursos do mesmo nível para o bloco "Cursos relacionados" — prioriza
  *  a mesma área de interesse e completa com os demais do nível. */
-export async function getRelatedCourses(
-  course: Course,
-  limit = 4
-): Promise<Course[]> {
-  const doNivel = (await getCoursesByNivelSlug(course.nivelSlug)).filter(
-    (c) => c.slug !== course.slug
-  );
-  const mesmaArea = doNivel.filter((c) => c.area === course.area);
-  const resto = doNivel.filter((c) => c.area !== course.area);
-  return [...mesmaArea, ...resto].slice(0, limit);
+export async function getRelatedCourses(course: Course, limit = 4): Promise<Course[]> {
+  if (!course.nivelSlug) return [];
+
+  /* Duas consultas curtas e limitadas no banco, em vez de uma grande filtrada
+     na memória do Worker: primeiro a mesma área, depois o resto do nível. */
+  const busca = (mesmaArea: boolean, quantidade: number) =>
+    queryCourses((fields) => {
+      const q = supabasePublic
+        .from("courses")
+        .select(`${fields}, course_niveis!inner(slug, nome)`)
+        .eq("course_niveis.slug", course.nivelSlug)
+        .neq("slug", course.slug);
+      return (mesmaArea ? q.eq("area", course.area) : q.neq("area", course.area))
+        .order("nome", { ascending: true })
+        .limit(quantidade);
+    }, `${COURSE_CARD_FIELDS}, carga_horaria`, COURSE_CARD_FIELDS);
+
+  const { data: daArea } = await busca(true, limit);
+  const mesmaArea = ((daArea ?? []) as unknown as CourseRow[]).map(mapCourseCard);
+  if (mesmaArea.length >= limit) return mesmaArea.slice(0, limit);
+
+  const { data: resto } = await busca(false, limit - mesmaArea.length);
+  return [...mesmaArea, ...((resto ?? []) as unknown as CourseRow[]).map(mapCourseCard)];
 }

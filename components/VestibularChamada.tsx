@@ -52,8 +52,6 @@ export default function VestibularChamada() {
             sizes="(min-width: 1024px) 340px, 260px"
             className="relative h-auto w-[240px] sm:w-[290px] lg:w-[340px]"
           />
-          {/* A foto termina num corte reto: o degradê a dissolve no fundo
-              para o título poder subir por cima dela. */}
           <div
             aria-hidden
             className="absolute inset-x-0 bottom-0 h-[65%]"

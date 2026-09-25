@@ -15,6 +15,13 @@ const headingFont = Poppins({
   weight: ["600", "700", "800"],
 });
 
+/* ISR: as páginas públicas são servidas do cache (R2) e regeneradas em segundo
+   plano a cada 5 minutos, então o que você altera no admin aparece sozinho
+   nesse prazo — ou na hora, pelo revalidatePath() das ações do admin.
+   Fica no layout raiz porque o menu de categorias acima também vem do banco.
+   As telas de /admin leem cookies, são dinâmicas e ignoram isto. */
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: {
     default: "LA Faculdade — Educação acessível e de qualidade para todos",

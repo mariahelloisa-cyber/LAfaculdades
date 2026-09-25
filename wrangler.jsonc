@@ -11,6 +11,39 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  /* Cache incremental do Next (ISR). Sem ele o Worker re-renderiza cada página
+     do zero a cada visita, o que estourava o limite de memória (erro 1102). */
+  "r2_buckets": [
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "lafaculdades-cache"
+    }
+  ],
+  /* Guarda quando cada tag foi revalidada — é o que faz o revalidatePath()
+     das ações do admin realmente invalidar as páginas já cacheadas. */
+  "d1_databases": [
+    {
+      "binding": "NEXT_TAG_CACHE_D1",
+      "database_name": "lafaculdades-cache-tags",
+      "database_id": "29e4d0c6-8c9b-4937-a8ab-690a7d4d1809"
+    }
+  ],
+  /* Fila que regenera a página em segundo plano quando ela vence, para o
+     visitante nunca esperar o re-render. */
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "NEXT_CACHE_DO_QUEUE",
+        "class_name": "DOQueueHandler"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["DOQueueHandler"]
+    }
+  ],
   "vars": {
     "NEXT_PUBLIC_SUPABASE_URL": "https://nfklgwtncdaoembrmiar.supabase.co",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ma2xnd3RuY2Rhb2VtYnJtaWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxNjc2MjgsImV4cCI6MjEwMzc0MzYyOH0.jXIvp7TJL9mUHJwaxu6IEDFo_kOlIwsJosfNpn7WqeU"

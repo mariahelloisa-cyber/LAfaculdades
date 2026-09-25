@@ -13,7 +13,7 @@ export default async function EditarCursoPage({ params }: { params: Promise<{ id
     supabase
       .from("courses")
       .select(
-        "id, slug, nome, nivel_id, area, modalidade, duracao, mensalidade, mensalidade_de, capa_url, resumo, descricao, destaques, destaque_home, para_quem, atuacao, grade"
+        "id, slug, nome, nivel_id, area, modalidade, duracao, carga_horaria, mensalidade, mensalidade_de, capa_url, resumo, descricao, destaques, destaque_home, para_quem, atuacao, grade"
       )
       .eq("id", id)
       .maybeSingle(),
@@ -37,6 +37,7 @@ export default async function EditarCursoPage({ params }: { params: Promise<{ id
             nivelId: curso.nivel_id,
             area: curso.area,
             duracao: curso.duracao,
+            cargaHoraria: curso.carga_horaria ?? "",
             mensalidade: curso.mensalidade,
             mensalidadeDe: curso.mensalidade_de,
             capaUrl: curso.capa_url,

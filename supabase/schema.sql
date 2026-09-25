@@ -162,6 +162,10 @@ create table if not exists courses (
 alter table courses drop column if exists tipo;
 alter table courses drop column if exists modalidades;
 
+-- Carga horária total do curso ("570h"). Fica ao lado da duração: a duração diz
+-- quanto tempo leva ("4 semestres") e a carga horária, quantas horas tem.
+alter table courses add column if not exists carga_horaria text not null default '';
+
 -- Conteúdo da página "Saiba mais" do curso. Todos opcionais: cada bloco só
 -- aparece no site quando o curso tem conteúdo preenchido no admin.
 alter table courses add column if not exists para_quem text[] not null default '{}';

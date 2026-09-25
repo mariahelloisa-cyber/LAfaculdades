@@ -39,6 +39,7 @@ function parseForm(formData: FormData) {
   const nivel_id = String(formData.get("nivel_id") ?? "").trim();
   const area = String(formData.get("area") ?? "").trim();
   const duracao = String(formData.get("duracao") ?? "").trim();
+  const carga_horaria = String(formData.get("carga_horaria") ?? "").trim();
   const resumo = String(formData.get("resumo") ?? "").trim();
   const descricao = String(formData.get("descricao") ?? "").trim();
   const destaque_home = formData.get("destaque_home") === "on";
@@ -56,6 +57,7 @@ function parseForm(formData: FormData) {
     nivel_id,
     area,
     duracao,
+    carga_horaria,
     mensalidade,
     mensalidade_de,
     resumo,
