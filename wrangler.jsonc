@@ -13,10 +13,10 @@
   },
   /* Cache incremental do Next (ISR). Sem ele o Worker re-renderiza cada página
      do zero a cada visita, o que estourava o limite de memória (erro 1102). */
-  "r2_buckets": [
+  "kv_namespaces": [
     {
-      "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "lafaculdades-cache"
+      "binding": "NEXT_INC_CACHE_KV",
+      "id": "39e9ce701cf446a89a0e53ef0b4d15e1"
     }
   ],
   /* Guarda quando cada tag foi revalidada — é o que faz o revalidatePath()
