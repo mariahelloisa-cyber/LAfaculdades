@@ -22,11 +22,7 @@ const faqs = [
     resposta:
       "Sim. A LA Faculdades é credenciada pelo MEC (E-MEC 26591) e os diplomas emitidos têm validade em todo o território nacional.",
   },
-  {
-    pergunta: "Como funciona o financiamento LA Bank?",
-    resposta:
-      "O LA Bank é o financiamento estudantil da própria LA Faculdades, sem banco no meio do caminho e sem necessidade de fiador.",
-  },
+  
   {
     pergunta: "Onde consigo acessar a área do aluno?",
     resposta:
