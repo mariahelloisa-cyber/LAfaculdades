@@ -197,15 +197,17 @@ export default function LaBankPage() {
           </p>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/vestibular/inscricao"
+            <a
+              href={SITE.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-bold text-[#DB1069] transition-transform hover:scale-[1.02]"
             >
               Simular minha matrícula
               <svg width="19" height="14" viewBox="0 0 20 14" fill="none" className="transition-transform group-hover:translate-x-1" aria-hidden>
                 <path d="M1 7h17M12.5 1 18.5 7l-6 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </Link>
+            </a>
             <a
               href={SITE.whatsapp}
               target="_blank"
