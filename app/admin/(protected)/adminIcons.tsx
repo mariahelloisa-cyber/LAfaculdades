@@ -39,6 +39,12 @@ export const adminIcons: Record<string, ReactNode> = {
       <path d="M9 11h6M9 15h4" />
     </>
   ),
+  vestibular: (
+    <>
+      <path d="M3 9.2 12 5l9 4.2-9 4.2-9-4.2Z" />
+      <path d="M7 11.6V16c0 1.2 2.2 2.2 5 2.2s5-1 5-2.2v-4.4" />
+    </>
+  ),
   imagem: (
     <>
       <rect x="3" y="4" width="18" height="16" rx="2" />

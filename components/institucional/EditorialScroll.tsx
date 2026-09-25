@@ -364,7 +364,7 @@ export default function EditorialScroll() {
       <section className="ed-intro" aria-labelledby="ed-intro-titulo">
         <h2 id="ed-intro-titulo" className="ed-display ed-intro__head">
           <span className="ed-line">Educação que cabe</span>
-          <span className="ed-line">na sua vida.</span>
+          <span className="ed-line">no seu bolso.</span>
         </h2>
 
         <div className="ed-intro__media">

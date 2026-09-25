@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s — LA Faculdade",
   },
   description:
-    "LA Faculdade (E-MEC 18263): graduação e pós-graduação com diploma reconhecido pelo MEC, vestibular próprio, ingresso pela nota do ENEM e financiamento próprio pelo LA Bank.",
+    "LA Faculdade (E-MEC 26591): graduação e pós-graduação com diploma reconhecido pelo MEC, vestibular próprio, ingresso pela nota do ENEM e financiamento próprio pelo LA Bank.",
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {

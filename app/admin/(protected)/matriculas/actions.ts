@@ -29,6 +29,7 @@ export async function atualizarStatus(formData: FormData) {
     .eq("id", id);
 
   revalidatePath("/admin/matriculas");
+  revalidatePath("/admin/vestibular");
   revalidatePath("/admin");
 }
 
@@ -40,5 +41,6 @@ export async function excluirMatricula(formData: FormData) {
   await supabase.from("matriculas").delete().eq("id", id);
 
   revalidatePath("/admin/matriculas");
+  revalidatePath("/admin/vestibular");
   revalidatePath("/admin");
 }

@@ -1,7 +1,7 @@
 export const SITE = {
   name: "LA Faculdade",
   slogan: "Educação acessível e de qualidade para todos.",
-  emec: "18263",
+  emec: "26591",
   cnpj: "42.935.217/0001-33",
   address: "R. Formosa, 75 - São Paulo/SP - CEP 01049-000",
   email: "diretoria@laeducacao.com.br",
@@ -23,3 +23,18 @@ export const NAV_LINKS = [
   { label: "Institucional", href: "/institucional" },
   { label: "Contato", href: "/contato" },
 ];
+
+/* Vestibular online (/vestibular). Edite à vontade:
+   - provaUrl: link da prova online. Preenchido, o candidato vê o botão
+     "Começar minha prova" logo após se inscrever. Vazio, a tela de sucesso
+     avisa que o link chega pelo e-mail e pelo WhatsApp informados.
+   - tiposIngresso: opções do campo "Tipo de ingresso" do formulário. */
+export const VESTIBULAR = {
+  provaUrl: "",
+  tiposIngresso: [
+    "Primeira graduação",
+    "Segunda graduação (já tenho diploma)",
+    "Transferência de outra faculdade",
+    "Retorno aos estudos",
+  ],
+};

@@ -1,27 +1,13 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { cpfValido } from "@/lib/cpf";
 
 export type MatriculaFormState = { ok?: boolean; error?: string } | undefined;
 
 /** As três portas de entrada do site. O formulário é o mesmo; muda só o que
  *  o candidato marca aqui, para o gestor saber como ele quer ingressar. */
 export const FORMAS_INGRESSO = ["Matrícula direta", "Vestibular", "Nota do ENEM"] as const;
-
-/** CPF: valida os dois dígitos verificadores — evita que um número digitado
- *  errado só apareça quando o gestor tentar ligar para o candidato. */
-function cpfValido(cpf: string) {
-  if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
-
-  const digito = (ate: number) => {
-    let soma = 0;
-    for (let i = 0; i < ate; i++) soma += Number(cpf[i]) * (ate + 1 - i);
-    const resto = (soma * 10) % 11;
-    return resto === 10 ? 0 : resto;
-  };
-
-  return digito(9) === Number(cpf[9]) && digito(10) === Number(cpf[10]);
-}
 
 export async function criarMatricula(
   _prevState: MatriculaFormState,

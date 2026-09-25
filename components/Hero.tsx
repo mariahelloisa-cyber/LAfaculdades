@@ -32,7 +32,7 @@ export default function Hero({ videoUrl }: { videoUrl?: string }) {
         >
           Educação que
           <br />
-          cabe na sua vida
+          cabe no seu bolso
         </h1>
 
 

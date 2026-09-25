@@ -9,14 +9,14 @@ export const FAQ_CURSOS: FaqItem[] = [
     resposta: `A LA Faculdade é credenciada pelo MEC (E-MEC ${SITE.emec}) e os diplomas emitidos têm validade em todo o território nacional.`,
   },
   {
-    pergunta: "Como são as aulas e as provas?",
+    pergunta: "Como são as aulas?",
     resposta:
-      "As aulas ficam gravadas no Ambiente Virtual de Aprendizagem (AVA), disponíveis 24h. Você estuda no seu ritmo e faz as avaliações dentro dos prazos de cada disciplina.",
+      "Suas aulas ficam no Ambiente Virtual de Aprendizagem (AVA) e ficam disponíveis 24 horas por dia, 7 dias por semana. Isso significa que você tem total liberdade para estudar no seu próprio ritmo, de onde quiser!",
   },
   {
     pergunta: "Quando posso começar?",
     resposta:
-      "As turmas têm entradas contínuas. Concluindo a matrícula, o acesso ao AVA é liberado e você já começa a estudar.",
+      "Imediatamente! Assim que você receber os seus dados de acesso ao AVA, aulas e materiais estarão prontos e liberados para você dar o próximo passo na sua carreira.",
   },
   {
     pergunta: "Existe financiamento?",

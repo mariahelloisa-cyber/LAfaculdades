@@ -18,18 +18,18 @@ const passos = [
     n: "1",
     titulo: "Fale com um consultor",
     texto:
-      "Clique em matricule-se e preencha o formulário com seus dados e o curso desejado. A equipe de matrículas entra em contato para tirar suas dúvidas e concluir a inscrição.",
+      "Clique em matricule-se e preencha o formulário com seus dados e o curso desejado. A equipe comercial entrará em contato para esclarecimentos de dúvidas e conclusão da matrícula.",
   },
   {
     n: "2",
     titulo: "Confirme a matrícula",
     texto:
-      "A equipe de matrículas pede seus documentos e garante o 1º mês por R$ 49,90 enquanto houver vagas.",
+      "Após confirmação, serão solicitados alguns documentos para a formalização e conclusão da matrícula. Primeira parcela por apenas R$ 49,90, garanta já sua vaga. Oferta limitada.",
   },
   {
     n: "3",
     titulo: "Comece a estudar",
-    texto: "O acesso ao AVA é liberado e você já assiste às primeiras aulas do curso.",
+    texto: "Ao receber o acesso do AVA (Ambiente Virtual de Aprendizagem), poderá estudar de imediato. Aulas já estarão liberadas.",
   },
 ];
 

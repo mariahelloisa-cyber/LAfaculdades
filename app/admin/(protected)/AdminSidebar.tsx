@@ -9,6 +9,7 @@ import { logout } from "./actions";
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: "dashboard" },
   { href: "/admin/matriculas", label: "Matrículas", icon: "matriculas" },
+  { href: "/admin/vestibular", label: "Vestibular", icon: "vestibular" },
   { href: "/admin/cursos", label: "Cursos", icon: "cursos" },
   { href: "/admin/cursos/niveis", label: "Categoria", icon: "niveis" },
   { href: "/admin/blog", label: "Blog", icon: "blog" },

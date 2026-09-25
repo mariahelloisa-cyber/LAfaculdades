@@ -303,3 +303,10 @@ create policy "Authenticated delete matriculas" on matriculas
 -- Forma de ingresso escolhida pelo candidato (matrícula direta, vestibular
 -- ou nota do ENEM) — o mesmo formulário atende as três portas de entrada.
 alter table matriculas add column if not exists forma_ingresso text not null default 'Matrícula direta';
+
+-- Inscrição do vestibular online (/vestibular): além da forma de ingresso,
+-- o candidato informa modalidade, polo e tipo de ingresso. Ficam vazios nas
+-- matrículas que chegam pelos outros formulários.
+alter table matriculas add column if not exists modalidade text not null default '';
+alter table matriculas add column if not exists polo text not null default '';
+alter table matriculas add column if not exists tipo_ingresso text not null default '';

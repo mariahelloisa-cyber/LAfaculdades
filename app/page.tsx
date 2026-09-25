@@ -20,12 +20,12 @@ const faqs = [
   {
     pergunta: "O diploma da LA Faculdade tem validade nacional?",
     resposta:
-      "Sim. A LA Faculdade é credenciada pelo MEC (E-MEC 18263) e os diplomas emitidos têm validade em todo o território nacional.",
+      "Sim. A LA Faculdade é credenciada pelo MEC (E-MEC 26591) e os diplomas emitidos têm validade em todo o território nacional.",
   },
   {
     pergunta: "Qual é a forma de ingresso mais rápida?",
     resposta:
-      "A inscrição com pagamento direto pelo site é a via principal hoje. Você também pode usar a nota do ENEM e ganhar desconto na mensalidade — o vestibular próprio está em andamento.",
+      "A inscrição com pagamento direto pelo site é a via principal hoje. Você também pode usar a nota do ENEM e ganhar desconto na mensalidade — ou fazer o vestibular online, com a prova feita pela internet no seu tempo.",
   },
   {
     pergunta: "Como funciona o financiamento LA Bank?",

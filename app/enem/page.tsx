@@ -299,7 +299,7 @@ export default async function EnemPage() {
                 >
                   <h3 className="t-h3">Conheça o vestibular próprio</h3>
                   <p className="mt-3 text-[15px] leading-relaxed text-muted">
-                    Uma prova online, feita no seu tempo. Saiba como está o andamento dessa forma de ingresso.
+                    Inscrições abertas: faça a inscrição, receba a prova online e responda no seu tempo.
                   </p>
                   <span className="mt-auto pt-6 font-bold text-accent">Ver como funciona →</span>
                 </Link>
