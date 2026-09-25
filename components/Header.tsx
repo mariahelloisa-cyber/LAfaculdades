@@ -216,7 +216,7 @@ export default function Header() {
 
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
-              href="/matricula/inscricao"
+              href="/cursos"
               className="group inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-accent px-4 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-accent-hover sm:gap-2.5 sm:px-6 sm:text-[15px]"
             >
               Matricule-se
@@ -303,7 +303,7 @@ export default function Header() {
               Já sou aluno (AVA)
             </a>
             <Link
-              href="/matricula/inscricao"
+              href="/cursos"
               onClick={() => setMenuOpen(false)}
               className="mt-3 rounded-full bg-accent py-3.5 text-center font-bold text-white"
             >

@@ -315,7 +315,7 @@ export default function QuizResult({
             <div className="flex flex-col gap-3 sm:flex-row">
               {principal && (
                 <Link
-                  href={`/${principal.course.nivelSlug}`}
+                  href="/cursos"
                   className={`flex h-[52px] items-center justify-center rounded-[12px] border border-white/40 px-7 font-bold transition-colors hover:border-white ${FOCO} focus-visible:ring-offset-navy-800`}
                 >
                   Ver todos os cursos

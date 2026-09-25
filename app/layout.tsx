@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import SiteChrome from "@/components/SiteChrome";
-import { getCourseNiveis } from "@/lib/data/courses";
 
 const bodyFont = Inter({
   variable: "--font-body",
@@ -32,12 +31,10 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const courseNiveis = await getCourseNiveis();
-
   return (
     <html lang="pt-BR" className={`${bodyFont.variable} ${headingFont.variable} h-full`}>
       <body className="min-h-full flex flex-col font-sans antialiased text-ink">
-        <SiteChrome courseNiveis={courseNiveis}>{children}</SiteChrome>
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

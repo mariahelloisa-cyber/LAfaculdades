@@ -1,14 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { SITE } from "@/lib/constants";
-import type { CourseNivel } from "@/lib/data/courses";
 
-export default function Footer({ courseNiveis }: { courseNiveis: CourseNivel[] }) {
+export default function Footer() {
   const navCols = [
     {
       title: "Cursos",
       links: [
-        ...courseNiveis.map((n) => ({ label: n.nome, href: `/${n.slug}` })),
+        { label: "Todos os cursos", href: "/cursos" },
         { label: "Vestibular", href: "/vestibular" },
         { label: "Financiamento LA Bank", href: "/financiamento-la-bank" },
       ],
@@ -57,7 +56,7 @@ export default function Footer({ courseNiveis }: { courseNiveis: CourseNivel[] }
 
           <div className="flex flex-wrap items-center gap-6">
             <Link
-              href="/vestibular/inscricao"
+              href="/cursos"
               className="group inline-flex items-center gap-3 rounded-full bg-accent px-7 py-4 font-bold text-white transition-colors hover:bg-accent-hover"
             >
               Encontre seu curso

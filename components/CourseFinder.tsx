@@ -33,8 +33,6 @@ export default function CourseFinder({
       .filter((c) => !q || c.nome.toLowerCase().includes(q) || c.area.toLowerCase().includes(q));
   }, [courses, tab, query]);
 
-  const nivelSlug = courses.find((c) => c.nivelNome === tab)?.nivelSlug ?? "";
-
   /* A esteira esconde a barra de rolagem (ver .rail), então sem as setas não
      haveria como rolar com o mouse. Elas só aparecem quando há o que rolar —
      com 4 cursos ou menos a fileira cabe inteira e some. */
@@ -136,14 +134,12 @@ export default function CourseFinder({
       {niveis.length > 0 && (
         <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
           <FilterPills options={niveis} value={tab} onChange={setTab} />
-          {nivelSlug && (
-            <Link
-              href={`/${nivelSlug}`}
-              className="text-[13px] font-bold text-black underline underline-offset-4 hover:opacity-70"
-            >
-              Ver todos os cursos
-            </Link>
-          )}
+          <Link
+            href="/cursos"
+            className="text-[13px] font-bold text-black underline underline-offset-4 hover:opacity-70"
+          >
+            Ver todos os cursos
+          </Link>
         </div>
       )}
 

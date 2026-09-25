@@ -123,7 +123,7 @@ export default function CourseDetail({
               Início
             </Link>
             <span className="px-1.5 text-sky-300/60">/</span>
-            <Link href={`/${course.nivelSlug}`} className="hover:text-white">
+            <Link href="/cursos" className="hover:text-white">
               {course.nivelNome}
             </Link>
             <span className="px-1.5 text-sky-300/60">/</span>
@@ -430,10 +430,10 @@ export default function CourseDetail({
                 Cursos relacionados
               </AnimatedText>
               <Link
-                href={`/${course.nivelSlug}`}
+                href="/cursos"
                 className="text-sm font-bold text-navy-950 underline underline-offset-4 hover:opacity-70"
               >
-                Ver todos de {course.nivelNome}
+                Ver todos os cursos
               </Link>
             </div>
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-[10px]">
@@ -446,7 +446,7 @@ export default function CourseDetail({
       )}
 
       {/* ---------- Banner de fechamento ---------- */}
-      <CourseBannerCta href={`/${course.nivelSlug}`} />
+      <CourseBannerCta href="/cursos" />
 
       {/* ---------- Barra de matrícula ----------
           Entra quando o card lateral sai da tela e acompanha o resto da
