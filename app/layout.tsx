@@ -24,11 +24,11 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: {
-    default: "LA Faculdade — Educação acessível e de qualidade para todos",
-    template: "%s — LA Faculdade",
+    default: "LA Faculdades — Educação acessível e de qualidade para todos",
+    template: "%s — LA Faculdades",
   },
   description:
-    "LA Faculdade (E-MEC 26591): graduação e pós-graduação com diploma reconhecido pelo MEC, vestibular próprio, ingresso pela nota do ENEM e financiamento próprio pelo LA Bank.",
+    "LA Faculdades (E-MEC 26591): graduação e pós-graduação com diploma reconhecido pelo MEC, vestibular próprio, ingresso pela nota do ENEM e financiamento próprio pelo LA Bank.",
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {

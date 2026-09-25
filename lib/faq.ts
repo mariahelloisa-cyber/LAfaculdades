@@ -6,7 +6,7 @@ import type { FaqItem } from "@/components/FaqAccordion";
 export const FAQ_CURSOS: FaqItem[] = [
   {
     pergunta: "O diploma tem validade nacional?",
-    resposta: `A LA Faculdade é credenciada pelo MEC (E-MEC ${SITE.emec}) e os diplomas emitidos têm validade em todo o território nacional.`,
+    resposta: `A LA Faculdades é credenciada pelo MEC (E-MEC ${SITE.emec}) e os diplomas emitidos têm validade em todo o território nacional.`,
   },
   {
     pergunta: "Como são as aulas?",
@@ -18,9 +18,5 @@ export const FAQ_CURSOS: FaqItem[] = [
     resposta:
       "Imediatamente! Assim que você receber os seus dados de acesso ao AVA, aulas e materiais estarão prontos e liberados para você dar o próximo passo na sua carreira.",
   },
-  {
-    pergunta: "Existe financiamento?",
-    resposta:
-      "Sim. O LA Bank é o financiamento estudantil da própria LA Faculdade, sem banco no meio do caminho e sem necessidade de fiador.",
-  },
+  
 ];

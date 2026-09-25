@@ -15,7 +15,7 @@ import { getCourseNiveis, getFeaturedCourses } from "@/lib/data/courses";
 export const metadata: Metadata = {
   title: "Matrícula",
   description:
-    "A matrícula na LA Faculdade é simples: escolha o curso, clique em Saiba mais e depois em Matricule-se — um consultor finaliza tudo com você pelo WhatsApp.",
+    "A matrícula na LA Faculdades é simples: escolha o curso, clique em Saiba mais e depois em Matricule-se — um consultor finaliza tudo com você pelo WhatsApp.",
 };
 
 /* A matrícula não tem formulário no site: o aluno escolhe o curso, entra na
@@ -137,7 +137,7 @@ export default async function MatriculaPage() {
   /* Mesmo padrão dos botões da página de curso: a conversa já abre com a
      intenção escrita, só que aqui sem o nome do curso. */
   const whatsappHref = `${SITE.whatsapp}?text=${encodeURIComponent(
-    "Olá! Quero fazer minha matrícula na LA Faculdade."
+    "Olá! Quero fazer minha matrícula na LA Faculdades."
   )}`;
 
   return (
@@ -188,7 +188,7 @@ export default async function MatriculaPage() {
         <Container className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 py-4 sm:gap-x-20">
           <Image
             src="/images/logobranca-corte.png"
-            alt="LA Faculdade"
+            alt="LA Faculdades"
             width={160}
             height={56}
             className="h-10 w-auto sm:h-14"
@@ -290,7 +290,7 @@ export default async function MatriculaPage() {
           <Reveal>
             <h2 className="t-h2 text-navy-950">Outras formas de ingressar</h2>
             <p className="t-lead mt-5 max-w-2xl text-muted">
-              A matrícula direta é a via mais rápida, mas não é a única — e as condições abaixo podem
+              A matrícula é a via mais rápida, mas não é a única — e as condições abaixo podem
               ser somadas a ela.
             </p>
           </Reveal>

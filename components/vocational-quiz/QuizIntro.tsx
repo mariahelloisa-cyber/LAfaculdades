@@ -103,7 +103,7 @@ export default function QuizIntro() {
               />
               <h2 id="vq-card-cta-titulo" className="vq-card__title">
                 <span className="block">Pronto para</span> <span className="block">descobrir o curso</span>{" "}
-                <span className="block">que tem a sua cara?</span>
+                <span className="block">que combina com você?</span>
               </h2>
               <p className="vq-card__text">
                 Responda algumas perguntas rápidas e veja quais cursos da LA têm mais afinidade com o seu perfil.

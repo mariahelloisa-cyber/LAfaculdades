@@ -137,7 +137,7 @@ body {
 
 /* ---- Tema LA Bank ----
    Escopo para a página de financiamento: mantém o grid, a tipografia e o
-   shell da LA Faculdade, mas troca os acentos pela identidade do LA Bank. */
+   shell da LA Faculdades, mas troca os acentos pela identidade do LA Bank. */
 .theme-bank {
   --color-accent: #db1069;
   --color-accent-hover: #b70d57;
@@ -326,4 +326,51 @@ body {
     animation: hero-in-left 1.7s cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: var(--delay, 0ms);
   }
+}
+
+/* ---- Slider de faixa (dois thumbs) — filtro de carga horária ----
+   São dois <input type="range"> empilhados no mesmo track. O elemento
+   inteiro não recebe ponteiro (senão o de cima bloquearia o de baixo);
+   só os thumbs recebem, então cada alça é arrastável de forma
+   independente. O trilho colorido é uma <div> atrás dos dois. */
+.range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  outline: none;
+  margin: 0;
+  pointer-events: none;
+}
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 3px solid #fff;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 2px 8px rgba(23, 162, 224, 0.45);
+}
+.range-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 3px solid #fff;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 2px 8px rgba(23, 162, 224, 0.45);
+}
+.range-slider::-webkit-slider-runnable-track,
+.range-slider::-moz-range-track {
+  height: 22px;
+  background: transparent;
+  border: none;
 }

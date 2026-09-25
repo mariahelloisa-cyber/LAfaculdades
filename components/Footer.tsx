@@ -31,7 +31,7 @@ export default function Footer({ courseNiveis }: { courseNiveis: CourseNivel[] }
           <div className="flex flex-col gap-8 sm:flex-row sm:items-center sm:gap-10">
             <Image
               src="/images/logo-horizontal.png"
-              alt="LA Faculdade"
+              alt="LA Faculdades"
               width={2561}
               height={895}
               className="h-10 w-auto brightness-0 invert"
@@ -69,7 +69,7 @@ export default function Footer({ courseNiveis }: { courseNiveis: CourseNivel[] }
               href={SITE.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Instagram da LA Faculdade"
+              aria-label="Instagram da LA Faculdades"
               className="hover:text-accent"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -127,7 +127,9 @@ export default function Footer({ courseNiveis }: { courseNiveis: CourseNivel[] }
                   {SITE.email}
                 </a>
               </p>
-              <p>CNPJ {SITE.cnpj}</p>
+              <p>
+                Mantenedora: {SITE.mantenedora} — CNPJ {SITE.cnpj}
+              </p>
               <p>Código E-MEC {SITE.emec}</p>
             </address>
           </div>

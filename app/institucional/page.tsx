@@ -11,7 +11,7 @@ import { getSiteMediaUrls, type SiteMediaKey } from "@/lib/data/siteMedia";
 
 export const metadata: Metadata = {
   title: "Institucional",
-  description: "Conheça a missão, a visão e o credenciamento MEC da LA Faculdade.",
+  description: "Conheça a missão, a visão e o credenciamento MEC da LA Faculdades.",
 };
 
 const iconProps = {

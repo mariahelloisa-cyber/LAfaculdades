@@ -6,7 +6,7 @@ import { SITE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Contato",
-  description: "Fale com a LA Faculdade: endereço, e-mail, WhatsApp e formulário de contato.",
+  description: "Fale com a LA Faculdades: endereço, e-mail, WhatsApp e formulário de contato.",
 };
 
 export default function ContatoPage() {
@@ -22,6 +22,12 @@ export default function ContatoPage() {
               <div>
                 <dt className="font-bold text-navy-950">Endereço</dt>
                 <dd className="mt-1 text-muted">{SITE.address}</dd>
+              </div>
+              <div>
+                <dt className="font-bold text-navy-950">Mantenedora</dt>
+                <dd className="mt-1 text-muted">
+                  {SITE.mantenedora} — CNPJ {SITE.cnpj}
+                </dd>
               </div>
               <div>
                 <dt className="font-bold text-navy-950">E-mail</dt>
@@ -55,8 +61,8 @@ export default function ContatoPage() {
 
             <div className="mt-10 overflow-hidden rounded-2xl">
               <iframe
-                title="Localização LA Faculdade"
-                src="https://www.google.com/maps?q=R.+Formosa,+75+-+S%C3%A3o+Paulo+-+SP,+01049-000&output=embed"
+                title="Localização LA Faculdades"
+                src="https://www.google.com/maps?q=Rua+Conde+do+Pinhal,+78+-+Centro,+S%C3%A3o+Paulo+-+SP,+01049-000&output=embed"
                 width="100%"
                 height="260"
                 style={{ border: 0 }}

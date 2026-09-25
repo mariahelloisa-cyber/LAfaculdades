@@ -1,10 +1,11 @@
 export const SITE = {
-  name: "LA Faculdade",
+  name: "LA Faculdades",
   slogan: "Educação acessível e de qualidade para todos.",
   emec: "26591",
-  cnpj: "42.935.217/0001-33",
-  address: "R. Formosa, 75 - São Paulo/SP - CEP 01049-000",
-  email: "diretoria@laeducacao.com.br",
+  mantenedora: "Centro Educacional Fortaleza Ltda",
+  cnpj: "48.351.151/0001-10",
+  address: "Rua Conde do Pinhal, 78 - Centro - São Paulo/SP - CEP 01049-000",
+  email: "coordenacao.academica@facla.edu.br",
   instagram: "https://www.instagram.com/la.faculdadesoficial/",
   // Links dos cards "Acompanhe" da página institucional. Vazio = card sem link.
   facebook: "",

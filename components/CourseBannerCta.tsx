@@ -57,7 +57,7 @@ export default function CourseBannerCta({ href }: { href: string }) {
             {/* A marca é azul escura no arquivo; o filtro deixa ela branca. */}
             <Image
               src="/images/logo-horizontal.png"
-              alt="LA Faculdade"
+              alt="LA Faculdades"
               width={220}
               height={80}
               className="absolute right-10 top-1/2 z-10 hidden w-[190px] -translate-y-1/2 brightness-0 invert lg:block"

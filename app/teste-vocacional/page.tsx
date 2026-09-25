@@ -7,7 +7,7 @@ import type { QuizCourse } from "@/lib/vocational-quiz/types";
 export const metadata: Metadata = {
   title: "Teste vocacional",
   description:
-    "Responda 10 perguntas rápidas e descubra quais cursos da LA Faculdade combinam com o seu perfil. Leva cerca de 2 minutos.",
+    "Responda 10 perguntas rápidas e descubra quais cursos da LA Faculdades combinam com o seu perfil. Leva cerca de 2 minutos.",
 };
 
 export default async function TesteVocacionalPage() {

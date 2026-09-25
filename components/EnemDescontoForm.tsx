@@ -54,7 +54,7 @@ export default function EnemDescontoForm({
     const curso = cursosDoNivel.find((c) => c.slug === cursoSlug);
 
     const mensagem = [
-      "Olá! Quero usar minha nota do ENEM para conseguir desconto na LA Faculdade.",
+      "Olá! Quero usar minha nota do ENEM para conseguir desconto na LA Faculdades.",
       `Nome: ${nome}`,
       `Curso: ${curso ? curso.nome : "-"} (${nivel?.nome ?? "-"})`,
       `Minha nota do ENEM: ${nota}`,

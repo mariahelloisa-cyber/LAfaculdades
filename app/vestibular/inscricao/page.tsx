@@ -7,7 +7,7 @@ import { getAllCourses, getCourseNiveis } from "@/lib/data/courses";
 
 export const metadata: Metadata = {
   title: "Inscrição",
-  description: "Faça sua inscrição na LA Faculdade: escolha o curso, preencha seus dados e garanta sua vaga.",
+  description: "Faça sua inscrição na LA Faculdades: escolha o curso, preencha seus dados e garanta sua vaga.",
 };
 
 export default async function InscricaoPage() {

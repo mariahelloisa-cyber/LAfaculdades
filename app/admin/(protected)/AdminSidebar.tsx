@@ -40,7 +40,7 @@ export default function AdminSidebar({ email }: { email: string }) {
           <Image src="/images/logo-mark.png" alt="" width={44} height={44} className="h-7 w-7 object-contain" />
         </span>
         <span className="min-w-0">
-          <span className="block truncate text-[15px] font-bold leading-tight">LA Faculdade</span>
+          <span className="block truncate text-[15px] font-bold leading-tight">LA Faculdades</span>
           <span className="block text-[10px] font-bold uppercase tracking-wider text-sky-300">
             Painel administrativo
           </span>

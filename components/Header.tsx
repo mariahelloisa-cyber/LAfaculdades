@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { SITE } from "@/lib/constants";
-import type { CourseNivel } from "@/lib/data/courses";
 
 const mainLinks = [
   { label: "Por que a LA?", href: "/institucional" },
@@ -20,8 +19,8 @@ const ingressarLinks = [
 
 type NavLink = { label: string; href: string };
 
-/* Dropdown de navegação com realce deslizante: usado tanto para "Cursos"
-   quanto para "Ingressar", cada um com seu próprio estado de hover/pílula. */
+/* Dropdown de navegação com realce deslizante. "Cursos" deixou de usá-lo —
+   virou link direto para /cursos —, então hoje só "Ingressar" o usa. */
 function NavDropdown({ label, links }: { label: string; links: NavLink[] }) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -144,8 +143,7 @@ function NavDropdown({ label, links }: { label: string; links: NavLink[] }) {
   );
 }
 
-export default function Header({ courseNiveis }: { courseNiveis: CourseNivel[] }) {
-  const courseLinks = courseNiveis.map((n) => ({ label: n.nome, href: `/${n.slug}` }));
+export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -191,10 +189,10 @@ export default function Header({ courseNiveis }: { courseNiveis: CourseNivel[] }
             </svg>
           </button>
 
-          <Link href="/" className="shrink-0" aria-label="LA Faculdade — página inicial">
+          <Link href="/" className="shrink-0" aria-label="LA Faculdades — página inicial">
             <Image
               src="/images/logo-horizontal.png"
-              alt="LA Faculdade"
+              alt="LA Faculdades"
               width={2561}
               height={895}
               priority
@@ -204,7 +202,9 @@ export default function Header({ courseNiveis }: { courseNiveis: CourseNivel[] }
 
           {/* Desktop nav */}
           <nav className="hidden flex-1 items-center gap-8 lg:flex">
-            <NavDropdown label="Cursos" links={courseLinks} />
+            <Link href="/cursos" className="py-5 text-[15px] font-bold hover:text-accent">
+              Cursos
+            </Link>
             <NavDropdown label="Ingressar" links={ingressarLinks} />
 
             {mainLinks.map((l) => (
@@ -259,17 +259,13 @@ export default function Header({ courseNiveis }: { courseNiveis: CourseNivel[] }
       {menuOpen && (
         <div className="fixed inset-0 top-[58px] z-40 overflow-y-auto bg-navy-950 lg:hidden">
           <nav className="container-x flex flex-col py-6">
-            <span className="t-label mb-1 text-sky-400 uppercase">Cursos</span>
-            {courseLinks.map((c) => (
-              <Link
-                key={c.href}
-                href={c.href}
-                onClick={() => setMenuOpen(false)}
-                className="border-b border-white/10 py-4 text-lg font-bold"
-              >
-                {c.label}
-              </Link>
-            ))}
+            <Link
+              href="/cursos"
+              onClick={() => setMenuOpen(false)}
+              className="border-b border-white/10 py-4 text-lg font-bold"
+            >
+              Cursos
+            </Link>
             <span className="t-label mb-1 mt-4 text-sky-400 uppercase">Ingressar</span>
             {ingressarLinks.map((l) => (
               <Link

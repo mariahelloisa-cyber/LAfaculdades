@@ -44,7 +44,7 @@ export default async function AdminLoginPage() {
         <div className="relative h-7 w-40 sm:h-8 sm:w-44">
           <Image
             src="/images/logo-horizontal.png"
-            alt="LA Faculdade"
+            alt="LA Faculdades"
             fill
             priority
             className="object-contain object-left brightness-0 invert"
@@ -70,7 +70,7 @@ export default async function AdminLoginPage() {
         </div>
 
         <p className="text-[13px] text-white/40">
-          © {new Date().getFullYear()} LA Faculdade. Todos os direitos reservados.
+          © {new Date().getFullYear()} LA Faculdades. Todos os direitos reservados.
         </p>
       </div>
 

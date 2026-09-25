@@ -36,24 +36,20 @@ export default function CourseCard({ course }: { course: Course }) {
         </h3>
 
         {/* Balões: carga horária e duração. Curso sem carga horária cadastrada
-            cai na modalidade, para o card nunca ficar sem nenhum selo. */}
+            cai na modalidade, para o card nunca ficar sem nenhum selo. Nas
+            pós-graduações a duração foi cadastrada como carga horária ("570h"),
+            então o segundo balão só sai quando diz algo diferente do primeiro. */}
         <div className="mt-2.5 flex flex-wrap gap-1.5">
           <span className="flex h-[26px] items-center rounded-full bg-sky-200 px-2.5 text-[10px] font-semibold text-navy-900">
             {course.cargaHoraria || course.modalidade}
           </span>
-          {course.duracao && (
+          {course.duracao && course.duracao !== (course.cargaHoraria || course.modalidade) && (
             <span className="flex h-[26px] items-center rounded-full bg-white px-2.5 text-[10px] font-semibold text-black">
               {course.duracao}
             </span>
           )}
         </div>
 
-        <Link
-          href={`/${course.nivelSlug}/${course.slug}`}
-          className="mt-2 w-fit text-[12px] font-bold text-white underline underline-offset-4 hover:text-accent-soft"
-        >
-          Saiba mais
-        </Link>
       </div>
 
       {/* Faixa rosa de urgência */}

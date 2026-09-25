@@ -60,7 +60,7 @@ export default function MatriculaForm({
       <div className="rounded-2xl bg-navy-950 p-9 text-center">
         <h2 className="t-h3 text-white">Recebemos seus dados!</h2>
         <p className="mt-3 text-sky-200">
-          A equipe de matrículas da LA Faculdade vai entrar em contato pelo telefone e pelo e-mail
+          A equipe de matrículas da LA Faculdades vai entrar em contato pelo telefone e pelo e-mail
           informados para concluir a sua matrícula.
         </p>
         <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -228,7 +228,7 @@ export default function MatriculaForm({
       )}
 
       <p className="mt-5 text-xs leading-relaxed text-muted">
-        Ao enviar, seus dados são registrados com segurança e a equipe de matrículas da LA Faculdade
+        Ao enviar, seus dados são registrados com segurança e a equipe de matrículas da LA Faculdades
         entra em contato para concluir a sua matrícula.
       </p>
 

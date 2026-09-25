@@ -29,7 +29,7 @@ export default function SiteChrome({
       {/* data-site-chrome: animações com pin medem a altura daqui. */}
       <div className="sticky top-0 z-50" data-site-chrome>
         <AnnouncementBar />
-        <Header courseNiveis={courseNiveis} />
+        <Header />
       </div>
       <main className="flex-1">{children}</main>
       <Footer courseNiveis={courseNiveis} />

@@ -263,7 +263,7 @@ export default function VestibularForm({ cursos }: { cursos: Course[] }) {
           <rect x="4.5" y="10.5" width="15" height="9.5" rx="2.2" stroke="currentColor" strokeWidth="1.9" />
           <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
         </svg>
-        Seus dados ficam registrados com segurança e são usados só para o processo seletivo da LA Faculdade.
+        Seus dados ficam registrados com segurança e são usados só para o processo seletivo da LA Faculdades.
       </p>
 
       <button

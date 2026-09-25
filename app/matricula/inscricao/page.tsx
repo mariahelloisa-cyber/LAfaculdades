@@ -8,7 +8,7 @@ import { getAllCourses, getCourseNiveis } from "@/lib/data/courses";
 export const metadata: Metadata = {
   title: "Matricule-se",
   description:
-    "Preencha seus dados e escolha o curso: a equipe de matrículas da LA Faculdade entra em contato para concluir a sua matrícula.",
+    "Preencha seus dados e escolha o curso: a equipe de matrículas da LA Faculdades entra em contato para concluir a sua matrícula.",
 };
 
 export default async function MatriculaInscricaoPage() {

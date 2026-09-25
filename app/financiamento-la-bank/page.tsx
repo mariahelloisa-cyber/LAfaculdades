@@ -9,7 +9,7 @@ import { SITE } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Financiamento LA Bank",
   description:
-    "O LA Bank é o banco oficial da educação e o financiamento estudantil da LA Faculdade: sem banco externo, sem fiador e com aprovação na matrícula.",
+    "O LA Bank é o banco oficial da educação e o financiamento estudantil da LA Faculdades: sem banco externo, sem fiador e com aprovação na matrícula.",
 };
 
 const vantagens = [
@@ -106,7 +106,7 @@ const faqs = [
   {
     pergunta: "Quem pode usar o LA Bank?",
     resposta:
-      "Qualquer aluno matriculado em um curso de graduação ou pós-graduação da LA Faculdade pode solicitar o financiamento LA Bank.",
+      "Qualquer aluno matriculado em um curso de graduação ou pós-graduação da LA Faculdades pode solicitar o financiamento LA Bank.",
   },
   {
     pergunta: "Quanto custa o financiamento?",
@@ -166,11 +166,11 @@ export default function LaBankPage() {
         />
 
         <Container className="py-16 lg:py-20">
-          {/* Lockup: LA Faculdade + LA Bank */}
+          {/* Lockup: LA Faculdades + LA Bank */}
           <div className="flex flex-wrap items-center gap-5">
             <Image
               src="/images/logo-horizontal.png"
-              alt="LA Faculdade"
+              alt="LA Faculdades"
               width={2561}
               height={895}
               className="h-8 w-auto brightness-0 invert sm:h-9"
@@ -192,7 +192,7 @@ export default function LaBankPage() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg font-semibold leading-relaxed text-white/90 sm:text-xl">
-            Na LA Faculdade, o LA Bank vira o seu financiamento estudantil: sem banco externo, sem
+            Na LA Faculdades, o LA Bank vira o seu financiamento estudantil: sem banco externo, sem
             fiador e com aprovação na hora da matrícula.
           </p>
 
@@ -314,7 +314,7 @@ export default function LaBankPage() {
               <div className="mt-7 space-y-5 text-[16px] leading-relaxed text-muted">
                 <p>
                   O LA Bank é uma solução financeira inovadora, criada para atender às necessidades do
-                  ecossistema do Grupo LA Educação — o mesmo grupo do qual a LA Faculdade faz parte.
+                  ecossistema do Grupo LA Educação — o mesmo grupo do qual a LA Faculdades faz parte.
                 </p>
                 <p>
                   Sua missão é resolver o problema das altas tarifas e taxas de outras plataformas
@@ -341,7 +341,7 @@ export default function LaBankPage() {
               Pronto para começar sem travar no orçamento?
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-white/90">
-              Faça sua inscrição na LA Faculdade e peça o financiamento LA Bank na hora da matrícula.
+              Faça sua inscrição na LA Faculdades e peça o financiamento LA Bank na hora da matrícula.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link

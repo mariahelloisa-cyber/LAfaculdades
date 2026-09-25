@@ -26,13 +26,16 @@ export default function Hero({ videoUrl }: { videoUrl?: string }) {
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-navy-950/95 via-navy-950/70 to-navy-950/30" />
 
       <div className="container-x -mt-12 py-20 sm:-mt-18 lg:-mt-26 lg:py-24">
+        {/* O <br /> fixa as duas linhas; a largura máxima é em `em` (e não em
+            `ch`) para acompanhar a fonte em cada passo do clamp — assim a
+            linha maior cabe inteira e nenhuma delas quebra de novo. */}
         <h1
-          className="t-display max-w-[15ch] text-white"
-          style={{ fontSize: "clamp(2.5rem, 6.2vw, 5.5rem)" }}
+          className="t-display max-w-[14em] leading-[1.32] text-white"
+          style={{ fontSize: "clamp(2rem, 4.8vw, 4.25rem)" }}
         >
-          Educação que
+          Educação acessível e
           <br />
-          cabe no seu bolso
+          de qualidade para todos
         </h1>
 
 

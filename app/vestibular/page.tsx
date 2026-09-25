@@ -14,7 +14,7 @@ import { getAllCourses, getCoursesByNivelSlug } from "@/lib/data/courses";
 export const metadata: Metadata = {
   title: "Vestibular online",
   description:
-    "Inscrições abertas para o vestibular online da LA Faculdade: faça sua inscrição, receba a prova e faça tudo pela internet, no seu tempo.",
+    "Inscreva-se, faça a prova 100% online e avance no seu ritmo.",
 };
 
 const passos = [
@@ -31,12 +31,12 @@ const passos = [
   {
     n: "3",
     t: "Faça a prova online",
-    d: "Responda pelo celular ou computador, de onde estiver, sem ir até um polo.",
+    d: "Responda pelo celular ou computador, de onde estiver e sem sair de casa.",
   },
   {
     n: "4",
     t: "Resultado e matrícula",
-    d: "Em poucos dias úteis você recebe o resultado e, aprovado, já garante sua vaga.",
+    d: "Em poucos dias, o seu resultado fica pronto para você dar inicio na sua graduação e garantir sua vaga.",
   },
 ];
 
@@ -149,8 +149,8 @@ export default async function VestibularPage() {
     <>
       <PageHero
         eyebrow="Vestibular online · Inscrições abertas"
-        title="O vestibular da LA Faculdade está aberto."
-        description="Faça sua inscrição, receba a prova e faça tudo pela internet, no seu tempo. O resultado sai em poucos dias úteis."
+        title="O vestibular da LA Faculdades está aberto."
+        description="Inscreva-se, faça a prova 100% online e avance no seu ritmo.. O resultado sai em poucos dias úteis."
         imageUrl={vestibularFoto.src}
       >
         <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -190,7 +190,7 @@ export default async function VestibularPage() {
         <Container className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 py-4 sm:gap-x-20">
           <Image
             src="/images/logobranca-corte.png"
-            alt="LA Faculdade"
+            alt="LA Faculdades"
             width={160}
             height={56}
             className="h-10 w-auto sm:h-14"
@@ -287,7 +287,7 @@ export default async function VestibularPage() {
         <Container>
           <Reveal>
             <h2 className="t-h2 max-w-2xl text-navy-950">
-              Do cadastro à aprovação em{" "}
+              Da inscrição à aprovação em{" "}
               <span className="text-accent">4 passos</span>
             </h2>
           </Reveal>

@@ -18,34 +18,19 @@ import { getSiteMediaUrl } from "@/lib/data/siteMedia";
 
 const faqs = [
   {
-    pergunta: "O diploma da LA Faculdade tem validade nacional?",
+    pergunta: "O diploma da LA Faculdades tem validade nacional?",
     resposta:
-      "Sim. A LA Faculdade é credenciada pelo MEC (E-MEC 26591) e os diplomas emitidos têm validade em todo o território nacional.",
-  },
-  {
-    pergunta: "Qual é a forma de ingresso mais rápida?",
-    resposta:
-      "A inscrição com pagamento direto pelo site é a via principal hoje. Você também pode usar a nota do ENEM e ganhar desconto na mensalidade — ou fazer o vestibular online, com a prova feita pela internet no seu tempo.",
+      "Sim. A LA Faculdades é credenciada pelo MEC (E-MEC 26591) e os diplomas emitidos têm validade em todo o território nacional.",
   },
   {
     pergunta: "Como funciona o financiamento LA Bank?",
     resposta:
-      "O LA Bank é o financiamento estudantil da própria LA Faculdade, sem banco no meio do caminho e sem necessidade de fiador.",
+      "O LA Bank é o financiamento estudantil da própria LA Faculdades, sem banco no meio do caminho e sem necessidade de fiador.",
   },
   {
-    pergunta: "Existe área do aluno?",
+    pergunta: "Onde consigo acessar a área do aluno?",
     resposta:
-      "Sim. O Ambiente Virtual de Aprendizagem (AVA) é acessado pelo botão “Já sou aluno” no topo do site.",
-  },
-  {
-    pergunta: "Qual a diferença entre bacharelado, licenciatura e tecnólogo?",
-    resposta:
-      "O bacharelado é a formação mais ampla; a licenciatura habilita para a docência; o tecnólogo é mais curto e focado numa área específica do mercado.",
-  },
-  {
-    pergunta: "Preciso ir até uma unidade para estudar?",
-    resposta:
-      "Nos cursos EAD, não. Nos cursos semipresenciais há encontros presenciais para práticas de laboratório e estágio supervisionado.",
+      "O seu Ambiente Virtual de Aprendizagem (AVA) está a um clique de distância. Basta acessar o botão “Já sou aluno”, localizado no topo do nosso site, para entrar com seus dados.",
   },
 ];
 
@@ -81,13 +66,13 @@ export default async function HomePage() {
         art="/images/sobre1.jpg"
         eyebrow="Por que a LA?"
         title="Uma faculdade que cabe na rotina de quem já trabalha."
-        body="Você estuda no horário que der, com tutoria que responde de verdade, mensalidade que não aperta o orçamento e um diploma reconhecido pelo MEC que vale em todo o país."
+        body="Estude nos horários que preferir, conte com suporte e tutoria humanizada de verdade, pague mensalidades acessíveis e conquiste um diploma reconhecido pelo MEC."
         linkHref="/institucional"
         linkLabel="Conheça a instituição"
         badge={{ top: "Credenciada pelo", big: "MEC" }}
         cards={[
           { art: "/images/imagem1.jpg", label: "Tutoria ativa" },
-          { art: "/images/imagem2.jpg", label: "Ensino online" },
+          { art: "/images/imagem2.jpg", label: "Ensino a Distãncia" },
           { art: "/images/imagem3.jpg", label: "Mensalidade justa" },
         ]}
       />

@@ -13,7 +13,7 @@ import { getAllCourses, getCourseNiveis } from "@/lib/data/courses";
 
 export const metadata: Metadata = {
   title: "Nota do Enem vale desconto",
-  description: "Use a nota do seu Enem de qualquer edição anterior na LA Faculdade e garanta desconto na mensalidade, sem precisar fazer uma nova prova.",
+  description: "Use a nota do seu Enem de qualquer edição anterior na LA Faculdades e garanta desconto na mensalidade, sem precisar fazer uma nova prova.",
 };
 
 /* Frases da faixa que corre no rodapé da seção escura. Edite à vontade:
@@ -107,7 +107,7 @@ export default async function EnemPage() {
         <Container className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 py-4 sm:gap-x-20">
           <Image
             src="/images/logobranca-corte.png"
-            alt="LA Faculdade"
+            alt="LA Faculdades"
             width={160}
             height={56}
             className="h-10 w-auto sm:h-14"
@@ -287,7 +287,7 @@ export default async function EnemPage() {
                 >
                   <h3 className="t-h3">Faça sua matrícula direta</h3>
                   <p className="mt-3 text-[15px] leading-relaxed text-sky-200">
-                    A via mais rápida: preencha seus dados e finalize a inscrição direto pelo site.
+                    Preencha seus dados e finalize a inscrição com um consultor que entrará em contato.
                   </p>
                   <span className="mt-auto pt-6 font-bold text-accent">Ver como funciona →</span>
                 </Link>

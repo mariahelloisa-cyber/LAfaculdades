@@ -41,7 +41,7 @@ insert into blog_posts (slug, titulo, categoria, resumo, conteudo, data) values
   'Já fez o ENEM em algum ano anterior? Veja como usar a sua nota para ingressar direto, sem precisar fazer vestibular.',
   ARRAY[
     'Se você já fez o ENEM em qualquer edição anterior, pode usar a sua nota para ingressar em um curso de graduação sem precisar fazer uma nova prova.',
-    'Na LA Faculdade, o processo é simples: você informa o número de inscrição do ENEM, escolhe o curso desejado e a equipe de matrículas confirma o seu ingresso.',
+    'Na LA Faculdades, o processo é simples: você informa o número de inscrição do ENEM, escolhe o curso desejado e a equipe de matrículas confirma o seu ingresso.',
     'Não existe nota mínima fixa — a nota é usada como critério de ingresso simplificado, e não como corte eliminatório.'
   ],
   '2026-02-10'
@@ -50,9 +50,9 @@ insert into blog_posts (slug, titulo, categoria, resumo, conteudo, data) values
   'como-funciona-o-vestibular-online',
   'Vestibular online: como funciona e como se preparar',
   'Dicas de Estudo',
-  'Entenda como funciona o vestibular próprio da LA Faculdade, quanto tempo leva e o que estudar antes de fazer a prova.',
+  'Entenda como funciona o vestibular próprio da LA Faculdades, quanto tempo leva e o que estudar antes de fazer a prova.',
   ARRAY[
-    'O vestibular da LA Faculdade pode ser feito totalmente online, no seu tempo, sem precisar se deslocar até um polo.',
+    'O vestibular da LA Faculdades pode ser feito totalmente online, no seu tempo, sem precisar se deslocar até um polo.',
     'A prova é composta por questões de interpretação de texto, redação e conhecimentos gerais, com foco em avaliar o potencial do candidato e não decorar conteúdo.',
     'Você recebe o resultado em poucos dias úteis e, sendo aprovado, já pode iniciar o processo de matrícula.'
   ],
@@ -60,11 +60,11 @@ insert into blog_posts (slug, titulo, categoria, resumo, conteudo, data) values
 ),
 (
   'como-funciona-o-la-bank',
-  'LA Bank: como funciona o financiamento estudantil da LA Faculdade',
+  'LA Bank: como funciona o financiamento estudantil da LA Faculdades',
   'Carreira',
   'Conheça o LA Bank, o programa de financiamento próprio da instituição, sem burocracia de banco e sem fiador.',
   ARRAY[
-    'O LA Bank é o financiamento estudantil oferecido pela própria LA Faculdade, pensado para quem quer estudar sem esperar aprovação de banco.',
+    'O LA Bank é o financiamento estudantil oferecido pela própria LA Faculdades, pensado para quem quer estudar sem esperar aprovação de banco.',
     'Não é necessário apresentar fiador, e a análise é feita no momento da matrícula.',
     'As condições variam por curso e podem ser combinadas com bolsas e descontos — fale com a equipe de matrículas para simular o seu caso.'
   ],
