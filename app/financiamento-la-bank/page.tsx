@@ -136,6 +136,12 @@ const faqs = [
 ];
 
 export default function LaBankPage() {
+  /* Mesmo padrão do resto do site: a conversa já abre com a intenção
+     escrita, para o consultor saber que o assunto é a simulação do LA Bank. */
+  const simulacaoHref = `${SITE.whatsapp}?text=${encodeURIComponent(
+    "Olá! Quero simular minha matrícula com o LA Bank."
+  )}`;
+
   return (
     <div className="theme-bank">
       {/* Hero co-branded — cartões LA Bank sangrando na borda direita */}
@@ -198,7 +204,7 @@ export default function LaBankPage() {
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <a
-              href={SITE.whatsapp}
+              href={simulacaoHref}
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-bold text-[#DB1069] transition-transform hover:scale-[1.02]"
