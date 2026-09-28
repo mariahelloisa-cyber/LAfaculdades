@@ -102,7 +102,7 @@ const faqs = [
   {
     pergunta: "Preciso fazer prova para me matricular?",
     resposta:
-      "Graduação: Sim, através do vestibular simplificado ou nota do ENEM. Pós-Graduação: Não! Matrícula direta apenas com a sua documentação.",
+      "Graduação: Sim, através do vestibular simplificado ou nota do ENEM.\nPós-Graduação: Não! Matrícula direta apenas com a sua documentação.",
   },
   {
     pergunta: "Onde fica o formulário de matrícula?",
@@ -283,7 +283,7 @@ export default async function MatriculaPage() {
 
         <Container className="relative z-10">
           <Reveal>
-            <h2 className="t-h2 text-navy-950">Conheça outras formas de ingresso</h2>
+            <h2 className="t-h2 text-[clamp(2rem,3.6vw,3rem)]! text-navy-950">Conheça outras formas de ingresso</h2>
             <p className="t-lead mt-5 max-w-2xl text-muted">
               Você pode fazer sua matrícula imediata ou escolher caminhos com facilidades 
               de pagamento e garantir as melhores condições para o seu bolso:

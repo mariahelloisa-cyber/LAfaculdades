@@ -18,7 +18,7 @@ export default function FaqAccordion({ items }: { items: FaqItem[] }) {
               <path d="m5 9 7 7 7-7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </summary>
-          <p className="mt-3 text-[15px] leading-relaxed text-muted">{item.resposta}</p>
+          <p className="mt-3 whitespace-pre-line text-[15px] leading-relaxed text-muted">{item.resposta}</p>
         </details>
       ))}
     </div>
