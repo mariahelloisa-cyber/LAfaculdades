@@ -111,22 +111,22 @@ const faqs = [
   {
     pergunta: "Quanto custa o financiamento?",
     resposta:
-      "As condições variam por curso e duração. Fale com a equipe de matrículas pelo WhatsApp para simular o valor das parcelas para o seu caso.",
+      "As condições são personalizadas para cada curso e duração. Fale com a nossa equipe comercial via WhatsApp para fazer uma simulação gratuita e descobrir o valor exato das suas parcelas.",
   },
   {
-    pergunta: "O LA Bank substitui o FIES ou o financiamento bancário?",
+    pergunta: "O LA Bank substitui o FIES ou o financiamento bancário tradicional?",
     resposta:
-      "O LA Bank é uma alternativa própria do grupo, pensada para quem quer evitar a burocracia de bancos e financeiras externas.",
+      "Sim, o LA Bank é uma alternativa moderna e exclusiva da nossa instituição. Ele substitui os modelos tradicionais eliminando toda a burocracia de bancos e financeiras externas, garantindo uma aprovação muito mais rápida e sem complicações diretamente com a faculdade.",
   },
   {
     pergunta: "Preciso ter conta em algum banco específico?",
     resposta:
-      "Não. O LA Bank é o banco oficial da educação do Grupo LA Educação e cuida do processo de ponta a ponta junto com a instituição.",
+      "Não, nenhuma! O LA Bank é a fintech oficial do Grupo LA Educação e gerencia todo o seu financiamento de ponta a ponta. Você resolve tudo diretamente com a gente, sem burocracia e sem precisar abrir contas em outros bancos.",
   },
   {
-    pergunta: "Posso combinar o LA Bank com uma bolsa?",
+    pergunta: "Posso combinar o LA Bank com uma bolsa de estudos?",
     resposta:
-      "Sim. As condições do financiamento podem ser somadas às bolsas e descontos disponíveis para o seu curso.",
+      "Sim! Você pode somar os dois benefícios, reduzindo ainda mais o valor da sua mensalidade.",
   },
   {
     pergunta: "Em quanto tempo sai a aprovação?",
@@ -346,10 +346,10 @@ export default function LaBankPage() {
         <Container className="py-16 text-center lg:py-20">
           <Reveal>
             <h2 className="t-h2 mx-auto max-w-3xl text-white">
-              Pronto para começar sem travar no orçamento?
+              Pronto para começar sem pesar no orçamento?
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-white/90">
-              Faça sua inscrição na LA Faculdades e peça o financiamento LA Bank na hora da matrícula.
+              Faça sua inscrição na LA Faculdades e solicite o financiamento do LA Bank diretamente no ato da matrícula.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
