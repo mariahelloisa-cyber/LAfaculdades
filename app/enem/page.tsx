@@ -24,7 +24,7 @@ const FRASES_MARQUEE = [
   "Seu futuro começa agora",
   "Escolha sua graduação",
   "Prepare-se para o mercado",
-  "Estude. Evolua. Conquiste.",
+  "Estude, Evolua, Conquiste.",
 ];
 
 const destaques = [

@@ -44,6 +44,11 @@ export default function CourseDetail({
      escolhido — os dados caem no painel para a equipe entrar em contato. */
   const inscricaoHref = `/matricula/inscricao?curso=${encodeURIComponent(course.slug)}`;
 
+  /* Na pós a duração costuma vir cadastrada em horas, igual à carga horária —
+     nesse caso o segundo selo volta a mostrar a modalidade, sem repetir. */
+  const normaliza = (s?: string | null) => (s ?? "").replace(/\s+/g, "").toLowerCase();
+  const cargaRepetida = normaliza(course.cargaHoraria) === normaliza(course.duracao);
+
   const fatos = [
     {
       label: "Duração",
@@ -58,7 +63,7 @@ export default function CourseDetail({
     /* Carga horária no lugar da modalidade. Curso que ainda não teve a carga
        preenchida no admin continua mostrando a modalidade, para o selo não
        ficar vazio. */
-    course.cargaHoraria
+    course.cargaHoraria && !cargaRepetida
       ? {
           label: "Carga horária",
           valor: course.cargaHoraria,
