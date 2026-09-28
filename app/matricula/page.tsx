@@ -102,32 +102,27 @@ const faqs = [
   {
     pergunta: "Preciso fazer prova para me matricular?",
     resposta:
-      "Não. A matrícula direta dispensa prova: você escolhe o curso, clica em Matricule-se e finaliza a inscrição com um consultor pelo WhatsApp.",
+      "Graduação: Sim, através do vestibular simplificado ou nota do ENEM. Pós-Graduação: Não! Matrícula direta apenas com a sua documentação.",
   },
   {
     pergunta: "Onde fica o formulário de matrícula?",
     resposta:
-      "Não existe formulário no site. Todo o cadastro é feito pelo consultor no WhatsApp — assim você confirma cada dado e tira as dúvidas na mesma conversa.",
+      "Aqui no site, nós facilitamos tudo: todo o seu cadastro é feito diretamente por um de nossos consultores no WhatsApp. Dessa forma, você valida seus dados com total segurança e aproveita para tirar todas as suas dúvidas na mesma conversa.",
   },
   {
     pergunta: "Quanto tempo leva para a matrícula ficar pronta?",
     resposta:
-      "Em geral, no mesmo dia. Assim que o pagamento é confirmado e os documentos são conferidos, o acesso ao AVA é liberado e você já começa a assistir às aulas.",
+      "É tudo muito rápido e direto. Nós validamos seus documentos e confirmamos o pagamento em geral no mesmo dia. Com isso feito, seu login no AVA é liberado e você já poderá assistir às primeiras aulas.",
   },
   {
     pergunta: "Quanto custa a primeira mensalidade?",
     resposta:
-      "O 1º mês sai por R$ 49,90 enquanto houver vagas na turma. O valor das mensalidades seguintes você consulta com um consultor pelo WhatsApp.",
-  },
-  {
-    pergunta: "Posso me matricular em mais de um curso?",
-    resposta:
-      "Pode. Fale dos dois cursos na mesma conversa: o consultor organiza as duas matrículas e explica como ficam as mensalidades.",
+      "Apenas R$ 49,90! Esse é um valor promocional, válido apenas enquanto durarem as vagas da turma. Para saber o valor das mensalidades seguintes para o curso que você escolheu, converse com um de nossos consultores no WhatsApp e garanta uma condição exclusiva!",
   },
   {
     pergunta: "Dá para financiar a mensalidade?",
     resposta:
-      "Sim. Na hora da matrícula, peça o financiamento LA Bank ao consultor: é o financiamento estudantil da própria instituição, sem banco externo e sem fiador.",
+      "Com certeza! Através do LA Bank, nosso financiamento próprio, você parcela suas mensalidades direto com a gente. Como não exigimos fiador, o processo é muito mais rápido. Peça ao seu consultor para conhecer essa opção via WhatsApp!",
   },
 ];
 
@@ -144,8 +139,8 @@ export default async function MatriculaPage() {
     <>
       <PageHero
         eyebrow="Matrícula"
-        title="Seu futuro começa no curso que você escolher."
-        description="Sem complicação: escolha um curso e matricule-se preenchendo o formulário. Um consultor finaliza tudo com você pelo WhatsApp."
+        title="Sua transformação profissional começa aqui."
+        description="Escolha o curso ideal para os seus objetivos e faça sua inscrição. O resto é com a gente! Um consultor entrará em contato via WhatsApp para finalizar tudo com você de forma rápida e humanizada."
         imageUrl="/images/matricula-hero.jpg"
       >
         <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -237,10 +232,10 @@ export default async function MatriculaPage() {
         <div aria-hidden className="absolute inset-0 bg-navy-950/80" />
         <Container className="relative py-16 text-center lg:py-20">
           <Reveal>
-            <h2 className="t-h2 mx-auto max-w-3xl text-white">Já sabe o que quer cursar?</h2>
+            <h2 className="t-h2 mx-auto max-w-3xl text-white">Já sabe o que vai cursar?</h2>
             <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-sky-200">
-              Chame a equipe de matrículas no WhatsApp e diga o nome do curso. O consultor faz a
-              inscrição por você e tira as dúvidas na mesma conversa.
+              Chame nosso time de matrículas no WhatsApp e informe o nome do curso. Um consultor 
+              faz o seu cadastro e tira suas dúvidas de forma rápida e simplificada. Clique e comece hoje!
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
@@ -253,7 +248,7 @@ export default async function MatriculaPage() {
                 href="#cursos"
                 className="inline-flex items-center justify-center rounded-full border-2 border-white/70 px-9 py-4 font-bold text-white transition-colors hover:bg-white/15"
               >
-                Ver os cursos primeiro
+                Conhecer Cursos
               </a>
             </div>
           </Reveal>
@@ -288,10 +283,10 @@ export default async function MatriculaPage() {
 
         <Container className="relative z-10">
           <Reveal>
-            <h2 className="t-h2 text-navy-950">Outras formas de ingressar</h2>
+            <h2 className="t-h2 text-navy-950">Conheça outras formas de ingresso</h2>
             <p className="t-lead mt-5 max-w-2xl text-muted">
-              A matrícula é a via mais rápida, mas não é a única — e as condições abaixo podem
-              ser somadas a ela.
+              Você pode fazer sua matrícula imediata ou escolher caminhos com facilidades 
+              de pagamento e garantir as melhores condições para o seu bolso:
             </p>
           </Reveal>
 

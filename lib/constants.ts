@@ -12,7 +12,7 @@ export const SITE = {
   youtube: "",
   reclameAqui: "",
   googleMeuNegocio: "",
-  ava: "https://laFaculdadeava.simpleacademy.tech/login",
+  ava: "https://lafaculdadesava.simpleacademy.tech/login",
   whatsapp: "https://wa.me/5511969033012",
   whatsappDisplay: "(11) 96903-3012",
 };

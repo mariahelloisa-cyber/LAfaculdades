@@ -194,7 +194,7 @@ export default function LaBankPage() {
           </div>
 
           <h1 className="t-h2 mt-9 max-w-[16ch] text-white">
-            O banco oficial da educação.
+            Fintech oficial da LA Faculdades.
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg font-semibold leading-relaxed text-white/90 sm:text-xl">

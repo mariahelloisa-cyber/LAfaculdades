@@ -24,7 +24,6 @@ const ingresso: Ingresso[] = [
       "Inicie sua matrícula.",
       "Preencha seus dados e escolha o curso.",
       "Finalize a inscrição e nossa equipe entrará em contato.",
-      "Para Graduação é necessário passar pelo vestibular.",
     ],
     cta: "Iniciar inscrição",
     href: "/matricula/inscricao",

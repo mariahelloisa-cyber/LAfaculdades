@@ -36,9 +36,9 @@ export default function ContatoHero() {
             Estamos aqui para ajudar!
           </h1>
           <p className="mt-5 max-w-[52ch] text-[15px] font-semibold leading-relaxed text-white/90">
-            Nossa equipe está pronta para te atender e tirar todas as suas dúvidas sobre os cursos,
-            matrículas, formas de pagamento e tudo o que você precisar saber para começar a sua
-            jornada com a gente.
+            Nossa equipe está pronta para atender você e tirar todas as suas dúvidas 
+            sobre os cursos, matrículas, formas de pagamento e tudo o que você precisa 
+            saber para dar início à sua jornada conosco.
           </p>
         </div>
       </Container>
