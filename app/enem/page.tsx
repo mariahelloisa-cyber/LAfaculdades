@@ -80,7 +80,7 @@ const faqs = [
   {
     pergunta: "Como sei quanto de desconto vou receber?",
     resposta:
-      "Preencha o formulário desta página com a sua nota — quanto maior ela for, maior o desconto que a equipe de matrículas calcula para você.",
+      "A regra é proporcional: quanto maior for a sua pontuação, maior será o desconto que a a nossa equipe calculará para você. Preencha o formulário desta página com sua nota.",
   },
   {
     pergunta: "O desconto do ENEM soma com o financiamento LA Bank?",

@@ -78,11 +78,11 @@ export default function SplitFeature({
           {cards && (
             <div className="mt-8 grid grid-cols-3 gap-2.5 sm:gap-3.5">
               {cards.map((c) => (
-                <div key={c.label} className="overflow-hidden rounded-[14px] bg-white">
+                <div key={c.label} className="flex flex-col overflow-hidden rounded-[14px] bg-white">
                   <div className="relative h-[82px] sm:h-[95px]">
                     <Image src={src(c.art)} alt="" fill quality={95} className="object-cover" sizes="(max-width: 640px) 33vw, 180px" />
                   </div>
-                  <p className="bg-accent px-2.5 py-2.5 text-center text-[11px] font-bold leading-tight text-white">
+                  <p className="flex flex-1 items-center justify-center bg-accent px-2.5 py-2.5 text-center text-[11px] font-bold leading-tight text-white">
                     {c.label}
                   </p>
                 </div>

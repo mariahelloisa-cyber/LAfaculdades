@@ -260,6 +260,13 @@ export default function Header() {
         <div className="fixed inset-0 top-[58px] z-40 overflow-y-auto bg-navy-950 lg:hidden">
           <nav className="container-x flex flex-col py-6">
             <Link
+              href="/"
+              onClick={() => setMenuOpen(false)}
+              className="border-b border-white/10 py-4 text-lg font-bold"
+            >
+              Início
+            </Link>
+            <Link
               href="/cursos"
               onClick={() => setMenuOpen(false)}
               className="border-b border-white/10 py-4 text-lg font-bold"

@@ -33,7 +33,7 @@ export default function Footer() {
               alt="LA Faculdades"
               width={2561}
               height={895}
-              className="h-10 w-auto brightness-0 invert"
+              className="h-10 w-auto self-start object-contain brightness-0 invert sm:self-auto"
             />
             <div className="sm:border-l sm:border-white/20 sm:pl-10">
               <p className="text-[15px] font-bold">Central de Atendimento</p>

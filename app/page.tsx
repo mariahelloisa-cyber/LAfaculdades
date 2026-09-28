@@ -68,7 +68,7 @@ export default async function HomePage() {
         badge={{ top: "Credenciada pelo", big: "MEC" }}
         cards={[
           { art: "/images/imagem1.jpg", label: "Tutoria ativa" },
-          { art: "/images/imagem2.jpg", label: "Ensino a Distãncia" },
+          { art: "/images/imagem2.jpg", label: "Ensino a Distância" },
           { art: "/images/imagem3.jpg", label: "Mensalidade justa" },
         ]}
       />

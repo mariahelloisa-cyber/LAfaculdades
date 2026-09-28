@@ -14,14 +14,15 @@ export default function ContatoHero() {
 
       <Container className="relative z-10 grid items-center gap-8 py-12 lg:grid-cols-[46%_1fr] lg:gap-4 lg:py-0">
         {/* Puxada para fora da margem do container: a aluna encosta na borda
-            esquerda da tela, como na referência. */}
-        <div className="relative h-[300px] lg:-ml-12 lg:h-[480px] xl:-ml-24">
+            esquerda da tela, como na referência. No mobile some e o texto
+            abre a página. */}
+        <div className="relative hidden lg:-ml-12 lg:block lg:h-[480px] xl:-ml-24">
           <Image
             src={contato}
             alt=""
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 46vw"
+            sizes="(max-width: 1024px) 1px, 46vw"
             className="object-contain object-bottom lg:object-left-bottom"
           />
         </div>
