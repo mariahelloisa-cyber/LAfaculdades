@@ -68,14 +68,14 @@ const destaques = [
 const passos = [
   { n: "1", t: "Escolha seu curso", d: "Selecione a graduação ou pós-graduação que você quer cursar." },
   { n: "2", t: "Informe sua nota", d: "Preencha o formulário com a nota do ENEM de qualquer edição anterior." },
-  { n: "3", t: "Receba seu desconto", d: "A equipe de matrículas calcula o desconto que a sua nota garante." },
-  { n: "4", t: "Garanta sua vaga", d: "Finalize a matrícula já com o desconto aplicado na mensalidade." },
+  { n: "3", t: "Receba seu desconto", d: "Nossa equipe calcula e libera o seu desconto na hora do atendimento." },
+  { n: "4", t: "Garanta sua vaga", d: "Conclua sua matrícula já com o desconto aplicado na mensalidade." },
 ];
 
 const faqs = [
   {
     pergunta: "Minha nota do ENEM é de anos atrás, ainda vale?",
-    resposta: "Sim. Aceitamos a nota de qualquer edição anterior do ENEM, não precisa ser a mais recente.",
+    resposta: "Sim. Aceitamos o resultado de qualquer edição anterior do ENEM. Você não precisa da nota mais recente para começar a estudar.",
   },
   {
     pergunta: "Como sei quanto de desconto vou receber?",
@@ -84,7 +84,7 @@ const faqs = [
   },
   {
     pergunta: "O desconto do ENEM soma com o financiamento LA Bank?",
-    resposta: "Sim, as condições podem ser combinadas. Fale com a equipe de matrículas para simular o seu caso.",
+    resposta: "Sim! As condições podem ser combinadas. Fale com a nossa equipe de matrículas no WhatsApp e solicite uma simulação com o financiamento incluso.",
   },
   {
     pergunta: "Preciso levar o boletim impresso na matrícula?",
@@ -270,9 +270,9 @@ export default async function EnemPage() {
 
         <Container className="relative z-10">
           <Reveal>
-            <h2 className="t-h2 text-[clamp(2rem,3.6vw,3rem)]! text-navy-950">Conheça outras formas de ingresso</h2>
+            <h2 className="t-h2 text-[clamp(2rem,3.6vw,3rem)]! text-navy-950">Conheça outra forma de ingresso</h2>
             <p className="t-lead mt-5 max-w-2xl text-muted">
-              Prefere se matricular direto ou conhecer o vestibular próprio? Também temos esses caminhos.
+              Prefere se matricular direto? Também temos esse caminho.
             </p>
           </Reveal>
 
@@ -292,18 +292,7 @@ export default async function EnemPage() {
                   <span className="mt-auto pt-6 font-bold text-accent">Ver como funciona →</span>
                 </Link>
               </Reveal>
-              <Reveal delay={140}>
-                <Link
-                  href="/vestibular"
-                  className="flex h-full flex-col rounded-2xl bg-white p-6 text-navy-950 transition-transform hover:-translate-y-1 sm:min-h-[270px]"
-                >
-                  <h3 className="t-h3">Conheça o vestibular próprio</h3>
-                  <p className="mt-3 text-[15px] leading-relaxed text-muted">
-                    Inscrições abertas: faça a inscrição, receba a prova online e responda no seu tempo.
-                  </p>
-                  <span className="mt-auto pt-6 font-bold text-accent">Ver como funciona →</span>
-                </Link>
-              </Reveal>
+
             </div>
           </div>
         </Container>
