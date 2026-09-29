@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { isAdmin } from "@/lib/supabase/admin";
 import LoginForm from "./LoginForm";
 
 const FEATURES = [
@@ -30,7 +31,9 @@ export default async function AdminLoginPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (user) redirect("/admin");
+  /* Só admin volta direto para o painel. Um usuário logado que não é admin
+     fica aqui — mandar para /admin faria o layout devolvê-lo ao login, em loop. */
+  if (user && (await isAdmin(supabase))) redirect("/admin");
 
   return (
     <div className="flex min-h-screen flex-col lg:h-screen lg:flex-row">

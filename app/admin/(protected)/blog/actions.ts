@@ -2,8 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/admin";
 import { slugify } from "@/lib/slugify";
+import { MIDIA_INVALIDA, midiaValida } from "@/lib/mediaUrl";
 
 export type PostFormState = { error?: string } | undefined;
 
@@ -24,26 +25,20 @@ function parseForm(formData: FormData) {
   return { titulo, slug, categoria, resumo, conteudo, data };
 }
 
-async function requireUser() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/admin/login");
-  return supabase;
-}
-
 export async function createPost(_prevState: PostFormState, formData: FormData): Promise<PostFormState> {
-  const supabase = await requireUser();
+  const { supabase } = await requireAdmin();
   const post = parseForm(formData);
 
   if (!post.titulo || !post.categoria || !post.resumo || !post.data || post.conteudo.length === 0) {
     return { error: "Preencha todos os campos obrigatórios." };
   }
 
+  const imagemUrl = String(formData.get("imagem_url") ?? "").trim();
+  if (!midiaValida(imagemUrl)) return { error: MIDIA_INVALIDA };
+
   const { error } = await supabase.from("blog_posts").insert({
     ...post,
-    imagem_url: String(formData.get("imagem_url") ?? ""),
+    imagem_url: imagemUrl,
   });
   if (error) {
     return {
@@ -61,14 +56,15 @@ export async function updatePost(
   _prevState: PostFormState,
   formData: FormData
 ): Promise<PostFormState> {
-  const supabase = await requireUser();
+  const { supabase } = await requireAdmin();
   const post = parseForm(formData);
 
   if (!post.titulo || !post.categoria || !post.resumo || !post.data || post.conteudo.length === 0) {
     return { error: "Preencha todos os campos obrigatórios." };
   }
 
-  const imagemUrl = String(formData.get("imagem_url") ?? "");
+  const imagemUrl = String(formData.get("imagem_url") ?? "").trim();
+  if (!midiaValida(imagemUrl)) return { error: MIDIA_INVALIDA };
 
   const updateData: Record<string, unknown> = { ...post };
   if (imagemUrl) updateData.imagem_url = imagemUrl;
@@ -87,7 +83,7 @@ export async function updatePost(
 }
 
 export async function deletePost(formData: FormData) {
-  const supabase = await requireUser();
+  const { supabase } = await requireAdmin();
   const id = String(formData.get("id") ?? "");
   if (!id) return;
 

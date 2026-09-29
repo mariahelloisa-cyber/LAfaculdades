@@ -1,6 +1,37 @@
 
 create extension if not exists pgcrypto;
 
+-- ============================================================
+-- Administradores do painel
+-- Estar logado NÃO basta: o Supabase Auth aceita cadastro público
+-- (/auth/v1/signup) com a chave anon, que é pública. Toda escrita e toda
+-- leitura de dados pessoais exige que o usuário esteja nesta tabela.
+-- Ela não é exposta pela API (sem grants); gerencie pelo SQL Editor:
+--   insert into public.admins (user_id)
+--   select id from auth.users where email = 'admin@exemplo.com';
+-- ============================================================
+
+create table if not exists public.admins (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  created_at timestamptz not null default now()
+);
+
+alter table public.admins enable row level security;
+revoke all on public.admins from anon, authenticated;
+
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (select 1 from public.admins where user_id = (select auth.uid()));
+$$;
+
+revoke execute on function public.is_admin() from public;
+grant execute on function public.is_admin() to anon, authenticated;
+
 create table if not exists blog_posts (
   id uuid primary key default gen_random_uuid(),
   slug text not null unique,
@@ -28,9 +59,10 @@ create policy "Public read blog_posts" on blog_posts
   for select using (true);
 
 drop policy if exists "Authenticated manage blog_posts" on blog_posts;
--- Só usuários autenticados (login do admin) podem criar/editar/apagar.
-create policy "Authenticated manage blog_posts" on blog_posts
-  for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+drop policy if exists "Admin manage blog_posts" on blog_posts;
+-- Só administradores (tabela admins) podem criar/editar/apagar.
+create policy "Admin manage blog_posts" on blog_posts
+  for all to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
 
 -- Migração dos posts que já existiam em lib/data/posts.ts.
 insert into blog_posts (slug, titulo, categoria, resumo, conteudo, data) values
@@ -116,8 +148,9 @@ create policy "Public read course_niveis" on course_niveis
   for select using (true);
 
 drop policy if exists "Authenticated manage course_niveis" on course_niveis;
-create policy "Authenticated manage course_niveis" on course_niveis
-  for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+drop policy if exists "Admin manage course_niveis" on course_niveis;
+create policy "Admin manage course_niveis" on course_niveis
+  for all to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
 
 -- ATENÇÃO: excluir ou renomear o slug de um nível muda a URL daquela
 -- seção do site (ex.: /graduacao deixaria de existir) — afeta SEO e
@@ -186,8 +219,9 @@ create policy "Public read courses" on courses
   for select using (true);
 
 drop policy if exists "Authenticated manage courses" on courses;
-create policy "Authenticated manage courses" on courses
-  for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+drop policy if exists "Admin manage courses" on courses;
+create policy "Admin manage courses" on courses
+  for all to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
 
 -- Sem cursos de exemplo: os cursos reais da LA são cadastrados pelo admin
 -- (/admin/cursos). Os 8 cursos de teste que existiam aqui foram removidos
@@ -215,8 +249,9 @@ create policy "Public read site_media" on site_media
   for select using (true);
 
 drop policy if exists "Authenticated manage site_media" on site_media;
-create policy "Authenticated manage site_media" on site_media
-  for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+drop policy if exists "Admin manage site_media" on site_media;
+create policy "Admin manage site_media" on site_media
+  for all to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
 
 -- Valores padrão = o que já está no ar hoje, pra nada mudar visualmente
 -- até o admin trocar por uma mídia de verdade. (As fotos de hero de
@@ -242,21 +277,39 @@ insert into storage.buckets (id, name, public)
 values ('media', 'media', true)
 on conflict (id) do nothing;
 
+-- Só imagem e vídeo. Sem SVG nem HTML: servidos pelo domínio do Supabase,
+-- eles executariam script no navegador de quem abrisse o link.
+update storage.buckets
+set allowed_mime_types = array[
+  'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif',
+  'video/mp4', 'video/webm', 'video/quicktime'
+]
+where id = 'media';
+
+-- Sem policy de leitura pública: bucket público já entrega os arquivos pela
+-- URL /object/public/...; a policy só servia para listar o bucket inteiro
+-- pela API (qualquer visitante enumerava todos os arquivos).
 drop policy if exists "Public read media bucket" on storage.objects;
-create policy "Public read media bucket" on storage.objects
-  for select using (bucket_id = 'media');
+drop policy if exists "Admin read media bucket" on storage.objects;
+create policy "Admin read media bucket" on storage.objects
+  for select to authenticated using (bucket_id = 'media' and (select public.is_admin()));
 
 drop policy if exists "Authenticated upload media bucket" on storage.objects;
-create policy "Authenticated upload media bucket" on storage.objects
-  for insert to authenticated with check (bucket_id = 'media');
+drop policy if exists "Admin upload media bucket" on storage.objects;
+create policy "Admin upload media bucket" on storage.objects
+  for insert to authenticated with check (bucket_id = 'media' and (select public.is_admin()));
 
 drop policy if exists "Authenticated update media bucket" on storage.objects;
-create policy "Authenticated update media bucket" on storage.objects
-  for update to authenticated using (bucket_id = 'media');
+drop policy if exists "Admin update media bucket" on storage.objects;
+create policy "Admin update media bucket" on storage.objects
+  for update to authenticated
+  using (bucket_id = 'media' and (select public.is_admin()))
+  with check (bucket_id = 'media' and (select public.is_admin()));
 
 drop policy if exists "Authenticated delete media bucket" on storage.objects;
-create policy "Authenticated delete media bucket" on storage.objects
-  for delete to authenticated using (bucket_id = 'media');
+drop policy if exists "Admin delete media bucket" on storage.objects;
+create policy "Admin delete media bucket" on storage.objects
+  for delete to authenticated using (bucket_id = 'media' and (select public.is_admin()));
 
 -- ============================================================
 -- Matrículas (leads do botão "Matricule-se")
@@ -281,29 +334,6 @@ create table if not exists matriculas (
 
 create index if not exists matriculas_created_at_idx on matriculas (created_at desc);
 
-alter table matriculas enable row level security;
-
--- O formulário é público: o visitante (anon) só pode inserir. Ler, editar e
--- apagar fica restrito a quem está logado no painel.
-grant insert on matriculas to anon, authenticated;
-grant select, update, delete on matriculas to authenticated;
-
-drop policy if exists "Public insert matriculas" on matriculas;
-create policy "Public insert matriculas" on matriculas
-  for insert with check (true);
-
-drop policy if exists "Authenticated read matriculas" on matriculas;
-create policy "Authenticated read matriculas" on matriculas
-  for select using (auth.role() = 'authenticated');
-
-drop policy if exists "Authenticated manage matriculas" on matriculas;
-create policy "Authenticated manage matriculas" on matriculas
-  for update using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
-
-drop policy if exists "Authenticated delete matriculas" on matriculas;
-create policy "Authenticated delete matriculas" on matriculas
-  for delete using (auth.role() = 'authenticated');
-
 -- Forma de ingresso escolhida pelo candidato (matrícula direta, vestibular
 -- ou nota do ENEM) — o mesmo formulário atende as três portas de entrada.
 alter table matriculas add column if not exists forma_ingresso text not null default 'Matrícula direta';
@@ -314,3 +344,56 @@ alter table matriculas add column if not exists forma_ingresso text not null def
 alter table matriculas add column if not exists modalidade text not null default '';
 alter table matriculas add column if not exists polo text not null default '';
 alter table matriculas add column if not exists tipo_ingresso text not null default '';
+
+-- O INSERT vem direto da API pública (chave anon), não só do formulário do
+-- site — então as mesmas regras do formulário valem aqui no banco, com
+-- limite de tamanho para ninguém gravar megabytes num campo.
+alter table matriculas drop constraint if exists matriculas_campos_validos;
+alter table matriculas add constraint matriculas_campos_validos check (
+  char_length(nome_completo) between 3 and 200
+  and cpf ~ '^[0-9]{11}$'
+  and char_length(email) <= 254
+  and email ~ '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$'
+  and telefone ~ '^[0-9]{10,11}$'
+  and char_length(curso_nome) between 1 and 200
+  and char_length(curso_slug) <= 200
+  and forma_ingresso in ('Matrícula direta', 'Vestibular', 'Nota do ENEM')
+  and char_length(modalidade) <= 100
+  and char_length(polo) <= 100
+  and char_length(tipo_ingresso) <= 100
+  and char_length(observacoes) <= 5000
+  and data_nascimento >= date '1900-01-01'
+);
+
+alter table matriculas enable row level security;
+
+-- O formulário é público: o visitante (anon) só pode inserir, e só as
+-- colunas do formulário — status, observações, id e datas ficam com o
+-- default (sem isso, dava para criar um lead já "matriculado"). Ler, editar
+-- e apagar é só para administradores.
+revoke all on matriculas from anon, authenticated;
+grant insert (
+  nome_completo, data_nascimento, cpf, email, telefone, curso_slug, curso_nome,
+  forma_ingresso, modalidade, polo, tipo_ingresso
+) on matriculas to anon, authenticated;
+grant select, delete on matriculas to authenticated;
+grant update (status, observacoes, updated_at) on matriculas to authenticated;
+
+drop policy if exists "Public insert matriculas" on matriculas;
+create policy "Public insert matriculas" on matriculas
+  for insert to anon, authenticated with check (status = 'novo' and observacoes = '');
+
+drop policy if exists "Authenticated read matriculas" on matriculas;
+drop policy if exists "Admin read matriculas" on matriculas;
+create policy "Admin read matriculas" on matriculas
+  for select to authenticated using ((select public.is_admin()));
+
+drop policy if exists "Authenticated manage matriculas" on matriculas;
+drop policy if exists "Admin update matriculas" on matriculas;
+create policy "Admin update matriculas" on matriculas
+  for update to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
+
+drop policy if exists "Authenticated delete matriculas" on matriculas;
+drop policy if exists "Admin delete matriculas" on matriculas;
+create policy "Admin delete matriculas" on matriculas
+  for delete to authenticated using ((select public.is_admin()));

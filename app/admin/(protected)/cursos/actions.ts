@@ -2,8 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/admin";
 import { slugify } from "@/lib/slugify";
+import { MIDIA_INVALIDA, midiaValida } from "@/lib/mediaUrl";
 import { normalizeGrade } from "@/lib/data/courses";
 
 export type CourseFormState = { error?: string } | undefined;
@@ -23,15 +24,6 @@ function parseGrade(valor: FormDataEntryValue | null) {
   } catch {
     return [];
   }
-}
-
-async function requireUser() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/admin/login");
-  return supabase;
 }
 
 function parseForm(formData: FormData) {
@@ -85,7 +77,7 @@ export async function createCourse(
   _prevState: CourseFormState,
   formData: FormData
 ): Promise<CourseFormState> {
-  const supabase = await requireUser();
+  const { supabase } = await requireAdmin();
   const course = parseForm(formData);
 
   const erro = validate(course);
@@ -94,12 +86,15 @@ export async function createCourse(
   /* Slug e modalidade saíram do formulário: o slug vem do nome e a modalidade
      nasce como EAD. Na edição nenhum dos dois é tocado, para não trocar a URL
      de um curso já publicado. O FAQ é único para todos os cursos (lib/faq.ts). */
+  const capaUrl = String(formData.get("capa_url") ?? "").trim();
+  if (!midiaValida(capaUrl)) return { error: MIDIA_INVALIDA };
+
   const { error } = await supabase.from("courses").insert({
     ...course,
     slug: slugify(course.nome),
     modalidade: "EAD",
     mercado: "",
-    capa_url: String(formData.get("capa_url") ?? ""),
+    capa_url: capaUrl,
   });
 
   if (error) {
@@ -118,13 +113,14 @@ export async function updateCourse(
   _prevState: CourseFormState,
   formData: FormData
 ): Promise<CourseFormState> {
-  const supabase = await requireUser();
+  const { supabase } = await requireAdmin();
   const course = parseForm(formData);
 
   const erro = validate(course);
   if (erro) return { error: erro };
 
-  const capaUrl = String(formData.get("capa_url") ?? "");
+  const capaUrl = String(formData.get("capa_url") ?? "").trim();
+  if (!midiaValida(capaUrl)) return { error: MIDIA_INVALIDA };
 
   const updateData: Record<string, unknown> = { ...course };
   if (capaUrl) updateData.capa_url = capaUrl;
@@ -142,7 +138,7 @@ export async function updateCourse(
 }
 
 export async function deleteCourse(formData: FormData) {
-  const supabase = await requireUser();
+  const { supabase } = await requireAdmin();
   const id = String(formData.get("id") ?? "");
   if (!id) return;
 

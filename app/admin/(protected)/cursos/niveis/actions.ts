@@ -2,19 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/admin";
 import { slugify } from "@/lib/slugify";
+import { MIDIA_INVALIDA, midiaValida } from "@/lib/mediaUrl";
 
 export type NivelFormState = { error?: string } | undefined;
-
-async function requireUser() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/admin/login");
-  return supabase;
-}
 
 function parseForm(formData: FormData) {
   const nome = String(formData.get("nome") ?? "").trim();
@@ -27,16 +19,19 @@ function parseForm(formData: FormData) {
 }
 
 export async function createNivel(_prevState: NivelFormState, formData: FormData): Promise<NivelFormState> {
-  const supabase = await requireUser();
+  const { supabase } = await requireAdmin();
   const nivel = parseForm(formData);
 
   if (!nivel.nome || !nivel.titulo) {
     return { error: "Preencha nome e título." };
   }
 
+  const imagemUrl = String(formData.get("imagem_url") ?? "").trim();
+  if (!midiaValida(imagemUrl)) return { error: MIDIA_INVALIDA };
+
   const { error } = await supabase.from("course_niveis").insert({
     ...nivel,
-    imagem_url: String(formData.get("imagem_url") ?? ""),
+    imagem_url: imagemUrl,
   });
 
   if (error) {
@@ -53,14 +48,15 @@ export async function updateNivel(
   _prevState: NivelFormState,
   formData: FormData
 ): Promise<NivelFormState> {
-  const supabase = await requireUser();
+  const { supabase } = await requireAdmin();
   const nivel = parseForm(formData);
 
   if (!nivel.nome || !nivel.titulo) {
     return { error: "Preencha nome e título." };
   }
 
-  const imagemUrl = String(formData.get("imagem_url") ?? "");
+  const imagemUrl = String(formData.get("imagem_url") ?? "").trim();
+  if (!midiaValida(imagemUrl)) return { error: MIDIA_INVALIDA };
 
   const updateData: Record<string, unknown> = { ...nivel };
   if (imagemUrl) updateData.imagem_url = imagemUrl;
@@ -76,7 +72,7 @@ export async function updateNivel(
 }
 
 export async function deleteNivel(formData: FormData) {
-  const supabase = await requireUser();
+  const { supabase } = await requireAdmin();
   const id = String(formData.get("id") ?? "");
   if (!id) return;
 
@@ -85,11 +81,5 @@ export async function deleteNivel(formData: FormData) {
   revalidatePath("/", "layout");
   revalidatePath("/admin/cursos/niveis");
 
-  if (error) {
-    redirect(
-      `/admin/cursos/niveis?erro=${encodeURIComponent(
-        "Não deu para excluir: ainda existem cursos cadastrados nesse nível."
-      )}`
-    );
-  }
+  if (error) redirect("/admin/cursos/niveis?erro=em-uso");
 }

@@ -8,7 +8,12 @@ export default async function AdminNiveisPage({
 }: {
   searchParams: Promise<{ erro?: string }>;
 }) {
-  const { erro } = await searchParams;
+  /* A URL traz só um código; o texto fica aqui, para ninguém montar um link
+     do painel exibindo a mensagem que quiser. */
+  const erro =
+    (await searchParams).erro === "em-uso"
+      ? "Não deu para excluir: ainda existem cursos cadastrados nesse nível."
+      : null;
 
   const supabase = await createClient();
   const [{ data: niveis }, { data: cursos }] = await Promise.all([

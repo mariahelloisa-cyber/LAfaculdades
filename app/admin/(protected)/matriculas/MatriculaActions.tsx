@@ -1,7 +1,8 @@
 "use client";
 
 import { AdminIcon } from "../adminIcons";
-import { atualizarStatus, excluirMatricula, STATUS_MATRICULA } from "./actions";
+import { STATUS_MATRICULA } from "@/lib/matriculas";
+import { atualizarStatus, excluirMatricula } from "./actions";
 
 export const STATUS_LABEL: Record<string, string> = {
   novo: "Novo",

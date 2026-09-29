@@ -3,11 +3,8 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useActionState, useState } from "react";
-import {
-  criarMatricula,
-  FORMAS_INGRESSO,
-  type MatriculaFormState,
-} from "@/app/matricula/inscricao/actions";
+import { criarMatricula, type MatriculaFormState } from "@/app/matricula/inscricao/actions";
+import { FORMAS_INGRESSO } from "@/lib/matriculas";
 import type { Course, CourseNivel } from "@/lib/data/courses";
 import { SITE } from "@/lib/constants";
 

@@ -1,13 +1,16 @@
 import { supabasePublic } from "@/lib/supabase/publicClient";
 
-export type SiteMediaKey =
-  | "blog_hero"
-  | "home_hero_video"
-  | "social_facebook"
-  | "social_instagram"
-  | "social_youtube"
-  | "social_reclameaqui"
-  | "social_google";
+export const SITE_MEDIA_KEYS = [
+  "blog_hero",
+  "home_hero_video",
+  "social_facebook",
+  "social_instagram",
+  "social_youtube",
+  "social_reclameaqui",
+  "social_google",
+] as const;
+
+export type SiteMediaKey = (typeof SITE_MEDIA_KEYS)[number];
 
 export async function getSiteMediaUrl(chave: SiteMediaKey): Promise<string> {
   const { data, error } = await supabasePublic

@@ -1,3 +1,9 @@
+/** Mesma regra da constraint matriculas_campos_validos (supabase/schema.sql):
+ *  se divergirem, o banco recusa um e-mail que o formulário aceitou. */
+export function emailValido(email: string) {
+  return email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 /** CPF: valida os dois dígitos verificadores — evita que um número digitado
  *  errado só apareça quando o gestor tentar ligar para o candidato. */
 export function cpfValido(cpf: string) {

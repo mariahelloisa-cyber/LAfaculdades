@@ -1,24 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/admin";
+import { STATUS_MATRICULA, type StatusMatricula } from "@/lib/matriculas";
 
-export const STATUS_MATRICULA = ["novo", "em_contato", "matriculado", "descartado"] as const;
-export type StatusMatricula = (typeof STATUS_MATRICULA)[number];
-
-async function requireUser() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/admin/login");
-  return supabase;
-}
 
 /** O gestor marca em que pé está o contato com o candidato. */
 export async function atualizarStatus(formData: FormData) {
-  const supabase = await requireUser();
+  const { supabase } = await requireAdmin();
   const id = String(formData.get("id") ?? "");
   const status = String(formData.get("status") ?? "");
   if (!id || !STATUS_MATRICULA.includes(status as StatusMatricula)) return;
@@ -34,7 +23,7 @@ export async function atualizarStatus(formData: FormData) {
 }
 
 export async function excluirMatricula(formData: FormData) {
-  const supabase = await requireUser();
+  const { supabase } = await requireAdmin();
   const id = String(formData.get("id") ?? "");
   if (!id) return;
 

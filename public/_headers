@@ -1,0 +1,6 @@
+# Headers dos arquivos estáticos servidos direto pelo Workers Static Assets
+# (/_next/static, /images). As páginas recebem os headers do next.config.ts.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000

@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { cpfValido } from "@/lib/cpf";
+import { cpfValido, emailValido } from "@/lib/cpf";
 import { VESTIBULAR } from "@/lib/constants";
 
 export type VestibularFormState = { ok?: boolean; error?: string } | undefined;
@@ -29,13 +29,19 @@ export async function inscreverVestibular(
   if (!nomeCompleto.includes(" ")) {
     return { error: "Informe o nome completo." };
   }
+  if (nomeCompleto.length > 200) {
+    return { error: "Nome muito longo." };
+  }
+  if (cursoNome.length > 200 || cursoSlug.length > 200) {
+    return { error: "Curso inválido." };
+  }
   if (!cpfValido(cpf)) {
     return { error: "CPF inválido. Confira os números digitados." };
   }
   if (telefone.length < 10 || telefone.length > 11) {
     return { error: "Celular inválido. Informe o DDD e o número." };
   }
-  if (!/^\S+@\S+\.\S+$/.test(email)) {
+  if (!emailValido(email)) {
     return { error: "E-mail inválido." };
   }
   if (!VESTIBULAR.tiposIngresso.includes(tipoIngresso)) {

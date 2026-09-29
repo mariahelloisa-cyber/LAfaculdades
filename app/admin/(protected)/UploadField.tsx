@@ -4,6 +4,21 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 
+const EXTENSOES: Record<"imagem" | "video", Record<string, string>> = {
+  imagem: {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/webp": "webp",
+    "image/gif": "gif",
+    "image/avif": "avif",
+  },
+  video: {
+    "video/mp4": "mp4",
+    "video/webm": "webm",
+    "video/quicktime": "mov",
+  },
+};
+
 /**
  * Envia o arquivo direto do navegador para o Storage do Supabase e guarda
  * só a URL num input escondido. É assim (e não via Server Action) porque
@@ -47,16 +62,30 @@ export default function UploadField({
     if (!file) return;
 
     setErro(null);
+
+    /* A extensão sai do tipo do arquivo, não do nome: "foto.html" com tipo
+       image/png vira .png. O bucket recusa o que não estiver nesta lista
+       (supabase/schema.sql) — aqui é só para avisar antes de enviar. */
+    const ext = EXTENSOES[tipo][file.type];
+    if (!ext) {
+      setErro(
+        tipo === "imagem"
+          ? "Formato não aceito. Envie JPG, PNG, WebP, GIF ou AVIF."
+          : "Formato não aceito. Envie MP4, WebM ou MOV."
+      );
+      e.target.value = "";
+      return;
+    }
+
     setBusy(true);
 
     try {
       const supabase = createClient();
-      const ext = file.name.split(".").pop() || "bin";
       const path = `${folder}/${crypto.randomUUID()}.${ext}`;
 
       const { error } = await supabase.storage.from("media").upload(path, file, {
-        upsert: true,
-        contentType: file.type || undefined,
+        upsert: false,
+        contentType: file.type,
       });
 
       if (error) {
@@ -94,7 +123,7 @@ export default function UploadField({
       <input
         ref={inputRef}
         type="file"
-        accept={tipo === "imagem" ? "image/*" : "video/*"}
+        accept={Object.keys(EXTENSOES[tipo]).join(",")}
         onChange={handleFile}
         disabled={uploading}
         className="mt-2 block w-full text-sm text-navy-950 file:mr-4 file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-accent-hover disabled:opacity-60"

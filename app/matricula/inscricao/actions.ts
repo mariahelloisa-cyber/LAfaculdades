@@ -1,13 +1,10 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { cpfValido } from "@/lib/cpf";
+import { cpfValido, emailValido } from "@/lib/cpf";
+import { FORMAS_INGRESSO } from "@/lib/matriculas";
 
 export type MatriculaFormState = { ok?: boolean; error?: string } | undefined;
-
-/** As três portas de entrada do site. O formulário é o mesmo; muda só o que
- *  o candidato marca aqui, para o gestor saber como ele quer ingressar. */
-export const FORMAS_INGRESSO = ["Matrícula direta", "Vestibular", "Nota do ENEM"] as const;
 
 export async function criarMatricula(
   _prevState: MatriculaFormState,
@@ -31,10 +28,16 @@ export async function criarMatricula(
   if (!nomeCompleto.includes(" ")) {
     return { error: "Informe o nome completo." };
   }
+  if (nomeCompleto.length > 200) {
+    return { error: "Nome muito longo." };
+  }
+  if (cursoNome.length > 200 || cursoSlug.length > 200) {
+    return { error: "Curso inválido." };
+  }
   if (!cpfValido(cpf)) {
     return { error: "CPF inválido. Confira os números digitados." };
   }
-  if (!/^\S+@\S+\.\S+$/.test(email)) {
+  if (!emailValido(email)) {
     return { error: "E-mail inválido." };
   }
   if (telefone.length < 10 || telefone.length > 11) {
