@@ -1,6 +1,8 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { registrarMatricula } from "@/lib/supabase/registrarMatricula";
+import { protegerEnvioPublico } from "@/lib/protecaoEnvio";
+import { MENSAGEM_LIMITE_CPF } from "@/lib/matriculas";
 import { cpfValido, emailValido } from "@/lib/cpf";
 import { VESTIBULAR } from "@/lib/constants";
 
@@ -53,8 +55,10 @@ export async function inscreverVestibular(
     return { error: "Data de nascimento inválida." };
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.from("matriculas").insert({
+  const bloqueio = await protegerEnvioPublico(formData, "vestibular");
+  if (bloqueio) return { error: bloqueio };
+
+  const resultado = await registrarMatricula({
     nome_completo: nomeCompleto,
     data_nascimento: dataNascimento,
     cpf,
@@ -66,8 +70,8 @@ export async function inscreverVestibular(
     tipo_ingresso: tipoIngresso,
   });
 
-  if (error) {
-    console.error("Erro ao salvar inscrição do vestibular:", error.message);
+  if (resultado === "limite") return { error: MENSAGEM_LIMITE_CPF };
+  if (resultado === "erro") {
     return { error: "Não conseguimos registrar sua inscrição agora. Tente novamente em instantes." };
   }
 

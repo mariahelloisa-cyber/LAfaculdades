@@ -2,6 +2,8 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/supabase/admin";
+import { MENSAGEM_LIMITE, dentroDoLimite, ipDoVisitante } from "@/lib/protecaoEnvio";
+import { TURNSTILE_CAMPO, mensagemFalha } from "@/lib/turnstile";
 
 export type LoginState = { error?: string; ok?: boolean } | undefined;
 
@@ -18,10 +20,29 @@ export async function login(_prevState: LoginState, formData: FormData): Promise
     return { error: CREDENCIAIS_INVALIDAS };
   }
 
+  if (!(await dentroDoLimite("RL_LOGIN", "login", await ipDoVisitante()))) {
+    return { error: MENSAGEM_LIMITE };
+  }
+
+  /* O token do Turnstile vai para o Supabase Auth, que o valida com o CAPTCHA
+     nativo (Authentication > Attack Protection). Não chamamos o siteverify
+     aqui: o token só pode ser usado uma vez, e quem precisa dele é o Auth —
+     é o que protege também quem chama /auth/v1/token direto. */
+  const captchaToken = formData.get(TURNSTILE_CAMPO);
+  if (typeof captchaToken !== "string" || !captchaToken || captchaToken.length > 2048) {
+    return { error: mensagemFalha("ausente") };
+  }
+
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+    options: { captchaToken },
+  });
 
   if (error) {
+    if (error.code === "captcha_failed") return { error: mensagemFalha("invalido") };
+    if (error.code === "over_request_rate_limit") return { error: MENSAGEM_LIMITE };
     return { error: CREDENCIAIS_INVALIDAS };
   }
 

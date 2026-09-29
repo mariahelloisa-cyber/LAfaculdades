@@ -44,7 +44,29 @@
       "new_sqlite_classes": ["DOQueueHandler"]
     }
   ],
+  /* Limite de envios por IP (proteção contra abuso). Contador da própria
+     Cloudflare, por localidade — não é memória do Worker. period: 10 ou 60 s.
+     namespace_id: qualquer número, único dentro da conta. */
+  "ratelimits": [
+    {
+      "name": "RL_FORMULARIOS",
+      "namespace_id": "4201",
+      "simple": { "limit": 5, "period": 60 }
+    },
+    {
+      "name": "RL_LOGIN",
+      "namespace_id": "4202",
+      "simple": { "limit": 5, "period": 60 }
+    }
+  ],
+  /* Secrets (NÃO ficam aqui; `npx wrangler secret put <NOME>`):
+     - TURNSTILE_SECRET            chave secreta do widget Turnstile
+     - CHAVE_GRAVACAO_MATRICULAS   gerada por supabase/seguranca-v07-chave.sql */
   "vars": {
+    /* Domínios onde o widget roda, separados por vírgula (ex.:
+       "lafaculdades.com.br,www.lafaculdades.com.br"). Sem localhost aqui.
+       Enquanto for este marcador, os formulários recusam todo envio. */
+    "TURNSTILE_HOSTNAMES": "  ",
     "NEXT_PUBLIC_SUPABASE_URL": "https://nfklgwtncdaoembrmiar.supabase.co",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ma2xnd3RuY2Rhb2VtYnJtaWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxNjc2MjgsImV4cCI6MjEwMzc0MzYyOH0.jXIvp7TJL9mUHJwaxu6IEDFo_kOlIwsJosfNpn7WqeU"
   },

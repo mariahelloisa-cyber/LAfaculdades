@@ -1,11 +1,13 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
+import TurnstileWidget from "@/components/TurnstileWidget";
 import { login } from "./actions";
 
 export default function LoginForm() {
   const [state, formAction, pending] = useActionState(login, undefined);
   const entrando = pending || state?.ok === true;
+  const [tokenVerificacao, setTokenVerificacao] = useState<string | null>(null);
 
   /* Login aceito: navegação completa, para o proxy e o layout lerem o cookie
      novo. router.push() seria a navegação suave que ficava presa. */
@@ -15,7 +17,13 @@ export default function LoginForm() {
   }, [state]);
 
   return (
-    <form action={formAction} className="w-full max-w-[400px]">
+    <form
+      action={(dados) => {
+        setTokenVerificacao(null);
+        formAction(dados);
+      }}
+      className="w-full max-w-[400px]"
+    >
       <h1 className="text-[2.5rem] font-extrabold leading-tight tracking-tight text-navy-950">Entrar</h1>
       <p className="mt-2.5 text-[15px] text-muted">
         Acesse o painel para gerenciar o conteúdo do site.
@@ -53,12 +61,15 @@ export default function LoginForm() {
 
       {state?.error && <p className="mt-4 text-sm font-semibold text-rose-dark">{state.error}</p>}
 
+      {/* O token vai para o CAPTCHA nativo do Supabase Auth (ver actions.ts). */}
+      <TurnstileWidget action="login" resetKey={state} onTokenChange={setTokenVerificacao} className="mt-5" />
+
       <button
         type="submit"
-        disabled={entrando}
+        disabled={entrando || !tokenVerificacao}
         className="mt-9 w-full rounded-full bg-accent py-3.5 text-[15px] font-bold text-white transition-colors hover:bg-accent-hover disabled:opacity-60"
       >
-        {entrando ? "Entrando..." : "Entrar"}
+        {entrando ? "Entrando..." : tokenVerificacao ? "Entrar" : "Verificando..."}
       </button>
     </form>
   );

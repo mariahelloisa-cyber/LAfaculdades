@@ -1,19 +1,4 @@
--- ============================================================
--- Migração de segurança — rodar UMA vez no SQL Editor do Supabase,
--- ANTES de publicar a versão do site que checa is_admin().
---
--- 1. Troque o e-mail em `emails_admin` (logo abaixo) pelo(s) e-mail(s) de
---    quem usa o painel. A conta precisa já existir em Authentication > Users.
--- 2. Rode o arquivo inteiro. É uma transação: se nenhum admin for
---    encontrado, nada é aplicado (ninguém fica trancado fora do painel).
--- 3. Em Authentication > Sign In / Providers, desligue
---    "Allow new users to sign up".
---
--- O que muda: até aqui qualquer usuário logado no Supabase era tratado como
--- admin — e qualquer pessoa conseguia criar um usuário pela API pública.
--- Agora só quem está na tabela public.admins escreve no site e lê as
--- matrículas. O schema.sql já está atualizado com o mesmo conteúdo.
--- ============================================================
+
 
 begin;
 
@@ -40,7 +25,7 @@ grant execute on function public.is_admin() to anon, authenticated;
 
 do $$
 declare
-  emails_admin text[] := array['COLOQUE_AQUI_O_EMAIL_DO_ADMIN@exemplo.com'];
+  emails_admin text[] := array['adminlafacul@gmail.com'];
 begin
   insert into public.admins (user_id)
   select id from auth.users

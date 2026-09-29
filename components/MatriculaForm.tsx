@@ -7,6 +7,7 @@ import { criarMatricula, type MatriculaFormState } from "@/app/matricula/inscric
 import { FORMAS_INGRESSO } from "@/lib/matriculas";
 import type { Course, CourseNivel } from "@/lib/data/courses";
 import { SITE } from "@/lib/constants";
+import TurnstileWidget from "./TurnstileWidget";
 
 const campoClasse =
   "mt-2 w-full rounded-xl border border-navy-950/20 bg-white px-4 py-3.5 text-[15px] outline-none transition-colors focus:border-accent focus:ring-4 focus:ring-accent/15";
@@ -49,6 +50,7 @@ export default function MatriculaForm({
   const [cursoSlug, setCursoSlug] = useState(cursoInicial);
   const [cpf, setCpf] = useState("");
   const [telefone, setTelefone] = useState("");
+  const [tokenVerificacao, setTokenVerificacao] = useState<string | null>(null);
 
   const cursoSelecionado = cursos.find((c) => c.slug === cursoSlug);
 
@@ -81,7 +83,13 @@ export default function MatriculaForm({
   }
 
   return (
-    <form action={formAction} className="rounded-2xl bg-surface p-6 sm:p-8">
+    <form
+      action={(dados) => {
+        setTokenVerificacao(null);
+        formAction(dados);
+      }}
+      className="rounded-2xl bg-surface p-6 sm:p-8"
+    >
       {/* O nome do curso vai junto para o painel: assim o gestor lê a
           matrícula mesmo que o curso seja renomeado ou saia do ar depois. */}
       <input type="hidden" name="curso_slug" value={cursoSlug} />
@@ -229,12 +237,21 @@ export default function MatriculaForm({
         entra em contato para concluir a sua matrícula.
       </p>
 
+      {/* Token do Turnstile: some a cada envio (vale uma vez) e volta quando o
+          widget gera outro. Travar o botão é só conveniência — quem barra é o servidor. */}
+      <TurnstileWidget
+        action="matricula"
+        resetKey={estado}
+        onTokenChange={setTokenVerificacao}
+        className="mt-5"
+      />
+
       <button
         type="submit"
-        disabled={enviando}
+        disabled={enviando || !tokenVerificacao}
         className="mt-7 w-full rounded-full bg-accent px-7 py-4 font-bold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {enviando ? "Enviando..." : textoBotao}
+        {enviando ? "Enviando..." : tokenVerificacao ? textoBotao : "Verificando..."}
       </button>
     </form>
   );

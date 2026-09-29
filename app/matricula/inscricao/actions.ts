@@ -1,8 +1,9 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { registrarMatricula } from "@/lib/supabase/registrarMatricula";
+import { protegerEnvioPublico } from "@/lib/protecaoEnvio";
 import { cpfValido, emailValido } from "@/lib/cpf";
-import { FORMAS_INGRESSO } from "@/lib/matriculas";
+import { FORMAS_INGRESSO, MENSAGEM_LIMITE_CPF } from "@/lib/matriculas";
 
 export type MatriculaFormState = { ok?: boolean; error?: string } | undefined;
 
@@ -18,9 +19,7 @@ export async function criarMatricula(
   const cursoNome = String(formData.get("curso_nome") ?? "").trim();
   const cursoSlug = String(formData.get("curso_slug") ?? "").trim();
   const formaIngressoRaw = String(formData.get("forma_ingresso") ?? "").trim();
-  const formaIngresso = (FORMAS_INGRESSO as readonly string[]).includes(formaIngressoRaw)
-    ? formaIngressoRaw
-    : FORMAS_INGRESSO[0];
+  const formaIngresso = FORMAS_INGRESSO.find((f) => f === formaIngressoRaw) ?? FORMAS_INGRESSO[0];
 
   if (!nomeCompleto || !dataNascimento || !cpf || !email || !telefone || !cursoNome) {
     return { error: "Preencha todos os campos." };
@@ -50,8 +49,10 @@ export async function criarMatricula(
     return { error: "Data de nascimento inválida." };
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.from("matriculas").insert({
+  const bloqueio = await protegerEnvioPublico(formData, "matricula");
+  if (bloqueio) return { error: bloqueio };
+
+  const resultado = await registrarMatricula({
     nome_completo: nomeCompleto,
     data_nascimento: dataNascimento,
     cpf,
@@ -62,8 +63,8 @@ export async function criarMatricula(
     forma_ingresso: formaIngresso,
   });
 
-  if (error) {
-    console.error("Erro ao salvar matrícula:", error.message);
+  if (resultado === "limite") return { error: MENSAGEM_LIMITE_CPF };
+  if (resultado === "erro") {
     return { error: "Não conseguimos registrar seus dados agora. Tente novamente em instantes." };
   }
 

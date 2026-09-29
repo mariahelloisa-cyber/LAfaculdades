@@ -3,24 +3,29 @@ import path from "path";
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const SUPABASE_HOST = "nfklgwtncdaoembrmiar.supabase.co";
-const isDev = process.env.NODE_ENV === "development";
 
-/* CSP: o Next injeta scripts inline na hidratação, e as páginas são estáticas
-   (ISR) — nonce exigiria renderizar tudo por requisição. Por isso
-   'unsafe-inline' em script-src; o ganho aqui está no resto: nada de
-   <object>, <base> trocado, formulário postando para fora, o site dentro de
-   iframe alheio ou fetch para domínio que não seja o Supabase.
-   Em dev o React/HMR precisa de eval e websocket. */
+/* A site key do Turnstile entra no JavaScript do navegador na hora do build.
+   Sem ela, os formulários e o login ficariam travados em "Verificando..." —
+   melhor o build falhar do que publicar o site assim. */
+if (process.env.NODE_ENV === "production" && !process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+  throw new Error(
+    "NEXT_PUBLIC_TURNSTILE_SITE_KEY não definida. Coloque a site key (pública) do widget Turnstile no .env.local antes do build."
+  );
+}
+const isDev = process.env.NODE_ENV === "development";
+// Turnstile: script e iframe do desafio (formulários públicos e login do painel).
+const TURNSTILE = "https://challenges.cloudflare.com";
+
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' ${TURNSTILE}${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data: blob: https://${SUPABASE_HOST}`,
   `media-src 'self' blob: https://${SUPABASE_HOST}`,
   "font-src 'self' data:",
   `connect-src 'self' https://${SUPABASE_HOST} wss://${SUPABASE_HOST}${isDev ? " ws: http://localhost:*" : ""}`,
-  // Mapa do Google na página /contato.
-  "frame-src https://www.google.com",
+  // Mapa do Google na página /contato e o desafio do Turnstile.
+  `frame-src https://www.google.com ${TURNSTILE}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -47,8 +52,8 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   poweredByHeader: false,
   images: {
-    /* No Next 16 o padrão passou a ser apenas [75]; qualquer outro valor de
-       `quality` seria arredondado para 75. 95 libera a arte da seção "Por que a LA?". */
+    /* No Next 16 passou a ser apenas [75]; qualquer outro valor de
+       `quality` seriafork çgdt etry arredondado para 75. 95 libera a arte da seção "Por que a LA?". */
     qualities: [75, 95],
     remotePatterns: [
       {

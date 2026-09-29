@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { inscreverVestibular, type VestibularFormState } from "@/app/vestibular/actions";
+import TurnstileWidget from "./TurnstileWidget";
 import type { Course } from "@/lib/data/courses";
 import { SITE, VESTIBULAR } from "@/lib/constants";
 
@@ -58,6 +59,7 @@ export default function VestibularForm({ cursos }: { cursos: Course[] }) {
   const [cpf, setCpf] = useState("");
   const [telefone, setTelefone] = useState("");
   const [cursoSlug, setCursoSlug] = useState("");
+  const [tokenVerificacao, setTokenVerificacao] = useState<string | null>(null);
 
   const cursoSelecionado = cursos.find((c) => c.slug === cursoSlug);
 
@@ -109,7 +111,10 @@ export default function VestibularForm({ cursos }: { cursos: Course[] }) {
 
   return (
     <form
-      action={formAction}
+      action={(dados) => {
+        setTokenVerificacao(null);
+        formAction(dados);
+      }}
       className="rounded-[28px] border border-accent/20 bg-navy-900 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.35)] sm:p-9"
     >
       {/* O nome do curso vai junto para o painel: assim o gestor lê a
@@ -266,12 +271,22 @@ export default function VestibularForm({ cursos }: { cursos: Course[] }) {
         Seus dados ficam registrados com segurança e são usados só para o processo seletivo da LA Faculdades.
       </p>
 
+      {/* Token do Turnstile: some a cada envio (vale uma vez) e volta quando o
+          widget gera outro. Travar o botão é só conveniência — quem barra é o servidor. */}
+      <TurnstileWidget
+        action="vestibular"
+        resetKey={estado}
+        onTokenChange={setTokenVerificacao}
+        tema="dark"
+        className="mt-6"
+      />
+
       <button
         type="submit"
-        disabled={enviando}
+        disabled={enviando || !tokenVerificacao}
         className="mt-6 w-full rounded-full bg-accent px-7 py-4 text-[16px] font-bold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {enviando ? "Enviando..." : "Fazer minha inscrição"}
+        {enviando ? "Enviando..." : tokenVerificacao ? "Fazer minha inscrição" : "Verificando..."}
       </button>
     </form>
   );
