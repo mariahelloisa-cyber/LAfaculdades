@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import Container from "@/components/Container";
 import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
@@ -8,13 +9,13 @@ import IngressoCards from "@/components/IngressoCards";
 import SplitFeature from "@/components/SplitFeature";
 import VerticalTestimonials from "@/components/VerticalTestimonials";
 import StrokeMark from "@/components/StrokeMark";
-import TestimonialsVideo from "@/components/TestimonialsVideo";
 import BlobDepoimentos from "@/components/BlobDepoimentos";
 import FaqAccordion from "@/components/FaqAccordion";
 import QuizIntro from "@/components/vocational-quiz/QuizIntro";
 import { getPosts } from "@/lib/data/posts";
 import { getFeaturedCourses } from "@/lib/data/courses";
 import { getSiteMediaUrl } from "@/lib/data/siteMedia";
+import laboratorioFoto from "@/app/assets/laboratorio.png";
 
 const faqs = [
   {
@@ -104,9 +105,18 @@ export default async function HomePage() {
                   </div>
                 </div>
 
-                {/* Vídeo fora da coluna do traço: ocupa a largura inteira do bloco. */}
+                {/* Foto fora da coluna do traço: ocupa a largura inteira do bloco. */}
                 <div className="mt-8 -mx-3 sm:mx-0">
-                  <TestimonialsVideo />
+                  <div className="relative aspect-video w-full overflow-hidden rounded-[22px] bg-navy-950 shadow-[0_24px_60px_-30px_rgba(6,21,35,0.55)]">
+                    <Image
+                      src={laboratorioFoto}
+                      alt="Alunos da LA Faculdades em aula prática no laboratório"
+                      fill
+                      sizes="(min-width: 1024px) 520px, 100vw"
+                      placeholder="blur"
+                      className="object-cover"
+                    />
+                  </div>
                 </div>
               </div>
             </Reveal>
