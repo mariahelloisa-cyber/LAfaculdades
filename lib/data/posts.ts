@@ -51,6 +51,19 @@ export async function getPosts(): Promise<Post[]> {
   return (data as PostRow[]).map(mapPost);
 }
 
+/** Slugs dos posts para o sitemap.xml. Lança erro pelo mesmo motivo de
+ *  getCoursePaths: melhor manter o sitemap anterior do que publicar um vazio. */
+export async function getPostSlugs(): Promise<string[]> {
+  const { data, error } = await supabasePublic
+    .from("blog_posts")
+    .select("slug")
+    .order("data", { ascending: false });
+
+  if (error) throw new Error(`Erro ao buscar posts para o sitemap: ${error.message}`);
+
+  return (data as { slug: string }[]).map((row) => row.slug);
+}
+
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   const { data, error } = await supabasePublic
     .from("blog_posts")

@@ -198,6 +198,22 @@ export async function getAllCourses(): Promise<Course[]> {
   return (data as unknown as CourseRow[]).map(mapCourse);
 }
 
+/** Só o necessário para montar a URL de cada curso (sitemap.xml). Lança erro
+ *  em vez de devolver lista vazia: um sitemap sem os cursos ficaria em cache
+ *  e tiraria as páginas do Google. Com o erro, o Next mantém a versão anterior. */
+export async function getCoursePaths(): Promise<{ nivel: string; slug: string }[]> {
+  const { data, error } = await supabasePublic
+    .from("courses")
+    .select("slug, course_niveis!nivel_id(slug)")
+    .order("nome", { ascending: true });
+
+  if (error) throw new Error(`Erro ao buscar cursos para o sitemap: ${error.message}`);
+
+  return (data as unknown as { slug: string; course_niveis: { slug: string } | null }[]).flatMap(
+    (row) => (row.course_niveis?.slug ? [{ nivel: row.course_niveis.slug, slug: row.slug }] : [])
+  );
+}
+
 export async function getCoursesByNivelSlug(nivelSlug: string): Promise<Course[]> {
   const { data, error } = await queryCourses((fields) =>
     supabasePublic

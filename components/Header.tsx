@@ -19,6 +19,27 @@ const ingressarLinks = [
 
 type NavLink = { label: string; href: string };
 
+function IconeCertificado() {
+  return (
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M19 10.5V5.5A1.5 1.5 0 0 0 17.5 4h-11A1.5 1.5 0 0 0 5 5.5v13A1.5 1.5 0 0 0 6.5 20h4"
+        stroke="currentColor"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+      />
+      <path d="M8.5 8h7M8.5 11.5h4" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
+      <circle cx="16" cy="15" r="2.8" stroke="currentColor" strokeWidth="1.9" />
+      <path
+        d="M14.3 17.3 13.6 21l2.4-1.3 2.4 1.3-.7-3.7"
+        stroke="currentColor"
+        strokeWidth="1.9"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 /* Dropdown de navegação com realce deslizante. "Cursos" deixou de usá-lo —
    virou link direto para /cursos —, então hoje só "Ingressar" o usa. */
 function NavDropdown({ label, links }: { label: string; links: NavLink[] }) {
@@ -201,17 +222,34 @@ export default function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden flex-1 items-center gap-8 lg:flex">
+          {/* gap menor entre lg e xl: é onde a barra fica mais apertada,
+              porque os 80px de respiro laterais já começam no lg. */}
+          <nav className="hidden flex-1 items-center gap-4 lg:flex xl:gap-7">
             <Link href="/cursos" className="py-5 text-[15px] font-bold hover:text-accent">
               Cursos
             </Link>
             <NavDropdown label="Ingressar" links={ingressarLinks} />
 
             {mainLinks.map((l) => (
-              <Link key={l.href} href={l.href} className="py-5 text-[15px] font-bold hover:text-accent">
+              <Link key={l.href} href={l.href} className="whitespace-nowrap py-5 text-[15px] font-bold hover:text-accent">
                 {l.label}
               </Link>
             ))}
+
+            {/* Destino dos QR Codes dos certificados. Entre lg e xl não há
+                largura para o rótulo inteiro ao lado dos outros cinco links,
+                então aparece só o ícone — com o nome no aria-label e no
+                title, do mesmo jeito que "Já sou aluno" já faz aqui. */}
+            <Link
+              href="/validar"
+              title="Validar certificado"
+              className="flex items-center whitespace-nowrap py-5 text-[15px] font-bold hover:text-accent"
+            >
+              <span className="xl:hidden" aria-hidden>
+                <IconeCertificado />
+              </span>
+              <span className="sr-only xl:not-sr-only">Validar certificado</span>
+            </Link>
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
@@ -294,6 +332,14 @@ export default function Header() {
                 {l.label}
               </Link>
             ))}
+            <Link
+              href="/validar"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-2.5 border-b border-white/10 py-4 text-lg font-bold"
+            >
+              <IconeCertificado />
+              Validar certificado
+            </Link>
             <Link
               href="/contato"
               onClick={() => setMenuOpen(false)}

@@ -28,6 +28,9 @@ export const metadata: Metadata = {
   },
   description:
     "LA Faculdades (E-MEC 26591): graduação e pós-graduação com diploma reconhecido pelo MEC, vestibular próprio, ingresso pela nota do ENEM e financiamento próprio pelo LA Bank.",
+  verification: {
+    google: "cPFV_vDbspWPWxFS9z5i9iXwLYbF9TR4lW8TzOdrM4E",
+  },
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {

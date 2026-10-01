@@ -56,9 +56,12 @@ export function avaliarSiteverify(
     if (codigos.includes("timeout-or-duplicate")) return { ok: false, motivo: "expirado", codigos };
     return { ok: false, motivo: "invalido", codigos };
   }
-  if (resposta.action !== acao) return { ok: false, motivo: "invalido", codigos: ["action-mismatch"] };
+  // action e hostname recebidos vão para o log: não são segredos e dizem na hora o que ajustar.
+  if (resposta.action !== acao) {
+    return { ok: false, motivo: "invalido", codigos: ["action-mismatch", `action=${String(resposta.action).slice(0, 64)}`] };
+  }
   if (typeof resposta.hostname !== "string" || !hostnames.has(resposta.hostname.toLowerCase())) {
-    return { ok: false, motivo: "invalido", codigos: ["hostname-mismatch"] };
+    return { ok: false, motivo: "invalido", codigos: ["hostname-mismatch", `hostname=${String(resposta.hostname).slice(0, 253)}`] };
   }
   return { ok: true };
 }

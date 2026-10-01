@@ -70,9 +70,9 @@ export async function protegerEnvioPublico(formData: FormData, acao: string): Pr
   });
   if (resultado.ok) return null;
 
-  // Só o motivo e os códigos da Cloudflare — nunca token nem segredo.
-  if (resultado.motivo === "configuracao" || resultado.motivo === "indisponivel") {
-    console.error(`[turnstile] ${acao}: ${resultado.motivo}`, resultado.codigos ?? []);
-  }
+  // Só o motivo e os códigos — nunca token nem segredo.
+  const registro = `[turnstile] ${acao}: ${resultado.motivo} ${(resultado.codigos ?? []).join(" ")}`.trim();
+  if (resultado.motivo === "configuracao" || resultado.motivo === "indisponivel") console.error(registro);
+  else console.warn(registro);
   return mensagemFalha(resultado.motivo);
 }

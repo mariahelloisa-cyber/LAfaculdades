@@ -71,6 +71,12 @@ describe("verificarTurnstile", () => {
     assert.equal((await verificarTurnstile({ ...base, token: "tok", fetcher })).ok, false);
   });
 
+  test("recusa por hostname informa o hostname recebido (para o log)", async () => {
+    const { fetcher } = siteverifyFalso({ success: true, action: "matricula", hostname: "facla.edu.br" });
+    const r = await verificarTurnstile({ ...base, token: "tok", fetcher });
+    assert.deepEqual(r, { ok: false, motivo: "invalido", codigos: ["hostname-mismatch", "hostname=facla.edu.br"] });
+  });
+
   test("token gerado em outro domínio é recusado", async () => {
     for (const hostname of ["evil.example", "localhost", "lafaculdades.com.br.evil.example", undefined]) {
       const { fetcher } = siteverifyFalso({ success: true, action: "matricula", hostname });

@@ -1,5 +1,7 @@
 export const SITE = {
   name: "LA Faculdades",
+  // Domínio canônico: usado no sitemap.xml e no robots.txt.
+  url: "https://facla.edu.br",
   slogan: "Educação acessível e de qualidade para todos.",
   emec: "26591",
   mantenedora: "Centro Educacional Fortaleza Ltda",

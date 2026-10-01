@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import type { Course } from "@/lib/data/courses";
 import CourseCard from "./CourseCard";
 import SearchInput from "./SearchInput";
@@ -15,6 +15,9 @@ function horasDe(course: Course): number | null {
 }
 
 type Secao = "duracao" | "formacao" | "area";
+
+// A query string não muda sem navegação, então não há o que assinar.
+const semAssinatura = () => () => {};
 
 export default function CourseCatalog({ courses }: { courses: Course[] }) {
   /* Ordem alfabética de verdade: o banco ordena por bytes, então "Ética"
@@ -41,7 +44,19 @@ export default function CourseCatalog({ courses }: { courses: Course[] }) {
   }, [ordenados]);
   const temDuracao = maxHoras > minHoras;
 
-  const [formacao, setFormacao] = useState<string[]>([]);
+  /* /cursos?formacao=<slug do nível> abre já filtrado (é o destino das URLs
+     de categoria do site antigo). A query é lida só no navegador, e não com
+     useSearchParams, para a página continuar estática e com todos os cursos
+     no HTML. Slug desconhecido é ignorado. Assim que o aluno mexe no filtro,
+     vale a escolha dele (null = ainda não mexeu). */
+  const busca = useSyncExternalStore(semAssinatura, () => window.location.search, () => "");
+  const formacaoDaUrl = useMemo(() => {
+    const slug = new URLSearchParams(busca).get("formacao");
+    const nivel = slug ? courses.find((c) => c.nivelSlug === slug)?.nivelNome : undefined;
+    return nivel ? [nivel] : [];
+  }, [busca, courses]);
+  const [formacaoEscolhida, setFormacao] = useState<string[] | null>(null);
+  const formacao = formacaoEscolhida ?? formacaoDaUrl;
   const [area, setArea] = useState<string[]>([]);
   const [faixa, setFaixa] = useState<[number, number] | null>(null);
   const [query, setQuery] = useState("");

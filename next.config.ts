@@ -15,12 +15,17 @@ if (process.env.NODE_ENV === "production" && !process.env.NEXT_PUBLIC_TURNSTILE_
 const isDev = process.env.NODE_ENV === "development";
 // Turnstile: script e iframe do desafio (formulários públicos e login do painel).
 const TURNSTILE = "https://challenges.cloudflare.com";
+/* API de certificados do SULA (página /validar). Quem a consulta é o Worker,
+   por isso ela NÃO entra no connect-src: o navegador nunca fala com ela
+   direto. Da resposta, só a imagem do QR Code vira elemento da página — daí
+   a liberação no img-src. */
+const SULA = "https://admin.laeducacao.com.br";
 
 const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' ${TURNSTILE}${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: blob: https://${SUPABASE_HOST}`,
+  `img-src 'self' data: blob: https://${SUPABASE_HOST} ${SULA}`,
   `media-src 'self' blob: https://${SUPABASE_HOST}`,
   "font-src 'self' data:",
   `connect-src 'self' https://${SUPABASE_HOST} wss://${SUPABASE_HOST}${isDev ? " ws: http://localhost:*" : ""}`,
@@ -52,9 +57,7 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   poweredByHeader: false,
   images: {
-    /* No Next 16 passou a ser apenas [75]; qualquer outro valor de
-       `quality` seriafork çgdt etry arredondado para 75. 95 libera a arte da seção "Por que a LA?". */
-    qualities: [75, 95],
+        qualities: [75, 95],
     remotePatterns: [
       {
         protocol: "https",
@@ -66,10 +69,29 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  /* URLs do site antigo (WordPress/WooCommerce) que ainda aparecem no Google.
+     permanent: true = 308. Com barra final, o Next primeiro tira a barra
+     (308) e depois aplica a regra abaixo. As categorias caem no catálogo já
+     filtrado pela formação (?formacao=<slug do nível>, lido pelo
+     CourseCatalog). Extensão universitária não existe mais: responde 410 em
+     app/categoria-produto/extensao-universitaria/route.ts. */
+  async redirects() {
+    return [
+      { source: "/sobre-nos", destination: "/institucional", permanent: true },
+      {
+        source: "/categoria-produto/graduacao",
+        destination: "/cursos?formacao=graduacao",
+        permanent: true,
+      },
+      {
+        source: "/categoria-produto/pos-graduacao",
+        destination: "/cursos?formacao=pos-graduacao",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
 
-// Habilita o acesso a bindings do Cloudflare (env vars, KV, R2, etc.) durante
-// `next dev`, usando a mesma wrangler.jsonc do build/deploy.
 initOpenNextCloudflareForDev();
