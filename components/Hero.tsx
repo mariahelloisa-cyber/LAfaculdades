@@ -4,6 +4,10 @@ import Image from "next/image";
 export default function Hero({ videoUrl }: { videoUrl?: string }) {
   return (
     <section className="relative isolate flex min-h-[620px] flex-col justify-center overflow-hidden bg-navy-950 lg:min-h-[800px]">
+      {/* preload="auto": o vídeo toca sozinho assim que dá, então não há o que
+          economizar esperando. Sem o atributo, parte dos navegadores busca só
+          os metadados primeiro e o vídeo entra mais tarde. O poster (2,5 KB,
+          servido pelo próprio site) segura a tela enquanto ele não chega. */}
       {videoUrl ? (
         <video
           src={videoUrl}
@@ -11,6 +15,7 @@ export default function Hero({ videoUrl }: { videoUrl?: string }) {
           muted
           loop
           playsInline
+          preload="auto"
           poster="/images/art/hero.svg"
           className="absolute inset-0 -z-10 h-full w-full object-cover"
         />

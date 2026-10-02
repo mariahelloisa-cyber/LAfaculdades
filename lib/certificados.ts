@@ -229,7 +229,13 @@ export function qrCodeSeguro(valor: unknown): string | null {
 // ====== DADOS PARA A TELA ======
 
 export type CampoCertificado = { rotulo: string; valor: string };
-export type BlocoCertificado = { titulo: string; campos: CampoCertificado[] };
+/** `id` é estável e serve para a tela escolher o ícone do bloco — o título é
+ *  texto de interface e pode ser reescrito sem quebrar nada. */
+export type BlocoCertificado = {
+  id: "aluno" | "curso" | "datas" | "registro";
+  titulo: string;
+  campos: CampoCertificado[];
+};
 export type CertificadoView = { blocos: BlocoCertificado[]; qrCode: string | null };
 
 function campo(rotulo: string, valor: string | null): CampoCertificado {
@@ -252,6 +258,7 @@ export function montarCertificado(dados: Record<string, unknown>): CertificadoVi
   return {
     blocos: [
       {
+        id: "aluno",
         titulo: "Aluno",
         campos: [
           campo("Nome", texto(aluno.nome)),
@@ -260,6 +267,7 @@ export function montarCertificado(dados: Record<string, unknown>): CertificadoVi
         ],
       },
       {
+        id: "curso",
         titulo: "Curso",
         campos: [
           // nome_manual tem precedência, como no HTML de referência.
@@ -269,6 +277,7 @@ export function montarCertificado(dados: Record<string, unknown>): CertificadoVi
         ],
       },
       {
+        id: "datas",
         titulo: "Datas",
         campos: [
           campo("Início", formatarDataCivil(datas.inicio)),
@@ -277,6 +286,7 @@ export function montarCertificado(dados: Record<string, unknown>): CertificadoVi
         ],
       },
       {
+        id: "registro",
         titulo: "Registro acadêmico",
         campos: [
           campo("Livro", texto(registro.livro)),

@@ -2,29 +2,13 @@
 
 import { useActionState, useRef, useState, useSyncExternalStore } from "react";
 import TurnstileWidget from "./TurnstileWidget";
+import CertificadoResultado from "./CertificadoResultado";
+import { IconeBusca, IconeInfo, IconeQr } from "./certificadoIcons";
 import { consultarCertificadoPublico, type ValidarCertificadoState } from "@/app/validar/actions";
-import { SITE } from "@/lib/constants";
-import { ACAO_VALIDAR, type BlocoCertificado } from "@/lib/certificados";
+import { ACAO_VALIDAR } from "@/lib/certificados";
 
 // A query string não muda sem navegação, então não há o que assinar.
 const semAssinatura = () => () => {};
-
-function Bloco({ bloco }: { bloco: BlocoCertificado }) {
-  return (
-    <div className="rounded-2xl border border-navy-950/8 bg-white p-5 sm:p-6">
-      <h3 className="t-label uppercase text-sky-600">{bloco.titulo}</h3>
-      <dl className="mt-4 grid gap-x-8 gap-y-4 sm:grid-cols-2">
-        {bloco.campos.map((c) => (
-          <div key={c.rotulo} className="min-w-0">
-            <dt className="text-[13px] font-semibold text-muted">{c.rotulo}</dt>
-            {/* Texto do React: a resposta da API nunca é interpretada como HTML. */}
-            <dd className="mt-0.5 break-words text-[15px] font-bold text-navy-950">{c.valor}</dd>
-          </div>
-        ))}
-      </dl>
-    </div>
-  );
-}
 
 export default function ValidarCertificadoForm() {
   const [estado, formAction, consultando] = useActionState<ValidarCertificadoState, FormData>(
@@ -62,28 +46,54 @@ export default function ValidarCertificadoForm() {
     <>
       <form
         action={formAction}
-        className="rounded-[28px] border border-navy-950/5 bg-white p-5 shadow-[0_24px_60px_rgba(6,21,35,0.10)] sm:p-7"
+        className="rounded-[28px] border border-navy-950/5 bg-white p-6 shadow-[0_24px_60px_rgba(6,21,35,0.10)] sm:p-8"
       >
-        <label className="text-[15px] font-bold text-navy-950" htmlFor="token">
-          Código / Token do certificado
-        </label>
-        <input
-          ref={campoRef}
-          id="token"
-          name="token"
-          type="text"
-          required
-          autoComplete="off"
-          spellCheck={false}
-          maxLength={64}
-          placeholder="Ex.: CRT-ABCDE1234"
-          value={token}
-          onChange={(e) => setTokenDigitado(e.target.value)}
-          aria-describedby="token-ajuda"
-          className="mt-2.5 w-full rounded-2xl border border-navy-950/12 bg-white px-5 py-4 text-[15px] tracking-[0.02em] text-navy-950 outline-none transition-colors placeholder:text-navy-950/35 focus:border-accent focus:ring-4 focus:ring-accent/15"
-        />
-        <p id="token-ajuda" className="mt-2 text-[13px] text-muted">
-          O código está impresso no certificado, ao lado do QR Code.
+        <div className="flex items-center gap-3.5">
+          <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-accent-soft text-accent">
+            <IconeBusca />
+          </span>
+          <div>
+            <h2 className="t-h3 text-navy-950">Consultar certificado</h2>
+            <p className="mt-0.5 text-[13px] font-semibold text-muted">Leva alguns segundos</p>
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <label className="text-[15px] font-bold text-navy-950" htmlFor="token">
+            Código / Token do certificado
+          </label>
+          {/* font-display + tracking: o código fica com cara de número de
+              documento e cada caractere é fácil de conferir. Sem `uppercase`
+              de propósito — mostrar maiúscula sem mudar o valor enviado faria
+              o aluno conferir uma coisa e consultar outra. */}
+          <input
+            ref={campoRef}
+            id="token"
+            name="token"
+            type="text"
+            required
+            autoComplete="off"
+            spellCheck={false}
+            maxLength={64}
+            placeholder="Ex.: CRT-ABCDE1234"
+            value={token}
+            onChange={(e) => setTokenDigitado(e.target.value)}
+            aria-describedby="token-ajuda"
+            className="mt-2.5 w-full rounded-2xl border border-navy-950/12 bg-white px-5 py-4 font-display text-[17px] font-bold tracking-[0.04em] text-navy-950 outline-none transition-colors placeholder:font-sans placeholder:text-[15px] placeholder:font-semibold placeholder:tracking-normal placeholder:text-navy-950/35 focus:border-accent focus:ring-4 focus:ring-accent/15"
+          />
+        </div>
+
+        {/* Onde achar o código: a dúvida mais provável de quem chega aqui sem
+            ter lido o QR Code. */}
+        <p
+          id="token-ajuda"
+          className="mt-3 flex gap-2.5 rounded-2xl bg-tint px-4 py-3 text-[13px] leading-relaxed text-navy-800"
+        >
+          <span className="mt-px shrink-0 text-sky-600">
+            <IconeQr />
+          </span>
+          O código está impresso no certificado, ao lado do QR Code. Se você chegou aqui lendo o QR Code, o
+          campo já vem preenchido.
         </p>
 
         {/* Token do Turnstile: some a cada envio (vale uma vez) e volta quando
@@ -99,7 +109,7 @@ export default function ValidarCertificadoForm() {
         <button
           type="submit"
           disabled={consultando || !tokenVerificacao}
-          className="mt-5 flex w-full items-center justify-center gap-3 rounded-full bg-accent px-7 py-4 text-[16px] font-bold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-5 flex w-full items-center justify-center gap-3 rounded-full bg-accent px-7 py-4.5 text-[16px] font-bold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
         >
           {consultando ? (
             <>
@@ -109,85 +119,59 @@ export default function ValidarCertificadoForm() {
               />
               Consultando certificado...
             </>
-          ) : tokenVerificacao ? (
-            "Consultar certificado"
           ) : (
-            "Verificando..."
+            <>
+              {tokenVerificacao ? "Consultar certificado" : "Verificando..."}
+              {tokenVerificacao && (
+                <svg width="18" height="14" viewBox="0 0 20 14" fill="none" aria-hidden>
+                  <path
+                    d="M1 7h17M12.5 1 18.5 7l-6 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              )}
+            </>
           )}
         </button>
       </form>
 
       {/* aria-live: quem usa leitor de tela ouve o resultado sem procurar. */}
-      <div aria-live="polite" className="mt-6">
+      <div aria-live="polite">
         {visivel && estado?.error && (
-          <div
-            role="alert"
-            className="rounded-2xl border border-rose/30 bg-rose/8 p-5 text-[15px] font-semibold text-navy-950"
-          >
-            {estado.error}
-          </div>
+          <>
+            <div
+              role="alert"
+              className="mt-6 flex gap-3.5 rounded-[28px] border border-rose/25 bg-rose/8 p-5 sm:p-6"
+            >
+              <span className="mt-0.5 shrink-0 text-rose-dark">
+                <IconeInfo />
+              </span>
+              <div className="min-w-0">
+                <h2 className="text-[15px] font-extrabold text-navy-950">
+                  Não foi possível mostrar o certificado
+                </h2>
+                <p className="mt-1 text-[14px] leading-relaxed text-navy-800">{estado.error}</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={novaConsulta}
+              className="mt-5 w-full rounded-full border border-navy-950/15 px-7 py-3.5 text-[15px] font-bold text-navy-950 transition-colors hover:border-navy-950/45 sm:w-auto"
+            >
+              Nova consulta
+            </button>
+          </>
         )}
 
         {visivel && estado?.certificado && (
-          <div className="rounded-[28px] border border-navy-950/5 bg-surface p-5 shadow-[0_24px_60px_rgba(6,21,35,0.08)] sm:p-7">
-            <h2 className="t-h3 text-navy-950">Certificado localizado</h2>
-            {/* A API não devolve situação do certificado, então a página não
-                pode afirmar que ele é válido — só que o registro existe. */}
-            <p className="mt-2.5 text-[14px] leading-relaxed text-muted">
-              Encontramos este registro no sistema acadêmico, com os dados abaixo. Esta consulta{" "}
-              <strong className="font-bold text-navy-950">não é uma declaração de validade</strong>: para
-              confirmar validade, cancelamento ou revogação, fale com a secretaria acadêmica em{" "}
-              <a href={`mailto:${SITE.email}`} className="font-bold text-sky-600 underline underline-offset-2">
-                {SITE.email}
-              </a>
-              .
-            </p>
-
-            <div className="mt-6 grid gap-4">
-              {estado.certificado.blocos.map((bloco) => (
-                <Bloco key={bloco.titulo} bloco={bloco} />
-              ))}
-
-              {estado.certificado.qrCode && (
-                <div className="rounded-2xl border border-navy-950/8 bg-white p-5 sm:p-6">
-                  <h3 className="t-label uppercase text-sky-600">QR Code</h3>
-                  <a
-                    href={estado.certificado.qrCode}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-block rounded-xl border border-navy-950/10 p-2"
-                  >
-                    {/* next/image só aceita o host do Supabase (next.config.ts),
-                        e esta imagem vem do SULA: <img> simples, com a URL já
-                        conferida por qrCodeSeguro. */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={estado.certificado.qrCode}
-                      alt="QR Code do certificado"
-                      width={180}
-                      height={180}
-                      className="size-[180px] object-contain"
-                    />
-                  </a>
-                </div>
-              )}
-            </div>
-
-            <p className="mt-5 text-[13px] leading-relaxed text-muted">
-              O CPF é mostrado em parte para proteger o dado pessoal — quem está com o certificado em mãos
-              pode conferir os dígitos do meio.
-            </p>
-          </div>
-        )}
-
-        {visivel && (
-          <button
-            type="button"
-            onClick={novaConsulta}
-            className="mt-5 w-full rounded-full border border-navy-950/15 px-7 py-3.5 text-[15px] font-bold text-navy-950 transition-colors hover:border-navy-950/40 sm:w-auto"
-          >
-            Nova consulta
-          </button>
+          <CertificadoResultado
+            certificado={estado.certificado}
+            token={estado.token}
+            onNovaConsulta={novaConsulta}
+          />
         )}
       </div>
     </>

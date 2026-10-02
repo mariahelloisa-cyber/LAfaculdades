@@ -21,6 +21,10 @@ const headingFont = Poppins({
    As telas de /admin leem cookies, são dinâmicas e ignoram isto. */
 export const revalidate = 300;
 
+/** Origem do Storage, para o preconnect do <head>. Vem da variável de ambiente
+ *  (e não escrita à mão) para acompanhar o projeto do Supabase. */
+const supabaseOrigin = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
 export const metadata: Metadata = {
   title: {
     default: "LA Faculdades — Educação acessível e de qualidade para todos",
@@ -36,6 +40,13 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className={`${bodyFont.variable} ${headingFont.variable} h-full`}>
+      <head>
+        {/* O vídeo da hero e as imagens enviadas pelo painel vêm do Storage do
+            Supabase. Sem isto, o navegador só começa o DNS + TCP + TLS desse
+            host quando encontra o <video> no HTML; abrindo a conexão junto com
+            a página, o vídeo começa a baixar antes. */}
+        {supabaseOrigin && <link rel="preconnect" href={supabaseOrigin} />}
+      </head>
       <body className="min-h-full flex flex-col font-sans antialiased text-ink">
         <SiteChrome>{children}</SiteChrome>
       </body>

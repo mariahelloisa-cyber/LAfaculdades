@@ -83,9 +83,14 @@ export default function UploadField({
       const supabase = createClient();
       const path = `${folder}/${crypto.randomUUID()}.${ext}`;
 
+      /* cacheControl de 1 ano: o caminho é um UUID novo a cada envio e nunca é
+         sobrescrito (upsert: false), então o arquivo nesta URL jamais muda —
+         trocar a mídia no painel gera outra URL. Sem isto o Supabase manda o
+         padrão de 1 hora, e quem volta ao site baixa o vídeo da home de novo. */
       const { error } = await supabase.storage.from("media").upload(path, file, {
         upsert: false,
         contentType: file.type,
+        cacheControl: "31536000",
       });
 
       if (error) {
