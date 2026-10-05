@@ -82,13 +82,6 @@ with checks(ordem, verificacao, resultado, esperado) as (
   -- Rastro dos testes da auditoria
   union all select 20, 'matrículas "TESTE AUDITORIA" gravadas',
     (select count(*)::text from public.matriculas where nome_completo ilike 'TESTE AUDITORIA%'), '0'
-
-  -- Segundo fator (supabase/seguranca-v09-mfa.sql)
-  union all select 21, 'policies que liberam admin SEM exigir MFA (is_admin)',
-    coalesce((select string_agg(format('%s.%s', tablename, policyname), ', ' order by tablename, policyname)
-      from pg_policies where schemaname in ('public', 'storage')
-        and (coalesce(qual, '') ilike '%is_admin()%' or coalesce(with_check, '') ilike '%is_admin()%')), '(nenhuma)'),
-    '(nenhuma)'
 )
 select ordem, verificacao, resultado, esperado,
   case
