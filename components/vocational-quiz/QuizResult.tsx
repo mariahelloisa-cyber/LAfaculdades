@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import persona from "@/app/assets/persona.png";
+import resultadoArte from "@/app/assets/resultado.png";
 import { AreaIcon } from "@/components/AreaIcons";
 import { SITE } from "@/lib/constants";
 import { COURSE_AFFINITY_PROFILES } from "@/lib/vocational-quiz/courseAffinityProfiles";
@@ -190,35 +190,19 @@ export default function QuizResult({
             )}
           </div>
 
-          {/* Painel com a aluna (recorte oficial usado no banner dos cursos) */}
+          {/* Painel com a arte da aluna — frase e logo já vêm na imagem */}
           <div
             aria-hidden="true"
-            className="relative isolate min-h-[380px] overflow-hidden rounded-[26px] bg-sky-100 sm:min-h-[460px] lg:min-h-0"
+            className="relative min-h-[380px] overflow-hidden rounded-[26px] bg-navy-800 sm:min-h-[460px] lg:min-h-0"
           >
-            <div className="absolute inset-0 -z-10 bg-navy-800 [clip-path:polygon(40%_0,100%_0,100%_100%,0_100%,0_50%)]" />
-            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-transparent via-transparent to-navy-950/35 [clip-path:polygon(40%_0,100%_0,100%_100%,0_100%,0_50%)]" />
-            <div className="absolute bottom-0 left-0 h-[84%] w-[76%]">
-              <Image
-                src={persona}
-                alt=""
-                fill
-                sizes="(min-width: 1024px) 32vw, 76vw"
-                className="object-contain object-[left_bottom]"
-              />
-            </div>
-            <div className="absolute right-5 top-[9%] max-w-[34%] text-white [text-shadow:0_2px_14px_rgba(6,21,35,0.5)] sm:right-8">
-              <p className="font-display text-[clamp(1.05rem,1.9vw,1.65rem)] font-semibold leading-[1.2]">
-                Mais que um curso, um futuro com propósito.
-              </p>
-              <span className="mt-5 block h-px w-10 bg-white/70" />
-            </div>
             <Image
-              src="/images/logo-horizontal.png"
+              src={resultadoArte}
               alt=""
-              width={2624}
-              height={958}
-              sizes="120px"
-              className="absolute bottom-5 right-5 h-auto w-[92px] brightness-0 invert sm:bottom-7 sm:right-8 sm:w-[110px]"
+              fill
+              placeholder="blur"
+              quality={95}
+              sizes="(min-width: 1024px) 32vw, 100vw"
+              className="object-cover object-[30%_35%]"
             />
           </div>
         </section>

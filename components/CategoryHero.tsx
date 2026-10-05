@@ -7,7 +7,7 @@ import type { CSSProperties } from "react";
 export default function CategoryHero({
   title,
   description,
-  backgroundUrl = "/images/matricula-hero.jpg",
+  backgroundUrl = "/images/bannercursos.png",
 }: {
   title: string;
   description?: string;
@@ -43,7 +43,7 @@ export default function CategoryHero({
         {/* Overlay no azul da marca: forte no lado do texto e mais aberto à
             direita, para a foto de fundo ainda aparecer sem atrapalhar a
             leitura. No mobile o degradê vira vertical. */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-navy-950/95 via-navy-900/90 to-navy-950/95 lg:bg-gradient-to-r lg:from-navy-950 lg:via-navy-900/92 lg:to-navy-700/55" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-navy-950/90 via-navy-900/80 to-navy-950/90 lg:bg-gradient-to-r lg:from-navy-950/95 lg:via-navy-900/75 lg:to-navy-700/35" />
 
         <div className="container-x">
           <div className="flex min-h-[260px] flex-col justify-center py-12 sm:py-14 lg:min-h-[440px] lg:py-16">

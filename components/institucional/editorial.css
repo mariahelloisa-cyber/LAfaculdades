@@ -12,6 +12,26 @@
   /* Altura útil abaixo do header fixo; --chrome-h vem medido do JS. */
   --ed-h: calc(100vh - var(--chrome-h, 94px));
   --ed-h: calc(100svh - var(--chrome-h, 94px));
+  /* Fundo das seções escuras em vidro fosco (glassmorphism): manchas de luz
+     nos azuis da marca, já desfocadas, sobre um azul-marinho mais aberto.
+     Tudo pintado no próprio fundo — sem backdrop-filter, que pesaria no
+     scroll animado dessas seções altas. A 1ª camada funde o topo e o pé de
+     cada seção na cor de base, então a passagem de uma seção para a outra
+     não deixa emenda. */
+  --ed-base: var(--color-navy-800);
+  --ed-bg:
+    linear-gradient(
+      to bottom,
+      var(--ed-base) 0,
+      transparent 22vh,
+      transparent calc(100% - 22vh),
+      var(--ed-base) 100%
+    ),
+    radial-gradient(72vw 62vw at 92% 28%, rgb(23 162 224 / 0.55), transparent 70%),
+    radial-gradient(78vw 66vw at 4% 55%, rgb(111 163 201 / 0.45), transparent 70%),
+    radial-gradient(64vw 56vw at 72% 82%, rgb(23 162 224 / 0.42), transparent 70%),
+    linear-gradient(rgb(255 255 255 / 0.04), rgb(255 255 255 / 0.04)),
+    var(--ed-base);
   overflow-x: clip;
 }
 
@@ -178,7 +198,7 @@
    02 · Destaques — título no topo direito, blocos desalinhados
    -------------------------------------------------------------------------- */
 .ed-works {
-  background: var(--color-navy-950);
+  background: var(--ed-bg);
   color: #fff;
   padding: clamp(72px, 14vh, 180px) var(--ed-g) clamp(96px, 16vh, 200px);
   overflow: clip;
@@ -268,7 +288,7 @@
    03 · Feature — mídia dominante cercada de escuro
    -------------------------------------------------------------------------- */
 .ed-feature {
-  background: var(--color-navy-950);
+  background: var(--ed-bg);
   color: #fff;
   padding: 0 var(--ed-g) clamp(64px, 11vh, 140px); /* espaço abaixo da legenda */
   overflow: clip;
@@ -350,7 +370,7 @@
   --ed-film-y: 20%;
   --ed-film-x: 6vw;
   position: relative;
-  background: var(--color-navy-950);
+  background: var(--ed-bg);
   color: #fff;
   overflow: clip;
 }

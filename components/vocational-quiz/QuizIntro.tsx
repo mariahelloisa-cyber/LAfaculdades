@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import capaQuiz from "@/app/assets/capaquiz.png";
 import { trackVocationalEvent } from "@/lib/vocational-quiz/analytics";
 import { QUESTIONS } from "@/lib/vocational-quiz/questions";
 import { useCardStack } from "./useCardStack";
@@ -46,11 +47,12 @@ export default function QuizIntro() {
     >
       <div className="quiz-stack-bg" aria-hidden="true">
         <Image
-          src="/images/alunos.jpg"
+          src={capaQuiz}
           alt=""
           fill
           sizes="100vw"
-          className="object-cover object-[center_40%]"
+          placeholder="blur"
+          className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-navy-950/20" />
       </div>

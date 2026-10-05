@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import capaBlog from "@/app/assets/capablog.png";
 import Container from "@/components/Container";
 import BlogExplorer from "@/components/BlogExplorer";
 import { getPosts } from "@/lib/data/posts";
@@ -15,19 +16,19 @@ export default async function BlogPage() {
 
   return (
     <>
-      {/* Hero — fundo escuro com grade de pontos e brilho decorativos,
-          selo "Blog LA", título com sublinhado desenhado e coluna de
-          ícones flutuantes no desktop. */}
-      <section className="relative isolate overflow-hidden bg-navy-950">
+      {/* Hero — a arte de fundo já traz o título, então a seção segue a
+          proporção da foto e o h1 fica só para leitores de tela e SEO.
+          Coluna de ícones flutuantes no desktop. */}
+      <section className="relative isolate aspect-[2560/900] overflow-hidden bg-navy-950">
         <Image
-          src={heroUrl || "/images/blog.jpg"}
+          src={heroUrl || capaBlog}
           alt=""
           fill
           priority
+          quality={95}
           sizes="100vw"
           className="-z-20 object-cover"
         />
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-navy-950/80" />
         <div
           aria-hidden
           className="pointer-events-none absolute right-6 top-6 hidden h-28 w-28 opacity-25 lg:block"
@@ -36,30 +37,9 @@ export default async function BlogPage() {
             backgroundSize: "10px 10px",
           }}
         />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-24 bottom-0 -z-10 h-72 w-72 rounded-full bg-accent/20 blur-3xl"
-        />
 
-        <Container className="relative py-10 lg:py-14">
-          <div className="max-w-xl">
-            <span className="t-label inline-flex items-center rounded-full bg-white/10 px-4 py-1.5 uppercase text-sky-300 ring-1 ring-white/15">
-              Blog LA
-            </span>
-            <h1 className="t-h2 mt-5 text-white">Conhecimento que inspira e transforma.</h1>
-            <svg aria-hidden viewBox="0 0 220 16" className="mt-2 h-2.5 w-32 text-accent">
-              <path
-                d="M2 12C40 2 80 2 110 8C140 14 180 14 218 4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-              />
-            </svg>
-            <p className="t-lead mt-5 text-sky-200">
-              Conteúdo sobre vestibular, ENEM, financiamento estudantil e vida acadêmica.
-            </p>
-          </div>
+        <Container className="relative h-full">
+          <h1 className="sr-only">Blog LA — Conhecimento que inspira e transforma.</h1>
 
           {/* coluna de ícones decorativos — só desktop */}
           <div className="pointer-events-none absolute right-0 top-1/2 hidden -translate-y-1/2 flex-col gap-3 lg:flex">
@@ -97,6 +77,10 @@ export default async function BlogPage() {
           </div>
         </Container>
       </section>
+
+      {/* Faixa que fecha a hero — como a da CategoryHero, um pouco mais fina
+          e no azul-marinho do header. */}
+      <div className="h-7 w-full bg-navy-950 sm:h-9" />
 
       {/* Artigos + sidebar (busca, categorias, newsletter) */}
       <BlogExplorer posts={posts} />

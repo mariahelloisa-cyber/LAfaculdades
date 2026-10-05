@@ -2,6 +2,9 @@
 
 import { useEffect, useLayoutEffect, useRef } from "react";
 import Image from "next/image";
+import foto2 from "@/app/assets/foto2.png";
+import foto3 from "@/app/assets/foto3.png";
+import foto4 from "@/app/assets/foto4.png";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SITE } from "@/lib/constants";
@@ -411,7 +414,7 @@ export default function EditorialScroll() {
             <div className="ed-fig">
               <div className="ed-fig__inner">
                 <Image
-                  src="/images/matricula-hero.jpg"
+                  src={foto2}
                   alt="Grupo de estudantes estudando juntos em uma mesa"
                   fill
                   sizes="(min-width: 1024px) 50vw, (min-width: 768px) 58vw, 100vw"
@@ -450,7 +453,7 @@ export default function EditorialScroll() {
             <div className="ed-fig">
               <div className="ed-fig__inner">
                 <Image
-                  src="/images/historia.jpg"
+                  src={foto3}
                   alt="Alunos da LA Faculdades sorrindo juntos"
                   fill
                   sizes="(min-width: 1024px) 33vw, (min-width: 768px) 40vw, 75vw"
@@ -473,7 +476,7 @@ export default function EditorialScroll() {
           </div>
           <div className="ed-feature__media">
             <Image
-              src="/images/imagem3.jpg"
+              src={foto4}
               alt="Estudante sorrindo enquanto usa o celular na rua"
               fill
               sizes="(min-width: 1024px) 67vw, (min-width: 768px) 84vw, 100vw"
