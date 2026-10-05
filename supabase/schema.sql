@@ -32,6 +32,22 @@ $$;
 revoke execute on function public.is_admin() from public;
 grant execute on function public.is_admin() to anon, authenticated;
 
+-- Escrita e dados pessoais exigem também o segundo fator (sessão aal2) — ver
+-- supabase/seguranca-v09-mfa.sql. is_admin() acima é só "está em admins".
+create or replace function public.admin_com_mfa()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select coalesce((select auth.jwt() ->> 'aal'), '') = 'aal2'
+     and exists (select 1 from public.admins where user_id = (select auth.uid()));
+$$;
+
+revoke execute on function public.admin_com_mfa() from public, anon;
+grant execute on function public.admin_com_mfa() to authenticated;
+
 create table if not exists blog_posts (
   id uuid primary key default gen_random_uuid(),
   slug text not null unique,
@@ -62,7 +78,7 @@ drop policy if exists "Authenticated manage blog_posts" on blog_posts;
 drop policy if exists "Admin manage blog_posts" on blog_posts;
 -- Só administradores (tabela admins) podem criar/editar/apagar.
 create policy "Admin manage blog_posts" on blog_posts
-  for all to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
+  for all to authenticated using ((select public.admin_com_mfa())) with check ((select public.admin_com_mfa()));
 
 -- Migração dos posts que já existiam em lib/data/posts.ts.
 insert into blog_posts (slug, titulo, categoria, resumo, conteudo, data) values
@@ -150,7 +166,7 @@ create policy "Public read course_niveis" on course_niveis
 drop policy if exists "Authenticated manage course_niveis" on course_niveis;
 drop policy if exists "Admin manage course_niveis" on course_niveis;
 create policy "Admin manage course_niveis" on course_niveis
-  for all to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
+  for all to authenticated using ((select public.admin_com_mfa())) with check ((select public.admin_com_mfa()));
 
 -- ATENÇÃO: excluir ou renomear o slug de um nível muda a URL daquela
 -- seção do site (ex.: /graduacao deixaria de existir) — afeta SEO e
@@ -221,7 +237,7 @@ create policy "Public read courses" on courses
 drop policy if exists "Authenticated manage courses" on courses;
 drop policy if exists "Admin manage courses" on courses;
 create policy "Admin manage courses" on courses
-  for all to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
+  for all to authenticated using ((select public.admin_com_mfa())) with check ((select public.admin_com_mfa()));
 
 -- Sem cursos de exemplo: os cursos reais da LA são cadastrados pelo admin
 -- (/admin/cursos). Os 8 cursos de teste que existiam aqui foram removidos
@@ -251,7 +267,7 @@ create policy "Public read site_media" on site_media
 drop policy if exists "Authenticated manage site_media" on site_media;
 drop policy if exists "Admin manage site_media" on site_media;
 create policy "Admin manage site_media" on site_media
-  for all to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
+  for all to authenticated using ((select public.admin_com_mfa())) with check ((select public.admin_com_mfa()));
 
 -- Valores padrão = o que já está no ar hoje, pra nada mudar visualmente
 -- até o admin trocar por uma mídia de verdade. (As fotos de hero de
@@ -292,24 +308,24 @@ where id = 'media';
 drop policy if exists "Public read media bucket" on storage.objects;
 drop policy if exists "Admin read media bucket" on storage.objects;
 create policy "Admin read media bucket" on storage.objects
-  for select to authenticated using (bucket_id = 'media' and (select public.is_admin()));
+  for select to authenticated using (bucket_id = 'media' and (select public.admin_com_mfa()));
 
 drop policy if exists "Authenticated upload media bucket" on storage.objects;
 drop policy if exists "Admin upload media bucket" on storage.objects;
 create policy "Admin upload media bucket" on storage.objects
-  for insert to authenticated with check (bucket_id = 'media' and (select public.is_admin()));
+  for insert to authenticated with check (bucket_id = 'media' and (select public.admin_com_mfa()));
 
 drop policy if exists "Authenticated update media bucket" on storage.objects;
 drop policy if exists "Admin update media bucket" on storage.objects;
 create policy "Admin update media bucket" on storage.objects
   for update to authenticated
-  using (bucket_id = 'media' and (select public.is_admin()))
-  with check (bucket_id = 'media' and (select public.is_admin()));
+  using (bucket_id = 'media' and (select public.admin_com_mfa()))
+  with check (bucket_id = 'media' and (select public.admin_com_mfa()));
 
 drop policy if exists "Authenticated delete media bucket" on storage.objects;
 drop policy if exists "Admin delete media bucket" on storage.objects;
 create policy "Admin delete media bucket" on storage.objects
-  for delete to authenticated using (bucket_id = 'media' and (select public.is_admin()));
+  for delete to authenticated using (bucket_id = 'media' and (select public.admin_com_mfa()));
 
 -- ============================================================
 -- Matrículas (leads do botão "Matricule-se")
@@ -457,14 +473,14 @@ grant execute on function public.registrar_matricula(text, text, date, text, tex
 drop policy if exists "Authenticated read matriculas" on matriculas;
 drop policy if exists "Admin read matriculas" on matriculas;
 create policy "Admin read matriculas" on matriculas
-  for select to authenticated using ((select public.is_admin()));
+  for select to authenticated using ((select public.admin_com_mfa()));
 
 drop policy if exists "Authenticated manage matriculas" on matriculas;
 drop policy if exists "Admin update matriculas" on matriculas;
 create policy "Admin update matriculas" on matriculas
-  for update to authenticated using ((select public.is_admin())) with check ((select public.is_admin()));
+  for update to authenticated using ((select public.admin_com_mfa())) with check ((select public.admin_com_mfa()));
 
 drop policy if exists "Authenticated delete matriculas" on matriculas;
 drop policy if exists "Admin delete matriculas" on matriculas;
 create policy "Admin delete matriculas" on matriculas
-  for delete to authenticated using ((select public.is_admin()));
+  for delete to authenticated using ((select public.admin_com_mfa()));
