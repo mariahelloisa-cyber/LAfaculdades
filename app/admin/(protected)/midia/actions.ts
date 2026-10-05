@@ -47,7 +47,7 @@ export async function clearSiteMedia(formData: FormData) {
   const { supabase } = await requireAdmin();
 
   const chave = String(formData.get("chave") ?? "");
-  if (!chave) return;
+  if (!ehChaveDeMidia(chave)) return;
 
   await supabase.from("site_media").update({ url: "" }).eq("chave", chave);
 

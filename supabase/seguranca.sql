@@ -137,17 +137,15 @@ alter table matriculas add constraint matriculas_campos_validos check (
 
 alter table matriculas enable row level security;
 
+/* Sem INSERT direto pela API (V-07): a gravação é só pela função
+   registrar_matricula (supabase/seguranca-v07-parte1.sql), que exige a chave
+   do servidor. Uma versão antiga deste arquivo devolvia o INSERT ao anon e
+   recriava "Public insert matriculas" — rodá-la de novo desfazia a V-07. */
 revoke all on matriculas from anon, authenticated;
-grant insert (
-  nome_completo, data_nascimento, cpf, email, telefone, curso_slug, curso_nome,
-  forma_ingresso, modalidade, polo, tipo_ingresso
-) on matriculas to anon, authenticated;
 grant select, delete on matriculas to authenticated;
 grant update (status, observacoes, updated_at) on matriculas to authenticated;
 
 drop policy if exists "Public insert matriculas" on matriculas;
-create policy "Public insert matriculas" on matriculas
-  for insert to anon, authenticated with check (status = 'novo' and observacoes = '');
 
 drop policy if exists "Authenticated read matriculas" on matriculas;
 drop policy if exists "Admin read matriculas" on matriculas;

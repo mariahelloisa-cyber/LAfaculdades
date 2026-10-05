@@ -4,6 +4,7 @@ import { registrarMatricula } from "@/lib/supabase/registrarMatricula";
 import { protegerEnvioPublico } from "@/lib/protecaoEnvio";
 import { MENSAGEM_LIMITE_CPF } from "@/lib/matriculas";
 import { cpfValido, emailValido } from "@/lib/cpf";
+import { getCourseNomeBySlug } from "@/lib/data/courses";
 import { VESTIBULAR } from "@/lib/constants";
 
 export type VestibularFormState = { ok?: boolean; error?: string } | undefined;
@@ -34,7 +35,7 @@ export async function inscreverVestibular(
   if (nomeCompleto.length > 200) {
     return { error: "Nome muito longo." };
   }
-  if (cursoNome.length > 200 || cursoSlug.length > 200) {
+  if (!cursoSlug || cursoNome.length > 200 || cursoSlug.length > 200) {
     return { error: "Curso inválido." };
   }
   if (!cpfValido(cpf)) {
@@ -58,6 +59,14 @@ export async function inscreverVestibular(
   const bloqueio = await protegerEnvioPublico(formData, "vestibular");
   if (bloqueio) return { error: bloqueio };
 
+  /* curso_slug e curso_nome vêm de campos escondidos: o nome gravado é o do
+     banco, e um slug que não existe é recusado. */
+  const cursoOficial = await getCourseNomeBySlug(cursoSlug);
+  if (cursoOficial === "erro") {
+    return { error: "Não conseguimos registrar sua inscrição agora. Tente novamente em instantes." };
+  }
+  if (!cursoOficial) return { error: "Curso inválido. Selecione um curso da lista." };
+
   const resultado = await registrarMatricula({
     nome_completo: nomeCompleto,
     data_nascimento: dataNascimento,
@@ -65,7 +74,7 @@ export async function inscreverVestibular(
     email,
     telefone,
     curso_slug: cursoSlug,
-    curso_nome: cursoNome,
+    curso_nome: cursoOficial,
     forma_ingresso: "Vestibular",
     tipo_ingresso: tipoIngresso,
   });

@@ -167,6 +167,24 @@ export const getCourseNiveis = cache(async (): Promise<CourseNivel[]> => {
   return (data as NivelRow[]).map(mapNivel);
 });
 
+/** Nome oficial do curso, para os formulários públicos. O slug e o nome chegam
+ *  em campos escondidos que quem chama a Server Action direto troca à vontade;
+ *  gravar o nome que o banco devolve impede inventar curso no painel.
+ *  "erro" = falha na consulta (não é o mesmo que curso inexistente). */
+export async function getCourseNomeBySlug(slug: string): Promise<string | null | "erro"> {
+  const { data, error } = await supabasePublic
+    .from("courses")
+    .select("nome")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Erro ao conferir curso:", error.message);
+    return "erro";
+  }
+  return (data as { nome: string } | null)?.nome ?? null;
+}
+
 export async function getCourseNivelBySlug(slug: string): Promise<CourseNivel | null> {
   const { data, error } = await supabasePublic
     .from("course_niveis")
