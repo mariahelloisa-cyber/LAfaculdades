@@ -270,10 +270,7 @@ export default async function EnemPage() {
 
         <Container className="relative z-10">
           <Reveal>
-            <h2 className="t-h2 text-[clamp(2rem,3.6vw,3rem)]! text-navy-950">Conheça outra forma de ingresso</h2>
-            <p className="t-lead mt-5 max-w-2xl text-muted">
-              Prefere se matricular direto? Também temos esse caminho.
-            </p>
+            
           </Reveal>
 
           {/* Cards na coluna estreita da esquerda; a coluna da direita fica
