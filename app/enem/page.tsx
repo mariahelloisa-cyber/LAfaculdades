@@ -269,13 +269,9 @@ export default async function EnemPage() {
         </div>
 
         <Container className="relative z-10">
-          <Reveal>
-            
-          </Reveal>
-
           {/* Cards na coluna estreita da esquerda; a coluna da direita fica
               vazia de propósito — é onde a foto ancorada na base aparece. */}
-          <div className="mt-10 grid items-center gap-10 lg:grid-cols-[0.9fr_1fr] lg:gap-10">
+          <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1fr] lg:gap-10">
             <div className="grid gap-5 sm:grid-cols-2">
               <Reveal delay={70}>
                 <Link
