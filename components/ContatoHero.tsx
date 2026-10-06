@@ -1,31 +1,17 @@
-import Image from "next/image";
 import Container from "./Container";
 import BlobDepoimentos from "./BlobDepoimentos";
-/* Composição da esquerda (aluna + janela de atendimento). Recorte feito a
-   partir de contato2.png, que veio em alta com o fundo azul embutido. */
-import contato from "@/app/assets/contato-recorte.png";
 
-/** Hero da página de contato: azul, com a aluna à esquerda e a chamada à
- *  direita. Sem botão — o formulário e os canais vêm logo abaixo. */
+/** Hero da página de contato: azul, com a chamada à direita. Sem botão — o
+ *  formulário e os canais vêm logo abaixo. */
 export default function ContatoHero() {
   return (
     <section className="relative isolate overflow-hidden bg-navy-950">
       <BlobDepoimentos fill="#1b7fb5" manterProporcao />
 
-      <Container className="relative z-10 grid items-center gap-8 py-12 lg:grid-cols-[46%_1fr] lg:gap-4 lg:py-0">
-        {/* Puxada para fora da margem do container: a aluna encosta na borda
-            esquerda da tela, como na referência. No mobile some e o texto
-            abre a página. */}
-        <div className="relative hidden lg:-ml-12 lg:block lg:h-[480px] xl:-ml-24">
-          <Image
-            src={contato}
-            alt=""
-            fill
-            priority
-            sizes="(max-width: 1024px) 1px, 46vw"
-            className="object-contain object-bottom lg:object-left-bottom"
-          />
-        </div>
+      <Container className="relative z-10 grid items-center gap-8 py-12 lg:min-h-[480px] lg:grid-cols-[46%_1fr] lg:gap-4 lg:py-0">
+        {/* Coluna da esquerda vazia no desktop: mantém a chamada no mesmo
+            lugar, sobre a parte azul do fundo. */}
+        <div className="hidden lg:block" aria-hidden />
 
         <div className="lg:py-16">
           <span className="text-[13px] font-bold uppercase tracking-[0.22em] text-[#FFD600]">
@@ -37,8 +23,8 @@ export default function ContatoHero() {
             Estamos aqui para ajudar!
           </h1>
           <p className="mt-5 max-w-[52ch] text-[15px] font-semibold leading-relaxed text-white/90">
-            Nossa equipe está pronta para atender você e tirar todas as suas dúvidas 
-            sobre os cursos, matrículas, formas de pagamento e tudo o que você precisa 
+            Nossa equipe está pronta para atender você e tirar todas as suas dúvidas
+            sobre os cursos, matrículas, formas de pagamento e tudo o que você precisa
             saber para dar início à sua jornada conosco.
           </p>
         </div>
