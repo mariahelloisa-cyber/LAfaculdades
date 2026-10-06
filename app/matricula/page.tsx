@@ -282,15 +282,7 @@ export default async function MatriculaPage() {
         </div>
 
         <Container className="relative z-10">
-          <Reveal>
-            <h2 className="t-h2 text-[clamp(2rem,3.6vw,3rem)]! text-navy-950">Conheça outras formas de ingresso</h2>
-            <p className="t-lead mt-5 max-w-2xl text-muted">
-              Você pode fazer sua matrícula imediata ou escolher caminhos com facilidades 
-              de pagamento e garantir as melhores condições para o seu bolso:
-            </p>
-          </Reveal>
-
-          <div className="mt-10 grid items-center gap-10 lg:grid-cols-[0.9fr_1fr] lg:gap-10">
+          <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1fr] lg:gap-10">
             <div className="grid gap-5 sm:grid-cols-2">
               <Reveal delay={70}>
                 <Link
