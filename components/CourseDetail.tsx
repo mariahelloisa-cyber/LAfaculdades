@@ -415,7 +415,7 @@ export default function CourseDetail({
       </section>
 
       {/* ---------- FAQ ---------- */}
-      <section id="faq" className="section-y scroll-mt-32 bg-white">
+      <section id="faq" className="section-y pb-16! scroll-mt-32 bg-white">
         <Container>
           <AnimatedText as="h2" variant="titulo" className="t-h2 text-navy-950">
             Dúvidas frequentes
@@ -428,7 +428,7 @@ export default function CourseDetail({
 
       {/* ---------- Cursos relacionados ---------- */}
       {relacionados.length > 0 && (
-        <section className="section-y bg-white">
+        <section className="section-y pt-0! pb-12! bg-white">
           <Container>
             <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
               <AnimatedText as="h2" variant="titulo" className="t-h2 text-navy-950">
@@ -455,8 +455,7 @@ export default function CourseDetail({
 
       {/* ---------- Barra de matrícula ----------
           Entra quando o card lateral sai da tela e acompanha o resto da
-          página. O espaçador evita que ela cubra o fim do conteúdo. */}
-      <div className="h-[140px]" aria-hidden />
+          página. Some pouco antes do rodapé, sem cobrir o fim do banner. */}
       <CourseStickyBar
         nome={course.nome}
         nivelNome={course.nivelNome}

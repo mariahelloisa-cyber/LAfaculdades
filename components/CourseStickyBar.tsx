@@ -32,21 +32,23 @@ export default function CourseStickyBar({
 
     const atualizar = () => setVisivel(window.scrollY > 420 && !cardNaTela && !rodapeNaTela);
 
-    const observar = (alvo: Element | null, ao: (visivel: boolean) => void) => {
+    const observar = (alvo: Element | null, ao: (visivel: boolean) => void, rootMargin = "0px") => {
       if (!alvo) return null;
       const obs = new IntersectionObserver(
         ([entry]) => {
           ao(entry.isIntersecting);
           atualizar();
         },
-        { threshold: 0 }
+        { threshold: 0, rootMargin }
       );
       obs.observe(alvo);
       return obs;
     };
 
     const ioCard = observar(card, (v) => (cardNaTela = v));
-    const ioRodape = observar(rodape, (v) => (rodapeNaTela = v));
+    /* Some um pouco antes do rodapé entrar, para não cobrir o fim do
+       conteúdo logo acima dele. */
+    const ioRodape = observar(rodape, (v) => (rodapeNaTela = v), "0px 0px 160px 0px");
 
     window.addEventListener("scroll", atualizar, { passive: true });
     atualizar();
